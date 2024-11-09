@@ -59,7 +59,8 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 			/*Approximately*/
 			add_filter( 'woocommerce_get_price_html', array( $this, 'add_approximately_price' ), 20, 2 );
 			if ( self::$settings->get_price_switcher() ) {
-				add_action( 'woocommerce_single_product_summary', array( $this, 'add_price_switcher' ), 20, 2 );
+				add_action( 'woocommerce_single_product_summary', array( $this, 'add_price_switcher' ),
+					(int) self::$settings->get_params( 'price_switcher_position' ), 2 );
 			}
 
 			if ( is_plugin_active( 'woocommerce-bookings/woocommerce-bookings.php' ) ) {
@@ -121,7 +122,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 			} elseif ( $display_price ) {
 				if ( $product->has_additional_costs() || $product->get_display_cost() ) {
 					/* translators: 1: display price */
-					$price_html = sprintf( __( 'From: %s', 'woocommerce-bookings' ), wc_price( $display_price ) ) . $product->get_price_suffix();
+					$price_html = sprintf( esc_html__( 'From: %s', 'woocommerce-bookings' ), wc_price( $display_price ) ) . $product->get_price_suffix();
 				} else {
 					$price_html = wc_price( $display_price ) . $product->get_price_suffix();
 				}
@@ -413,8 +414,8 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 
 			foreach ( $price_arr as $price_type => $values ) {
 				foreach ( $values as $key => $value ) {
-					$wc_variation_product = wc_get_product( $key );
 					if ( $fixed_price ) {
+						$wc_variation_product = wc_get_product( $key );
 						$current_currency = self::$settings->get_current_currency();
 						if ( $temp_arr['regular_price'][ $key ] != $temp_arr['price'][ $key ] ) {
 							if ( $price_type == 'regular_price' ) {

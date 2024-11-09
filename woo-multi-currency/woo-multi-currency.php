@@ -3,7 +3,7 @@
  * Plugin Name: CURCY - Multi Currency for WooCommerce
  * Plugin URI: https://villatheme.com/extensions/woo-multi-currency/
  * Description: Allows you to display prices and accepts payments in multiple currencies. Working only with WooCommerce.
- * Version: 2.2.3
+ * Version: 2.2.4
  * Author: VillaTheme
  * Author URI: https://villatheme.com
  * License:           GPL v2 or later
@@ -11,16 +11,16 @@
  * Copyright 2016-2024 VillaTheme.com. All rights reserved.
  * Text Domain: woo-multi-currency
  * Requires Plugins: woocommerce
- * Tested up to: 6.5
+ * Tested up to: 6.6
  * WC requires at least: 7.0
- * WC tested up to: 8.9
+ * WC tested up to: 9.3
  * Elementor tested up to: 3.6.5
  * Requires PHP: 7.0
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-define( 'WOOMULTI_CURRENCY_F_VERSION', '2.2.3' );
+define( 'WOOMULTI_CURRENCY_F_VERSION', '2.2.4' );
 define( 'WOOMULTI_CURRENCY_F_FILE', __FILE__ );
 
 /**
@@ -90,7 +90,7 @@ class WOOMULTI_CURRENCY_F {
 	public function before_woocommerce_init() {
 		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
 			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+//			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
 		}
 	}
 

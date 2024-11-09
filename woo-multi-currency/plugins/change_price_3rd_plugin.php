@@ -9,7 +9,7 @@ class WOOMULTI_CURRENCY_F_Plugin_Change_Price_3rd_Plugin {
 	public function __construct() {
 		$this->settings = WOOMULTI_CURRENCY_F_Data::get_ins();
 		if ( $this->settings->get_enable() ) {
-			add_filter( 'woocommerce_product_addons_option_price_raw', array( $this, 'change_price' ) );
+//			add_filter( 'woocommerce_product_addons_option_price_raw', array( $this, 'change_price' ) );
 			add_filter( 'wmc_change_3rd_plugin_price', array( $this, 'change_price' ) );
 			add_filter( 'wmc_change_raw_price', array( $this, 'change_price' ) );
 

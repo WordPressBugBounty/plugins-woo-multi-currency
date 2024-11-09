@@ -29,6 +29,10 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
 		$original_price   = sanitize_text_field( wp_unslash( $_POST['original_price'] ) );
 		$other_currencies = wc_clean( wp_unslash( $_POST['other_currencies'] ) );
 
+		if ( ! is_array( $other_currencies ) ) {
+			$other_currencies = (array) $other_currencies;
+        }
+
 		if ( ! empty( $other_currencies ) ) {
 			$other_currencies = implode( ',', $other_currencies );
 		}
@@ -225,27 +229,6 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                         </tr>
                         <tr>
                             <th>
-                                <label for="<?php echo esc_attr( self::set_field( 'price_switcher' ) ) ?>">
-									<?php esc_html_e( 'Currency Price Switcher', 'woo-multi-currency' ) ?>
-                                </label>
-                            </th>
-                            <td>
-								<?php $price_switcher = self::get_field( 'price_switcher', 0 ) ?>
-                                <select name="<?php echo esc_attr( self::set_field( 'price_switcher' ) ) ?>">
-                                    <option <?php selected( $price_switcher, 0 ) ?>
-                                            value="0"><?php esc_html_e( 'Not Show', 'woo-multi-currency' ) ?></option>
-                                    <option <?php selected( $price_switcher, 1 ) ?>
-                                            value="1"><?php esc_html_e( 'Flag', 'woo-multi-currency' ) ?></option>
-                                    <option <?php selected( $price_switcher, 2 ) ?>
-                                            value="2"><?php esc_html_e( 'Flag + Currency Code', 'woo-multi-currency' ) ?></option>
-                                    <option <?php selected( $price_switcher, 3 ) ?>
-                                            value="3"><?php esc_html_e( 'Flag + Price', 'woo-multi-currency' ) ?></option>
-                                </select>
-                                <p class="description"><?php esc_html_e( 'Display a currency switcher under product price in single product pages.', 'woo-multi-currency' ) ?></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
                                 <label for="<?php echo esc_attr( self::set_field( 'enable_switch_currency_by_js' ) ) ?>">
 									<?php esc_html_e( 'Switch Currency by JS', 'woo-multi-currency' ) ?>
                                 </label>
@@ -279,7 +262,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                         <tr>
                             <th>
                                 <label for="<?php echo esc_attr( self::set_field( 'loading_price_mask' ) ) ?>">
-			                        <?php esc_html_e( 'Loading price mask', 'woocommerce-multi-currency' ) ?>
+			                        <?php esc_html_e( 'Loading price mask', 'woo-multi-currency' ) ?>
                                 </label>
                             </th>
                             <td>
@@ -290,7 +273,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                            name="<?php echo esc_attr( self::set_field( 'loading_price_mask' ) ) ?>"/>
                                     <label></label>
                                 </div>
-                                <p class="description"><?php esc_html_e( 'Add loading layer when loading price via AJAX', 'woocommerce-multi-currency' );//Now It is not compatible with Caching plugins.?></p>
+                                <p class="description"><?php esc_html_e( 'Add loading layer when loading price via AJAX', 'woo-multi-currency' );//Now It is not compatible with Caching plugins.?></p>
                             </td>
                         </tr>
                         <tr>
@@ -423,11 +406,13 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                             </td>
                                             <td>
                                                 <div class="vi-ui buttons">
-                                                    <div class="vi-ui  small icon button wmc-update-rate"
+                                                    <div class="wmc-update-rate-wrap"
                                                          title="<?php esc_attr_e( 'Update Rate', 'woo-multi-currency' ) ?>"
                                                          data-tooltip="<?php esc_attr_e( 'Update Rate', 'woo-multi-currency' ) ?>">
                                                         <i class="cloud download icon"></i>
-
+                                                        <div class="vi-ui small icon button wmc-update-rate">
+                                                            <i class="cloud download icon"></i>
+                                                        </div>
                                                     </div>
                                                     <div class="vi-ui  small icon red button wmc-remove-currency"
                                                          title="<?php esc_attr_e( 'Remove', 'woo-multi-currency' ) ?>"
@@ -672,6 +657,62 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                         </tr>
                         <tr>
                             <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'is_checkout' ) ) ?>">
+			                        <?php esc_html_e( 'Checkout page', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <div class="vi-ui toggle checkbox">
+                                    <input id="<?php echo esc_attr( self::set_field( 'is_checkout' ) ) ?>"
+                                           type="checkbox" <?php checked( self::get_field( 'is_checkout' ), 1 ) ?>
+                                           tabindex="0" class="hidden" value="1"
+                                           name="<?php echo esc_attr( self::set_field( 'is_checkout' ) ) ?>"/>
+                                    <label></label>
+                                </div>
+                                <p class=""><?php esc_html_e( 'Enable to hide Currencies Bar on Checkout page.', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'is_cart' ) ) ?>">
+			                        <?php esc_html_e( 'Cart page', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <div class="vi-ui toggle checkbox">
+                                    <input id="<?php echo esc_attr( self::set_field( 'is_cart' ) ) ?>"
+                                           type="checkbox" <?php checked( self::get_field( 'is_cart' ), 1 ) ?>
+                                           tabindex="0" class="hidden" value="1"
+                                           name="<?php echo esc_attr( self::set_field( 'is_cart' ) ) ?>"/>
+                                    <label></label>
+                                </div>
+                                <p class=""><?php esc_html_e( 'Enable to hide Currencies Bar on Cart page.', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'conditional_tags' ) ) ?>">
+			                        <?php esc_html_e( 'Conditional Tags', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <input placeholder="<?php esc_html_e( 'eg: !is_page(array(34,98,73))', 'woo-multi-currency' ) ?>"
+                                       type="text"
+                                       value="<?php echo esc_attr( htmlentities( self::get_field( 'conditional_tags' ) ) ) ?>"
+                                       name="<?php echo esc_attr( self::set_field( 'conditional_tags' ) ) ?>"/>
+
+                                <p class="description">
+		                            <?php esc_html_e( 'Adjust which pages will appear using WP\'s conditional tags.', 'woo-multi-currency' ) ?>
+                                    <br/>
+                                    Ex: is_home(), is_shop(), is_product(), is_cart(), is_checkout(),...
+                                    <a href="https://codex.wordpress.org/Conditional_Tags" target="_blank">
+			                            <?php esc_html_e( 'more', 'woo-multi-currency' ); ?>
+                                    </a>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
                                 <label><?php esc_html_e( 'Title', 'woo-multi-currency' ) ?></label>
                             </th>
                             <td>
@@ -739,6 +780,19 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                         </tr>
                         <tr>
                             <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'enable_click_to_expand_currency_bar' ) ) ?>">
+			                        <?php esc_html_e( 'Click to expand currencies bar', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://1.envato.market/jABDP"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'By default, currencies bar will expand on hovering. Enable this option if you want them to only expand when clicking on.', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
                                 <label><?php esc_html_e( 'Text color', 'woo-multi-currency' ) ?></label>
                             </th>
                             <td>
@@ -791,56 +845,61 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                         </tr>
                         </tbody>
                     </table>
-                    <h3><?php esc_html_e( 'Conditional Tags', 'woo-multi-currency' ) ?></h3>
+                    <h3><?php esc_html_e( 'Product currency selector', 'woo-multi-currency' ) ?></h3>
                     <table class="optiontable form-table">
                         <tbody>
                         <tr>
                             <th>
-                                <label for="<?php echo esc_attr( self::set_field( 'is_checkout' ) ) ?>">
-									<?php esc_html_e( 'Checkout page', 'woo-multi-currency' ) ?>
+                                <label for="<?php echo esc_attr( self::set_field( 'price_switcher' ) ) ?>">
+                                    <?php esc_html_e( 'Currency Price Switcher', 'woo-multi-currency' ) ?>
                                 </label>
                             </th>
                             <td>
-                                <div class="vi-ui toggle checkbox">
-                                    <input id="<?php echo esc_attr( self::set_field( 'is_checkout' ) ) ?>"
-                                           type="checkbox" <?php checked( self::get_field( 'is_checkout' ), 1 ) ?>
-                                           tabindex="0" class="hidden" value="1"
-                                           name="<?php echo esc_attr( self::set_field( 'is_checkout' ) ) ?>"/>
-                                    <label></label>
-                                </div>
-                                <p class=""><?php esc_html_e( 'Enable to hide Currencies Bar on Checkout page.', 'woo-multi-currency' ) ?></p>
+                                <?php $price_switcher = self::get_field( 'price_switcher', 0 ) ?>
+                                <select name="<?php echo esc_attr( self::set_field( 'price_switcher' ) ) ?>">
+                                    <option <?php selected( $price_switcher, 0 ) ?>
+                                            value="0"><?php esc_html_e( 'Not Show', 'woo-multi-currency' ) ?></option>
+                                    <option <?php selected( $price_switcher, 1 ) ?>
+                                            value="1"><?php esc_html_e( 'Flag', 'woo-multi-currency' ) ?></option>
+                                    <option <?php selected( $price_switcher, 2 ) ?>
+                                            value="2"><?php esc_html_e( 'Flag + Currency Code', 'woo-multi-currency' ) ?></option>
+                                    <option <?php selected( $price_switcher, 3 ) ?>
+                                            value="3"><?php esc_html_e( 'Flag + Price', 'woo-multi-currency' ) ?></option>
+                                </select>
+                                <p class="description"><?php esc_html_e( 'Display a currency switcher under product price in single product pages.', 'woo-multi-currency' ) ?></p>
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                <label for="<?php echo esc_attr( self::set_field( 'is_cart' ) ) ?>">
-									<?php esc_html_e( 'Cart page', 'woo-multi-currency' ) ?>
+                                <label for="<?php echo esc_attr( self::set_field( 'price_switcher_position' ) ) ?>">
+			                        <?php esc_html_e( 'Switcher Position', 'woo-multi-currency' ) ?>
                                 </label>
                             </th>
                             <td>
-                                <div class="vi-ui toggle checkbox">
-                                    <input id="<?php echo esc_attr( self::set_field( 'is_cart' ) ) ?>"
-                                           type="checkbox" <?php checked( self::get_field( 'is_cart' ), 1 ) ?>
-                                           tabindex="0" class="hidden" value="1"
-                                           name="<?php echo esc_attr( self::set_field( 'is_cart' ) ) ?>"/>
-                                    <label></label>
-                                </div>
-                                <p class=""><?php esc_html_e( 'Enable to hide Currencies Bar on Cart page.', 'woo-multi-currency' ) ?></p>
+		                        <?php $price_switcher_position = self::get_field( 'price_switcher_position', 20 ) ?>
+                                <select name="<?php echo esc_attr( self::set_field( 'price_switcher_position' ) ) ?>"
+                                        class="vi-ui dropdown fluid">
+                                    <option <?php selected( $price_switcher_position, 5 ) ?>
+                                            value="5"><?php esc_html_e( 'Below title', 'woo-multi-currency' ) ?></option>
+                                    <option <?php selected( $price_switcher_position, 10 ) ?>
+                                            value="10"><?php esc_html_e( 'Below price', 'woo-multi-currency' ) ?></option>
+                                    <option <?php selected( $price_switcher_position, 20 ) ?>
+                                            value="20"><?php esc_html_e( 'Below excerpt', 'woo-multi-currency' ) ?></option>
+                                </select>
+                                <p class="description"><?php esc_html_e( 'Position of currency switcher in single product pages, it may be affected by the theme or product template', 'woo-multi-currency' ) ?></p>
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                <label for="<?php echo esc_attr( self::set_field( 'conditional_tags' ) ) ?>">
-									<?php esc_html_e( 'Other pages', 'woo-multi-currency' ) ?>
+                                <label for="<?php echo esc_attr( self::set_field( 'enable_click_to_expand_currency_selector' ) ) ?>">
+			                        <?php esc_html_e( 'Click to expand currency selector', 'woo-multi-currency' ) ?>
                                 </label>
                             </th>
                             <td>
-                                <input placeholder="<?php esc_html_e( 'eg: !is_page(array(34,98,73))', 'woo-multi-currency' ) ?>"
-                                       type="text"
-                                       value="<?php echo esc_attr( htmlentities( self::get_field( 'conditional_tags' ) ) ) ?>"
-                                       name="<?php echo esc_attr( self::set_field( 'conditional_tags' ) ) ?>"/>
-
-                                <p class="description"><?php esc_html_e( 'Let you adjust which pages will appear using WP\'s conditional tags.', 'woo-multi-currency' ) ?></p>
+                                <a class="vi-ui button yellow"
+                                   href="https://1.envato.market/jABDP"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'By default, dropdown currency selector will expand on hovering. Enable this option if you want them to only expand when clicking on.', 'woo-multi-currency' ) ?></p>
                             </td>
                         </tr>
                         </tbody>
@@ -990,6 +1049,45 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
 
                                 <p class="vi-ui message yellow"><?php esc_html_e( 'Payment method depend on Payment Gateway. If Payment Gateway is not support currency, customer can not checkout with currency. Example: Paypal is not support IDR, Customer can not checkout IDR by Paypal.', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'enable_currency_by_payment_method' ) ) ?>">
+			                        <?php esc_html_e( 'Currency by Payment method', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://1.envato.market/jABDP"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( "Enable this option to change the currency immediately at the checkout order detail when the customer selects a payment gateway, instead of after clicking the 'place order' button.", 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'enable_currency_by_payment_method' ) ) ?>">
+			                        <?php esc_html_e( 'Change currency follow', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://1.envato.market/jABDP"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( "Change currency when customer change billing or shipping address.", 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'enable_currency_by_payment_method' ) ) ?>">
+			                        <?php esc_html_e( 'Display multi currencies', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://1.envato.market/jABDP"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( "Display currencies both in the store pages and checkout page if they are different at the checkout page. This option and Fixed price option don't work together.", 'woo-multi-currency' ) ?></p>
                             </td>
                         </tr>
                         </tbody>

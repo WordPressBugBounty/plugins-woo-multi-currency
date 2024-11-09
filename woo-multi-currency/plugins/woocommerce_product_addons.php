@@ -21,6 +21,15 @@ class WOOMULTI_CURRENCY_F_Plugin_Woocommerce_Product_Addons {
 			$this,
 			'woocommerce_product_addon_cart_item_data'
 		), 10, 4 );
+
+		add_filter( 'woocommerce_product_addons_order_line_item_meta', array(
+			$this,
+			'woocommerce_product_addons_order_line_item_meta'
+		), 10, 4 );
+		add_filter( 'woocommerce_product_addons_option_price_raw', array(
+			$this,
+			'woocommerce_product_addons_price_raw'
+		), 10, 2 );
 	}
 
 	public function woocommerce_product_addon_cart_item_data( $data, $addon, $product_id, $post_data ) {
@@ -87,5 +96,39 @@ class WOOMULTI_CURRENCY_F_Plugin_Woocommerce_Product_Addons {
 		}
 
 		return $other_data;
+	}
+
+	public function woocommerce_product_addons_order_line_item_meta( $meta_data, $addon, $item, $values ) {
+		$key           = $addon['name'];
+		$price_type    = $addon['price_type'];
+		$product       = $item->get_product();
+		$product_price = $product->get_price();
+
+		if ( $addon['price'] && 'percentage_based' === $price_type && 0 != $product_price ) {
+			$addon_price = $product_price * ( $addon['price'] / 100 );
+		} else {
+			$addon_price = $addon['price'];
+		}
+
+		$price = html_entity_decode(
+			wp_strip_all_tags( wc_price( wmc_get_price( WC_Product_Addons_Helper::get_product_addon_price_for_display( $addon_price, $values['data'] ) ) ) ),
+			ENT_QUOTES, get_bloginfo( 'charset' )
+		);
+
+		if ( $addon['price'] && apply_filters( 'woocommerce_addons_add_price_to_name', true ) ) {
+			$key .= ' (' . $price . ')';
+		}
+
+		if ( 'custom_price' === $addon['field_type'] ) {
+			$addon['value'] = $addon['price'];
+		}
+
+		$meta_data = [
+			'key'   => $key,
+			'value' => $addon['value'],
+			'id'    => $addon['id']
+		];
+
+		return $meta_data;
 	}
 }

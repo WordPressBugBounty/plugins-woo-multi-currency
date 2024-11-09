@@ -1,3 +1,6 @@
+/*2.2.4 - 2024.11.09*/
+- Fixed: Missing text domain from some translate text
+
 /*2.2.3 - 2024.06.04*/
 - Update: Add filter wmc_switcher_display_currency_name to change display currency name
 

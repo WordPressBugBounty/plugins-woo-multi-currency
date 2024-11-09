@@ -107,7 +107,7 @@ class WOOMULTI_CURRENCY_F_Admin_System {
 								<?php
 								esc_html_e( '_SERVER system', 'woo-multi-currency' )
 								?></h3>
-                            <pre><?php print_r( $_SERVER ) ?></pre>
+                            <pre><?php print_r( array_map( 'esc_html', $_SERVER ) ) ?></pre>
                         </li>
                     </ul>
                 </td>

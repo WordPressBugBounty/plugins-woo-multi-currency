@@ -75,7 +75,7 @@ class WOOMULTI_CURRENCY_F_Plugin_Yith_Add_On {
 		foreach ( $cart_contents as $key => $content ) {
 			if ( isset( $content['yith_wapo_options'] ) && is_array( $content['yith_wapo_options'] ) && count( $content['yith_wapo_options'] ) ) {
 				foreach ( $content['yith_wapo_options'] as $sub_key => $option ) {
-					if ( $option['price_original'] ) {
+					if ( isset( $option['price_original'] ) && $option['price_original'] ) {
 						$cart_contents[ $key ]['yith_wapo_options'][ $sub_key ]['price'] = wmc_get_price( $option['price_original'] );
 					}
 				}

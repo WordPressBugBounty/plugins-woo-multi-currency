@@ -36,7 +36,7 @@ class WOOMULTI_CURRENCY_F_Admin_Order {
 //		), 'shop_order', 'side', 'default' );
 
 		if ( ! OrderUtil::custom_orders_table_usage_is_enabled() ) {
-			add_meta_box( 'wmc_order_metabox', __( 'Currency Information', 'woocommerce-multi-currency' ),
+			add_meta_box( 'wmc_order_metabox', esc_html__( 'Currency Information', 'woo-multi-currency' ),
 				array( $this, 'order_metabox' ), [ 'shop_order', 'shop_subscription' ], 'side', 'default' );
 		} else {
 			$screen = class_exists( '\Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController' )
@@ -45,7 +45,7 @@ class WOOMULTI_CURRENCY_F_Admin_Order {
 
 			add_meta_box(
 				'wmc_order_metabox',
-				__( 'Currency Information', 'woocommerce-multi-currency' ),
+				esc_html__( 'Currency Information', 'woo-multi-currency' ),
 				array( $this, 'order_metabox' ),
 				$screen,
 				'side',
@@ -78,7 +78,7 @@ class WOOMULTI_CURRENCY_F_Admin_Order {
 	public function order_metabox( $post ) {
 		$order = wc_get_order( $post->ID );
 
-		$order_currency = $order->get_currency();
+		$order_currency = $order && is_a( $order, 'WC_Order' ) ? $order->get_currency() : get_woocommerce_currency();
 		$wmc_order_info = $order && is_object( $order ) ? $order->get_meta('wmc_order_info', true ) :
 			get_post_meta( $post->ID, 'wmc_order_info', true );
 
@@ -134,7 +134,7 @@ class WOOMULTI_CURRENCY_F_Admin_Order {
 		ob_start();
 		?>
         <div class="wmc-order-currency">
-			<?php echo esc_html__( 'Currency: ', 'woocommerce-multi-currency' ) . esc_html( $order_currency ); ?>
+			<?php echo esc_html__( 'Currency: ', 'woo-multi-currency' ) . esc_html( $order_currency ); ?>
         </div>
 		<?php
 		$order_custom_text = ob_get_clean();
@@ -218,7 +218,7 @@ class WOOMULTI_CURRENCY_F_Admin_Order {
 
 			if ( ! empty( $tax_string_array ) ) {
 				/* translators: %s: taxes */
-				$tax_string = ' <small class="includes_tax">' . sprintf( __( '(includes %s)', 'woocommerce' ), implode( ', ', $tax_string_array ) ) . '</small>';
+				$tax_string = ' <small class="includes_tax">' . sprintf( esc_html__( '(includes %s)', 'woocommerce' ), implode( ', ', $tax_string_array ) ) . '</small>';
 			}
 		}
 

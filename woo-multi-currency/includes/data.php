@@ -25,7 +25,6 @@ class WOOMULTI_CURRENCY_F_Data {
 		$args         = array(
 			'enable'             => 0,
 			'enable_fixed_price' => 0,
-			'price_switcher'     => 0,
 			'currency_default'   => $wmc_settings['currency_core'],
 			'cache_compatible'   => 0,
 
@@ -53,6 +52,10 @@ class WOOMULTI_CURRENCY_F_Data {
 			'main_color'                 => '#f78080',
 			'flag_custom'                => '',
 			'sidebar_style'              => 0,
+
+			//Product price switcher
+			'price_switcher'          => 0,
+			'price_switcher_position' => 0,
 
 			//Shortcode
 			'shortcode_bg_color'         => '#ffffff',

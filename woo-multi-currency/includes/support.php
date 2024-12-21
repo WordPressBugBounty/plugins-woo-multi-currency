@@ -7,12 +7,12 @@ if ( ! class_exists( 'VillaTheme_Support' ) ) {
 
 	/**
 	 * Class VillaTheme_Support
-	 * 1.1.13
+	 * 1.1.14
 	 */
 	class VillaTheme_Support {
 		protected $plugin_base_name;
 		protected $ads_data;
-		protected $version = '1.1.13';
+		protected $version = '1.1.14';
 		protected $data = [];
 
 		public function __construct( $data ) {
@@ -108,7 +108,12 @@ if ( ! class_exists( 'VillaTheme_Support' ) ) {
 				'status' => 'error',
 				'data'   => '',
 			);
-			include_once ABSPATH . '/wp-admin/includes/plugin-install.php';
+			if ( ! function_exists( 'plugins_api' ) ) {
+				require_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
+			}
+			if ( ! function_exists( 'plugins_api' ) ) {
+				return $return;
+			}
 			foreach (
 				array(
 					'woo-multi-currency',
@@ -796,7 +801,6 @@ if ( ! class_exists( 'VillaTheme_Support' ) ) {
 		}
 
 		private function get_plugin_name() {
-			include_once ABSPATH . '/wp-admin/includes/plugin.php';
 			$plugins = get_plugins();
 
 			return isset( $plugins[ $this->plugin_base_name ]['Title'] ) ? $plugins[ $this->plugin_base_name ]['Title'] : ucwords( str_replace( '-', ' ', $this->data['slug'] ) );
@@ -922,87 +926,83 @@ if ( ! class_exists( 'VillaTheme_Require_Environment' ) ) {
 		}
 
 		protected function check( $args ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-			if ( ! empty( $args['php_version'] ) ) {
-				$compatible_php = is_php_version_compatible( $args['php_version'] );
-				if ( ! $compatible_php ) {
-					$this->notices[] = sprintf( "PHP version at least %s.", esc_html( $args['php_version'] ) );
-				}
+			if ( ! empty( $args['php_version'] ) && !is_php_version_compatible( $args['php_version'] )) {
+				$this->notices[] = sprintf( "PHP version at least %s.", esc_html( $args['php_version'] ) );
 			}
 
-			if ( ! empty( $args['wp_version'] ) ) {
-				$compatible_wp = is_wp_version_compatible( $args['wp_version'] );
-				if ( ! $compatible_wp ) {
-					$this->notices[] = sprintf( "WordPress version at least %s.", esc_html( $args['wp_version'] ) );
-				}
+			if ( ! empty( $args['wp_version'] ) && !is_wp_version_compatible( $args['wp_version'] )) {
+				$this->notices[] = sprintf( "WordPress version at least %s.", esc_html( $args['wp_version'] ) );
 			}
-
 			if ( ! empty( $args['require_plugins'] ) ) {
+				$default_headers = array(
+					'Version'         => 'Version',
+				);
+				$active_plugins = [];
+				$tmp = get_option( 'active_plugins' ,[]);
+				if (is_multisite()){
+					$tmp += array_keys(get_site_option( 'active_sitewide_plugins', [] ));
+				}
+				if (!empty($tmp)){
+					foreach ($tmp as $v){
+						$info = explode('/',$v);
+						if (empty($info[1])){
+							$info= explode(DIRECTORY_SEPARATOR, $v);
+						}
+						if (empty($info[1])){
+							continue;
+						}
+						$active_plugins[$info[0]] = $v;
+					}
+				}
+				$plugins_dir = WP_PLUGIN_DIR;
 				foreach ( $args['require_plugins'] as $plugin ) {
-					if ( empty( $plugin['version'] ) ) {
-						$plugin['version'] = '';
-					}
-
-					$status              = install_plugin_install_status( $plugin );
-					$require_plugin_name = $plugin['name'] ?? '';
-
-					if (!empty($plugin['requires_php']) && !is_php_version_compatible( $plugin['requires_php'] )){
+					if (!is_array($plugin) || empty($plugin)){
 						continue;
 					}
-
-					if (!empty($plugin['requires']) && !is_wp_version_compatible( $plugin['requires'] )){
-						continue;
+					$plugin_name = $plugin['name'] ?? '';
+					$plugin_slug = $plugin['slug'] ?? '';
+					$plugin_file = $plugin['file'] ?? '';
+					$plugin_version = $plugin['version']?? $plugin['required_version'] ?? '';
+					if (!$plugin_version && $plugin_slug ==='woocommerce'){
+						$plugin_version = $args['wc_version']??'';
 					}
-
-					switch ( $status['status']??'' ) {
-
-						case 'install':
-
+					$plugin['version'] = $plugin_version;
+					$is_installed = true;
+					if (empty($active_plugins[$plugin_slug])){
+						if (!is_dir($plugins_dir. DIRECTORY_SEPARATOR . $plugin_slug )) {
+							$is_installed = false;
 							$this->notices[] = sprintf( "%s to be installed. <br><a href='%s' target='_blank' class='button button-primary' style='vertical-align: middle; margin-top: 5px;'>Install %s</a>",
-								esc_html( $require_plugin_name ),
-								esc_url( current_user_can('install_plugins') ? wp_nonce_url( network_admin_url( "update.php?action=install-plugin&plugin={$plugin_slug}" ), "install-plugin_{$plugin_slug}" ): '#' ),
-								esc_html( $require_plugin_name ) );
+								esc_html( $plugin_name ),
+								esc_url( current_user_can( 'install_plugins' ) ? wp_nonce_url( network_admin_url( "update.php?action=install-plugin&plugin={$plugin_slug}" ), "install-plugin_{$plugin_slug}" ) : '#' ),
+								esc_html( $plugin_name ) );
+						}else{
+							$msg = sprintf('%s is installed and activated.', esc_html( $plugin_name ));
+							if (current_user_can( 'activate_plugin', $plugin_file) ) {
+								$activate_url = add_query_arg(
+									[
+										'_wpnonce' => wp_create_nonce( 'activate-plugin_' . $plugin_file ),
+										'action'   => 'activate',
+										'plugin'   => $plugin_file,
+									],
+									self_admin_url( 'plugins.php' )
+								);
 
-							break;
-
-						default:
-
-							if (!empty($status['file']) && ! is_plugin_active( $status['file']) ) {
-								$msg = sprintf('%s is installed and activated.', esc_html( $require_plugin_name ));
-								if (current_user_can( 'activate_plugin', $status['file'] ) ) {
-									$activate_url = add_query_arg(
-										[
-											'_wpnonce' => wp_create_nonce( 'activate-plugin_' . $status['file'] ),
-											'action'   => 'activate',
-											'plugin'   => $status['file'],
-										],
-										self_admin_url( 'plugins.php' )
-									);
-
-									$msg .= sprintf( " <br> <a href='%s' target='_blank' class='button button-primary' style='vertical-align: middle; margin-top: 5px;'>Active %s</a>",
-										esc_url( $activate_url ),
-										esc_html( $require_plugin_name ) );
-								}
-								$this->notices[] = $msg;
-
+								$msg .= sprintf( " <br> <a href='%s' target='_blank' class='button button-primary' style='vertical-align: middle; margin-top: 5px;'>Active %s</a>",
+									esc_url( $activate_url ),
+									esc_html( $plugin_name ) );
 							}
-
-							if ( ! empty( $plugin['required_version'] ) && !empty( $status['version'] ) ) {
-								if ( ! version_compare( $status['version'], $plugin['required_version'], '>=' ) ) {
-									$this->notices[] = sprintf( "%s version at least %s.", esc_html( $require_plugin_name ) ,esc_html( $plugin['required_version'] ) );
-								}
-							}
-
-							if ( $plugin['slug'] == 'woocommerce' && ! empty( $args['wc_version'] ) && is_plugin_active( $status['file'] ) ) {
-								$wc_current_version = get_option( 'woocommerce_version' );
-								if ( ! version_compare( $wc_current_version, $args['wc_version'], '>=' ) ) {
-									$this->notices[] = sprintf( "WooCommerce version at least %s.", esc_html( $args['wc_version'] ) );
-								}
-							}
-
-							break;
+							$this->notices[] = $msg;
+						}
+					}else{
+						$plugin_file = $active_plugins[$plugin_slug];
+					}
+					if ($plugin_version && $is_installed && $plugin_file){
+						$plugin_file = $plugins_dir.DIRECTORY_SEPARATOR.$plugin_file;
+						$plugin_info = get_file_data($plugin_file, $default_headers, 'plugin' );
+						if ( !empty( $plugin_info['Version'] ) && ! version_compare( $plugin_info['Version'], $plugin_version, '>=' )) {
+							$this->notices[] = sprintf( "%s version at least %s.", esc_html( $plugin_name ) ,esc_html( $plugin_version ) );
+						}
 					}
 				}
 			}

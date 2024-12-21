@@ -474,7 +474,21 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                             value="2"><?php esc_html_e( 'Approximate Price', 'woo-multi-currency' ) ?></option>
                                     <option <?php selected( self::get_field( 'auto_detect' ), 3 ) ?>
                                             value="3"><?php esc_html_e( 'Language Polylang', 'woo-multi-currency' ) ?></option>
+                                    <option disabled><?php esc_html_e( 'TranslatePress Multilingual (Premium)', 'woo-multi-currency' ) ?></option>
                                 </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label>
+			                        <?php esc_html_e( 'Switch when user login', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://1.envato.market/jABDP"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'Switch currency by user address when user login', 'woo-multi-currency' ) ?></p>
                             </td>
                         </tr>
                         <tr>
@@ -490,6 +504,8 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                             value="0"><?php esc_html_e( 'WooCommerce', 'woo-multi-currency' ) ?></option>
                                     <option <?php selected( self::get_field( 'geo_api' ), 1 ) ?>
                                             value="1"><?php esc_html_e( 'External', 'woo-multi-currency' ) ?></option>
+                                    <option disabled><?php esc_html_e( 'Inherited from server (Premium)', 'woo-multi-currency' ) ?></option>
+                                    <option disabled><?php esc_html_e( 'MaxMind Geolocation (Premium)', 'woo-multi-currency' ) ?></option>
                                 </select>
                                 <p class="description"><?php esc_html_e( 'API will help detect customer country code base on IP address.', 'woo-multi-currency' ) ?></p>
 
@@ -900,6 +916,19 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                    href="https://1.envato.market/jABDP"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( 'By default, dropdown currency selector will expand on hovering. Enable this option if you want them to only expand when clicking on.', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label>
+			                        <?php esc_html_e( 'Currency price collate', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://1.envato.market/jABDP"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'Display product price collated with other currency.', 'woo-multi-currency' ) ?></p>
                             </td>
                         </tr>
                         </tbody>

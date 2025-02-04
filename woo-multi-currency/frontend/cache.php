@@ -100,7 +100,12 @@ class WOOMULTI_CURRENCY_F_Frontend_Cache {
 			$exchange_sc  = [];
 			$exchange_arr = wc_clean( $_POST['exchange'] );
 			foreach ( $exchange_arr as $ex ) {
-				$exchange_sc[] = array_merge( $ex, [ 'shortcode' => do_shortcode( "[woo_multi_currency_exchange product_id='{$ex['product_id']}' keep_format='{$ex['keep_format']}' price='{$ex['price']}' original_price='{$ex['original_price']}' currency='{$ex['currency']}']" ) ] );
+				$ex_sc_product_id = isset( $ex['product_id'] ) ? esc_html( $ex['product_id'] ) : '';
+				$ex_sc_keep_format = isset( $ex['keep_format'] ) ? esc_html( $ex['keep_format'] ) : '';
+				$ex_sc_price = isset( $ex['price'] ) ? esc_html( $ex['price'] ) : '';
+				$ex_sc_original_price = isset( $ex['original_price'] ) ? esc_html( $ex['original_price'] ) : '';
+				$ex_sc_currency = isset( $ex['currency'] ) ? esc_html( $ex['currency'] ) : '';
+				$exchange_sc[] = array_merge( $ex, [ 'shortcode' => do_shortcode( "[woo_multi_currency_exchange product_id='{$ex_sc_product_id}' keep_format='{$ex_sc_keep_format}' price='{$ex_sc_price}' original_price='{$ex_sc_original_price}' currency='{$ex_sc_currency}']" ) ] );
 			}
 			$result['exchange'] = $exchange_sc;
 		}

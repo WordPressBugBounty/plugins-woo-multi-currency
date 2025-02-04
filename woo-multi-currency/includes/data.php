@@ -834,7 +834,7 @@ class WOOMULTI_CURRENCY_F_Data {
 		if ( ! isset( $rates[ $orginal_price ] ) ) {
 			$rates[ $orginal_price ] = 1;
 		}
-		if ( count( $rates ) ) {
+		if ( ( is_array( $data_rates ) || $data_rates instanceof Countable ) && count( $rates ) ) {
 			foreach ( $data_rates as $k => $rate ) {
 				$rates[ $k ] = $rate == 1 ? 1 : number_format( round( $rate, $this->get_rate_decimals() ), $this->get_rate_decimals(), '.', '' );
 			}

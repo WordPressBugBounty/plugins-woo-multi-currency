@@ -8,7 +8,11 @@ class WOOMULTI_CURRENCY_F_Plugin_Advanced_Product_Fields_For_Woocommerce_Pro {
 	public function __construct() {
 		if ( is_plugin_active( 'advanced-product-fields-for-woocommerce-pro/advanced-product-fields-for-woocommerce-pro.php' ) ) {
 			$this->settings = WOOMULTI_CURRENCY_F_Data::get_ins();
-			add_action( 'woocommerce_before_calculate_totals', array( $this, 'recalculate_pricing' ), 9 );
+			$v = wapf_get_setting( 'version' );
+			if ( version_compare( $v, '1.9.10', '<' ) ) {
+				add_action( 'woocommerce_before_calculate_totals', array( $this, 'recalculate_pricing' ), 9 );
+			}
+
 			add_filter( 'wapf/pricing/addon', array( $this, 'convert_product_price' ), 10, 2 );
 //
 //			add_filter( 'wapf/html/pricing_hint/amount', array( $this, 'convert_pricing_hint' ), 10, 3 );

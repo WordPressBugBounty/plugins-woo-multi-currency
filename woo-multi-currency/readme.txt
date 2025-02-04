@@ -4,7 +4,7 @@ Donate link: http://www.villatheme.com/donate
 Tags: ecommerce, multi currency for woo, woocommerce, woocommerce currency switcher, woocommerce multi currency
 Requires at least: 6.0
 Tested up to: 6.7
-WC tested up to: 9.5
+WC tested up to: 9.6
 Requires PHP: 7.0
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -96,7 +96,7 @@ Check screenshots at https://villatheme.com/woo-multi-currency/ or https://villa
 
 - [Project Page](https://villatheme.com)
 - [Documentation](http://docs.villatheme.com/?item=woocommerce-multi-currency)
-- [Report Bugs/Issues](https://villatheme.com/supports)
+- [Report Bugs/Issues](https://villatheme.com/knowledge-base/security-is-our-priority/)
 
 ### MAY BE YOU NEED
 [SUBRE – Product Subscription for WooCommerce](https://bit.ly/subre-product-subscription-for-woo)
@@ -204,6 +204,10 @@ Check screenshots at https://villatheme.com/woo-multi-currency/ or https://villa
 4. Design tab in setting page
 
 == Changelog ==
+/*2.2.6 - 2025.02.04*/
+- Fixed: Issue with Advanced Product Fields For WooCommerce
+- Update: Add setting style
+
 /*2.2.5 - 2024.12.21*/
 - Update: Add setting description
 - Updated: Compatibility with WC 9.5

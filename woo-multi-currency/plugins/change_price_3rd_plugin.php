@@ -39,6 +39,14 @@ class WOOMULTI_CURRENCY_F_Plugin_Change_Price_3rd_Plugin {
 			add_filter( 'bopobb_get_original_price', array( $this, 'bopobb_get_original_price' ) );
 			add_filter( 'bopobb_convert_currency_price', array( $this, 'change_price' ) );
 
+			/*REES - Real Estate for WooCommerce*/
+			add_filter( 'rees_convert_currency_price', array( $this, 'change_price' ) );
+			add_filter( 'rees_get_original_price', array( $this, 'revert_price' ) );
+
+			//gift4u-gift-cards-all-in-one-for-woo
+			add_filter( 'gift4u_convert_price_input', array( $this, 'change_price' ) );
+			add_filter( 'gift4u_revert_price_input', array( $this, 'revert_price' ) );
+
 			/*Sumo subscriptions*/
 			add_filter( 'sumosubscriptions_get_line_total', array( $this, 'revert_price' ), 10 );
 

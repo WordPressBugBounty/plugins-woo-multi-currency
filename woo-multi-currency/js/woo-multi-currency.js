@@ -152,7 +152,12 @@ jQuery(document).ready(function ($) {
 
                             if (prices) {
                                 for (let id in prices) {
-                                    $(`.wmc-cache-pid[data-wmc_product_id=${id}]`).replaceWith(prices[id]);
+                                    let priceBlock = $(`.wmc-cache-pid[data-wmc_product_id=${id}]`),
+                                        priceContainer = $(priceBlock).parent();
+                                    if (wooMultiCurrencyParams.woo_subscription === '1') {
+                                        $(priceContainer).find('.subscription-details').remove();
+                                    }
+                                    $(priceBlock).replaceWith(prices[id]);
                                 }
 
                                 $('.variations_form').each((i, form) => {

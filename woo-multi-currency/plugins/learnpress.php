@@ -14,7 +14,64 @@ class WOOMULTI_CURRENCY_F_Plugin_LearnPress {
 		$this->settings = WOOMULTI_CURRENCY_F_Data::get_ins();
 		if ( $this->settings->get_enable() ) {
 			if ( is_plugin_active( 'learnpress/learnpress.php' ) ) {
-				if ( version_compare( learn_press_get_current_version(), '4.1.5', '>=' ) ) {
+				$check_version = get_option( 'learnpress_version', '' );
+				if ( $check_version && version_compare( $check_version, '4.2.7', '>=' ) ) {
+					add_filter( 'learn-press/course/regular-price', array(
+						$this,
+						'learn_press_course_slash_regular_price'
+					), 99, 2 );
+					add_filter( 'learn-press/course/sale-price', array(
+						$this,
+						'learn_press_course_slash_sale_price'
+					), 99, 2 );
+					add_filter( 'learn-press/course/regular-price-html', array(
+						$this,
+						'learn_press_course_slash_regular_price_html'
+					), 99, 3 );
+					add_filter( 'learn_press_course_price_html', array(
+						$this,
+						'learn_press_course_slash_price_html'
+					), 99, 3 );
+					//deprecated_function
+//					add_filter( 'learn_press_get_cart_subtotal', array(
+//						$this,
+//						'learn_press_get_cart_subtotal'
+//					) );
+//					add_filter( 'learn_press_get_cart_total', array(
+//						$this,
+//						'learn_press_get_cart_total'
+//					) );
+					add_filter( 'learn-press/cart-total', array(
+						$this,
+						'learn_press_slash_cart_total'
+					) );
+					add_filter( 'learn-press/cart-subtotal', array(
+						$this,
+						'learn_press_slash_cart_subtotal'
+					) );
+					add_filter( 'learn-press/cart/item-subtotal', array(
+						$this,
+						'learn_press_cart_item_subtotal'
+					), 10, 4 );
+					/*LearnPress – WooCommerce Payment Methods Integration*/
+//					add_filter( 'learn-press/woo-course-price', array(
+//						$this,
+//						'learn_press_woo_course_price'
+//					), 10, 2 );
+					add_filter( 'learn-press/woo-course/price', array(
+						$this,
+						'learn_press_slash_woo_course_price'
+					), 10, 2 );
+					add_filter( 'learn-press/woo-course/regular-price', array(
+						$this,
+						'learn_press_slash_woo_course_regular_price'
+					), 10, 2 );
+					add_filter( 'learn-press/woo-course/sale-price', array(
+						$this,
+						'learn_press_slash_woo_course_sale_price'
+					), 10, 2 );
+
+				} elseif ( version_compare( learn_press_get_current_version(), '4.1.5', '>=' ) ) {
 					add_filter( 'learn-press/course/regular-price', array(
 						$this,
 						'learn_press_course_regular_price'
@@ -53,6 +110,99 @@ class WOOMULTI_CURRENCY_F_Plugin_LearnPress {
 				}
 			}
 		}
+	}
+
+	public function learn_press_slash_woo_course_price( $price, $course ) {
+		return wmc_get_price( $price );
+	}
+
+	public function learn_press_slash_woo_course_regular_price( $price, $course ) {
+		return wmc_get_price( $price );
+	}
+
+	public function learn_press_slash_woo_course_sale_price( $price, $course ) {
+		return wmc_get_price( $price );
+	}
+
+	public function learn_press_slash_cart_subtotal( $price ) {
+		if ( ! $this->is_default_currency() ) {
+			$price = $this->wc_price( wmc_get_price( $GLOBALS['LearnPress']->get_cart()->subtotal ) );
+		}
+
+		return $price;
+	}
+
+	public function learn_press_slash_cart_total( $price ) {
+		if ( ! $this->is_default_currency() ) {
+			$price = $this->wc_price( wmc_get_price( $GLOBALS['LearnPress']->get_cart()->total ) );
+		}
+
+		return $price;
+	}
+
+	public function learn_press_course_slash_price_html( $price_html, $has_sale, $course_id ) {
+		$course = learn_press_get_course( $course_id );
+		if ( $course ) {
+			if ( is_plugin_active( 'thim-course-builder/thim-course-builder.php' ) && function_exists( 'learn_press_format_price' ) ) {
+				$price_arr = explode( ' ', $price_html );
+				if ( count( $price_arr ) > 1 ) {
+					$price_html = sprintf( '<span class="origin-price">%s</span>', $this->wc_price( $course->get_regular_price() ) );
+					$price_html .= sprintf( '<span class="price">%s</span>', $this->wc_price( $course->get_price() ) );
+				} else {
+					$price_html = esc_html( $this->wc_price( $course->get_price() ) );
+//					$price_html = $course->get_price();
+//					$c_currency = $this->settings->get_current_currency();
+//					$current_currency_symbol = get_woocommerce_currency_symbol( $c_currency );
+//					return learn_press_format_price( $price_html, $current_currency_symbol );
+				}
+			} else {
+				if ( $has_sale ) {
+					$price_html = sprintf( '<span class="origin-price">%s</span>', $this->wc_price( $course->get_regular_price() ) );
+					$price_html .= sprintf( '<span class="price">%s</span>', $this->wc_price( $course->get_price() ) );
+				} else {
+					$price_html = esc_html( $this->wc_price( $course->get_price() ) );
+				}
+			}
+		}
+
+		return $price_html;
+	}
+
+	public function learn_press_course_slash_regular_price_html( $price, $course_id ) {
+		$course = learn_press_get_course( $course_id );
+		if ( $course ) {
+			$price = esc_html( $this->wc_price( $course->get_regular_price() ) );
+		}
+
+		return $price;
+	}
+
+	public function learn_press_course_slash_sale_price( $price, $course_id ) {
+		if ( is_float( $price ) ) {
+			$price = wmc_get_price( $price );
+		} elseif ( is_string( $price ) ) {
+			$course = learn_press_get_course( $course_id );
+			if ( $course ) {
+				$price = wmc_get_price( $course->get_regular_price() );
+				$price = $this->wc_price( $price );
+			}
+		}
+
+		return $price;
+	}
+
+	public function learn_press_course_slash_regular_price( $price, $course_id ) {
+		if ( is_float( $price ) ) {
+			$price = wmc_get_price( $price );
+		} elseif ( is_string( $price ) ) {
+			$course = learn_press_get_course( $course_id );
+			if ( $course ) {
+				$price = wmc_get_price( $course->get_regular_price() );
+				$price = $this->wc_price( $price );
+			}
+		}
+
+		return $price;
 	}
 
 	public function learn_press_woo_course_price( $price, $course ) {

@@ -1,3 +1,8 @@
+/*2.2.7 - 2025.03.24*/
+- Update: Add compatible code with GIFT4U – Gift Cards All in One for Woo
+- Fix: Conflict with WooCommerce Subscriptions
+- Fix: Conflict with Learnpress
+
 /*2.2.6 - 2025.02.04*/
 - Fixed: Issue with Advanced Product Fields For WooCommerce
 - Update: Add setting style

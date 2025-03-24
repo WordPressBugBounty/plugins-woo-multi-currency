@@ -78,6 +78,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Design {
 			'ajaxUrl'               => admin_url( 'admin-ajax.php' ),
 			'extra_params'          => apply_filters( 'wmc_frontend_extra_params', array() ),
 			'current_currency'      => $this->settings->get_current_currency(),
+			'woo_subscription'      => is_plugin_active( 'woocommerce-subscriptions/woocommerce-subscriptions.php' ),
 		) );
 	}
 

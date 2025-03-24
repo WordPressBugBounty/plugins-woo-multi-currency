@@ -45,7 +45,7 @@ vi_include_folder( WOOMULTI_CURRENCY_F_PLUGINS, 'WOOMULTI_CURRENCY_F_Plugin_' );
 if ( class_exists( 'VillaTheme_Support' ) ) {
 	new VillaTheme_Support( array(
 		'support'    => 'https://wordpress.org/support/plugin/woo-multi-currency/',
-		'docs'       => 'http://docs.villatheme.com/?item=woocommerce-multi-currency',
+		'docs'       => 'https://docs.villatheme.com/?item=woo-multi-currency',
 		'review'     => 'https://wordpress.org/support/plugin/woo-multi-currency/reviews/?rate=5#rate-response',
 		'pro_url'    => 'https://1.envato.market/jABDP',
 		'css'        => WOOMULTI_CURRENCY_F_CSS,

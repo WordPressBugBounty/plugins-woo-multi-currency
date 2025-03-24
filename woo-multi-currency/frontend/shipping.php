@@ -129,10 +129,13 @@ class WOOMULTI_CURRENCY_F_Frontend_Shipping {
 					if ( '' !== $cost ) {
 						$has_costs    = true;
 						$rate['cost'] = $this->evaluate_cost(
-							$cost, array(
+							$cost,
+							$method,
+							array(
 							'qty'  => $shipping->get_package_item_qty( $package ),
 							'cost' => wmc_revert_price( $package['contents_cost'] ),
-						) );//, $shipping
+							)
+						);//, $shipping
 					}
 
 					// Add shipping class costs.
@@ -150,10 +153,13 @@ class WOOMULTI_CURRENCY_F_Frontend_Shipping {
 							}
 							$has_costs  = true;
 							$class_cost = $this->evaluate_cost(
-								$class_cost_string, array(
+								$class_cost_string,
+								$method,
+								array(
 								'qty'  => array_sum( wp_list_pluck( $products, 'quantity' ) ),
 								'cost' => wmc_revert_price( array_sum( wp_list_pluck( $products, 'line_total' ) ) ),
-							) );
+								)
+							);
 
 							if ( 'class' === $shipping->type ) {
 								$rate['cost'] += $class_cost;
@@ -199,11 +205,11 @@ class WOOMULTI_CURRENCY_F_Frontend_Shipping {
 		return $methods;
 	}
 
-	protected function evaluate_cost( $sum, $args = array() ) {
+	protected function evaluate_cost( $sum, $method, $args = array() ) {
 		include_once WC()->plugin_path() . '/includes/libraries/class-wc-eval-math.php';
 
 		// Allow 3rd parties to process shipping cost arguments.
-		$args           = apply_filters( 'woocommerce_evaluate_shipping_cost_args', $args, $sum );
+		$args           = apply_filters( 'woocommerce_evaluate_shipping_cost_args', $args, $sum, $method );
 		$locale         = localeconv();
 		$decimals       = array(
 			wc_get_price_decimal_separator(),

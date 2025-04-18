@@ -3,8 +3,8 @@ Contributors: villatheme, mrt3vn
 Donate link: http://www.villatheme.com/donate
 Tags: ecommerce, multi currency for woo, woocommerce, woocommerce currency switcher, woocommerce multi currency
 Requires at least: 6.0
-Tested up to: 6.7
-WC tested up to: 9.7
+Tested up to: 6.8
+WC tested up to: 9.8
 Requires PHP: 7.0
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -19,7 +19,7 @@ If you have a WooCommerce store, CURCY - Multi Currency for WooCommerce is a mus
 >[Try the Demo](http://new2new.com/?item=woo-multi-currency "Demo Multi Currency for WooCommerce") | [Documents](https://docs.villatheme.com/?item=woo-multi-currency "Documents") | [Pro Version](https://1.envato.market/jABDP "Pro Version") | [Facebook group](https://www.facebook.com/groups/villatheme "VillaTheme")
 
 ###Preview CURCY - Multi Currency for WooCommerce
-[youtube https://youtu.be/ekwb2Vjf244]
+[youtube https://youtu.be/ib-kAqVXSl8]
 
 ###How to install and use the plugin
 [youtube https://youtu.be/_DV2XVETUzM]
@@ -227,17 +227,20 @@ Check screenshots at https://villatheme.com/woo-multi-currency/ or https://villa
 4. Design tab in setting page
 
 == Changelog ==
+/*2.2.8 - 2025.04.18*/
+- Updated: Compatibility with WP 6.8 and WC 9.8
+
 /*2.2.7 - 2025.03.24*/
-- Update: Add compatible code with GIFT4U – Gift Cards All in One for Woo
-- Fix: Conflict with WooCommerce Subscriptions
-- Fix: Conflict with Learnpress
+- Updated: Add compatible code with GIFT4U – Gift Cards All in One for Woo
+- Fixed: Conflict with WooCommerce Subscriptions
+- Fixed: Conflict with Learnpress
 
 /*2.2.6 - 2025.02.04*/
 - Fixed: Issue with Advanced Product Fields For WooCommerce
-- Update: Add setting style
+- Updated: Add setting style
 
 /*2.2.5 - 2024.12.21*/
-- Update: Add setting description
+- Updated: Add setting description
 - Updated: Compatibility with WC 9.5
 
 /*2.2.4 - 2024.11.09*/

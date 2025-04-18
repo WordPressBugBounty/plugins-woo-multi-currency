@@ -127,7 +127,7 @@ class WOOMULTI_CURRENCY_F_Admin_Order {
 	}
 
 	public function get_formatted_order_total_custom_column( $formatted_total, $this_order, $tax_display, $display_refunded ) {
-		if ( ! is_admin() || 'woocommerce_page_wc-orders' != get_current_screen()->id ) {
+		if ( ! is_admin() || ! function_exists( 'get_current_screen' ) || ( get_current_screen() && 'woocommerce_page_wc-orders' != get_current_screen()->id ) ) {
 			return $formatted_total;
 		}
 		$order_currency = $this_order->get_currency();

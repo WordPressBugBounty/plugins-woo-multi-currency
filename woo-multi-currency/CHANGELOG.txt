@@ -1,14 +1,17 @@
+/*2.2.8 - 2025.04.18*/
+- Updated: Compatibility with WP 6.8 and WC 9.8
+
 /*2.2.7 - 2025.03.24*/
-- Update: Add compatible code with GIFT4U – Gift Cards All in One for Woo
-- Fix: Conflict with WooCommerce Subscriptions
-- Fix: Conflict with Learnpress
+- Updated: Add compatible code with GIFT4U – Gift Cards All in One for Woo
+- Fixed: Conflict with WooCommerce Subscriptions
+- Fixed: Conflict with Learnpress
 
 /*2.2.6 - 2025.02.04*/
 - Fixed: Issue with Advanced Product Fields For WooCommerce
-- Update: Add setting style
+- Updated: Add setting style
 
 /*2.2.5 - 2024.12.21*/
-- Update: Add setting description
+- Updated: Add setting description
 - Updated: Compatibility with WC 9.5
 
 /*2.2.4 - 2024.11.09*/

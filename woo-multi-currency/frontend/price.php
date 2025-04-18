@@ -596,19 +596,37 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 			return $this->price[ $product_id ][ $price ];
 		}
 		$changes = $product->get_changes();
-
-		if ( self::$settings->check_fixed_price() && ( is_array( $changes ) ) && count( $changes ) < 1 ) {
+		$no_fixed_changes = is_array( $changes ) ? count( $changes ) < 1 : false;
+		$sale_price_changes = false;
+		if ( is_plugin_active( 'advanced-dynamic-pricing-for-woocommerce/advanced-dynamic-pricing-for-woocommerce.php' ) ) {
+			if ( is_array( $changes ) && array_key_exists( 'adpCustomInitialPrice', $changes ) && count( $changes ) < 2 ) {
+				$no_fixed_changes = true;
+			}
+		}
+		if ( is_plugin_active( 'checkout-upsell-and-order-bumps/checkout-upsell-and-order-bumps.php' ) ) {
+			if ( is_array( $changes ) && array_key_exists( 'regular_price', $changes ) && array_key_exists( 'price', $changes ) && count( $changes ) == 2 ) {
+				$no_fixed_changes = true;
+				$sale_price_changes = true;
+			}
+		}
+		if ( self::$settings->check_fixed_price() && $no_fixed_changes ) {
 			$currenct_currency = self::$settings->get_current_currency();
 			$product_id        = $product->get_id();
 			$product_price     = wmc_adjust_fixed_price( self::format_json_price_meta( $product->get_meta('_regular_price_wmcp', true ) ) );
 			$sale_price        = wmc_adjust_fixed_price( self::format_json_price_meta( $product->get_meta('_sale_price_wmcp', true ) ) );
 			if ( isset( $product_price[ $currenct_currency ] ) && ! self::is_on_sale( $product ) ) {
 				if ( $product_price[ $currenct_currency ] > 0 ) {
+					if ( $sale_price_changes && $changes['price'] != $changes['regular_price'] && ! empty( $changes['price'] ) && (float) $changes['regular_price'] == (float) $product_price[ $currenct_currency ] ) {
+						return $this->set_cache( $changes['price'], $product_id, $price );
+					}
 					return $this->set_cache( $product_price[ $currenct_currency ], $product_id, $price );
 
 				}
 			} elseif ( isset( $sale_price[ $currenct_currency ] ) ) {
 				if ( $sale_price[ $currenct_currency ] > 0 ) {
+					if ( $sale_price_changes && $changes['price'] != $changes['regular_price'] && ! empty( $changes['price'] ) && (float) $changes['regular_price'] == (float) $product_price[ $currenct_currency ] ) {
+						return $this->set_cache( $changes['price'], $product_id, $price );
+					}
 					return $this->set_cache( $sale_price[ $currenct_currency ], $product_id, $price );
 
 				}

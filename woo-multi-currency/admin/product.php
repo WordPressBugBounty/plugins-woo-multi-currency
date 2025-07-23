@@ -60,8 +60,9 @@ class WOOMULTI_CURRENCY_F_Admin_Product {
 			$params = array(
 				'currencies' => array_values( $currencies )
 			);
+			$src_min = WP_DEBUG ? '' : '.min';
 			wp_localize_script( 'wc-admin-variation-meta-boxes', 'wmc_params', $params );
-			wp_enqueue_script( 'woo-multi-currency-bulk-actions', WOOMULTI_CURRENCY_F_JS . 'woo-multi-currency-bulk-actions.js', array( 'jquery' ), WOOMULTI_CURRENCY_F_VERSION, false );
+			wp_enqueue_script( 'woo-multi-currency-bulk-actions', WOOMULTI_CURRENCY_F_JS . 'woo-multi-currency-bulk-actions' . $src_min . '.js', array( 'jquery' ), WOOMULTI_CURRENCY_F_VERSION, false );
 		}
 	}
 

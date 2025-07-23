@@ -691,7 +691,7 @@ class WOOMULTI_CURRENCY_F_Data {
 				if ( ! isset( $this->params['currency_rate_fee'][ $k ] ) ) {
 					$this->params['currency_rate_fee'][ $k ] = 0;
 				}
-				$data[ $currency ]['rate']     = ! $this->params['currency_rate_fee'][ $k ] ? $this->params['currency_rate'][ $k ] : $this->params['currency_rate'][ $k ] + $this->params['currency_rate_fee'][ $k ];
+				$data[ $currency ]['rate']     = ! $this->params['currency_rate_fee'][ $k ] ? $this->params['currency_rate'][ $k ] : floatval( $this->params['currency_rate'][ $k ] ) + floatval( $this->params['currency_rate_fee'][ $k ] );
 				$data[ $currency ]['pos']      = $this->params['currency_pos'][ $k ];
 				$data[ $currency ]['decimals'] = $this->params['currency_decimals'][ $k ];
 				$data[ $currency ]['custom']   = $this->params['currency_custom'][ $k ];

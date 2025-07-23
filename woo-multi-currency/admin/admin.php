@@ -155,6 +155,7 @@ class WOOMULTI_CURRENCY_F_Admin_Admin {
 					wp_dequeue_script( $script->handle );
 				}
 			}
+			$src_min = WP_DEBUG ? '' : '.min';
 			wp_dequeue_style( 'eopa-admin-css' );
 			/*Stylesheet*/
 			wp_enqueue_style( 'semantic-ui-button', WOOMULTI_CURRENCY_F_CSS . 'button.min.css', [], '2.1.7' );
@@ -170,7 +171,7 @@ class WOOMULTI_CURRENCY_F_Admin_Admin {
 			wp_enqueue_style( 'semantic-ui-input', WOOMULTI_CURRENCY_F_CSS . 'input.min.css', [], '2.2.12' );
 			wp_enqueue_style( 'semantic-ui-popup', WOOMULTI_CURRENCY_F_CSS . 'popup.min.css', [], '2.3.1' );
 			wp_enqueue_style( 'semantic-ui-message', WOOMULTI_CURRENCY_F_CSS . 'message.min.css', [], '2.3.1' );
-			wp_enqueue_style( 'woo-multi-currency', WOOMULTI_CURRENCY_F_CSS . 'woo-multi-currency-admin.css', [], WOOMULTI_CURRENCY_F_VERSION );
+			wp_enqueue_style( 'woo-multi-currency', WOOMULTI_CURRENCY_F_CSS . 'woo-multi-currency-admin' . $src_min . '.css', [], WOOMULTI_CURRENCY_F_VERSION );
 			wp_enqueue_style( 'select2', WOOMULTI_CURRENCY_F_CSS . 'select2.min.css', [], '4.0.3' );
 
 			wp_enqueue_script( 'select2' );
@@ -180,7 +181,7 @@ class WOOMULTI_CURRENCY_F_Admin_Admin {
 			wp_enqueue_script( 'semantic-ui-tab', WOOMULTI_CURRENCY_F_JS . 'tab.js', array( 'jquery' ), '2.4.2', false );
 			wp_enqueue_script( 'woo-multi-currency-address', WOOMULTI_CURRENCY_F_JS . 'jquery.address-1.6.min.js', array( 'jquery' ), '1.6', false );
 			wp_enqueue_script( 'jquery-ui-sortable' );
-			wp_enqueue_script( 'woo-multi-currency', WOOMULTI_CURRENCY_F_JS . 'woo-multi-currency-admin.js', array( 'jquery' ), WOOMULTI_CURRENCY_F_VERSION, false );
+			wp_enqueue_script( 'woo-multi-currency', WOOMULTI_CURRENCY_F_JS . 'woo-multi-currency-admin' . $src_min . '.js', array( 'jquery' ), WOOMULTI_CURRENCY_F_VERSION, false );
 			/*Color picker*/
 			wp_enqueue_script( 'iris' );
 

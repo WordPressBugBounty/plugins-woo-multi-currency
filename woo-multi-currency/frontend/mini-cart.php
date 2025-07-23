@@ -23,7 +23,8 @@ class WOOMULTI_CURRENCY_F_Frontend_Mini_Cart {
 		}
 		$selected_currencies = $this->settings->get_currencies();
 		if ( isset( $_GET['wmc-currency'] ) && in_array( sanitize_text_field( $_GET['wmc-currency'] ), $selected_currencies ) ) {
-			wp_enqueue_script( 'woo-multi-currency-cart', WOOMULTI_CURRENCY_F_JS . 'woo-multi-currency-cart.js', array( 'jquery' ), WOOMULTI_CURRENCY_F_VERSION, false );
+			$src_min = WP_DEBUG ? '' : '.min';
+			wp_enqueue_script( 'woo-multi-currency-cart', WOOMULTI_CURRENCY_F_JS . 'woo-multi-currency-cart' . $src_min . '.js', array( 'jquery' ), WOOMULTI_CURRENCY_F_VERSION, false );
 		}
 
 	}

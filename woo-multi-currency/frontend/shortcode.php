@@ -446,6 +446,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
 					<?php echo esc_html( $current_currency ) ?>
                     <span class="wmc-current-currency-arrow"></span>
 				</span>
+		        <?php if ( ! empty( $links ) ) { ?>
                 <div class="wmc-sub-currency">
 					<?php foreach ( $links as $k => $link ) {
 						if ( $current_currency == $k ) {
@@ -461,6 +462,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
                         </div>
 					<?php } ?>
                 </div>
+		        <?php } ?>
             </div>
         </div>
 		<?php
@@ -582,6 +584,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
                      class="vi-flag-64 flag-<?php echo esc_attr( strtolower( $country['code'] ) ) ?> "> </i>
                     <span class="wmc-current-currency-arrow"></span>
 				</span>
+		        <?php if ( ! empty( $links ) ) { ?>
                 <div class="wmc-sub-currency">
 					<?php foreach ( $links as $k => $link ) {
 						if ( $current_currency == $k ) {
@@ -603,6 +606,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
                         </div>
 					<?php } ?>
                 </div>
+		        <?php } ?>
             </div>
         </div>
 		<?php
@@ -651,6 +655,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
                     </span>
                     <span class="wmc-current-currency-arrow"></span>
 				</span>
+		        <?php if ( ! empty( $links ) ) { ?>
                 <div class="wmc-sub-currency">
 					<?php foreach ( $links as $k => $link ) {
 						if ( $current_currency == $k ) {
@@ -675,6 +680,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
                         </div>
 					<?php } ?>
                 </div>
+		        <?php } ?>
             </div>
         </div>
 		<?php
@@ -764,6 +770,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
 					<?php echo wp_kses_post( $symbol ) ?>
                     <span class="wmc-current-currency-arrow"></span>
 				</span>
+		        <?php if ( ! empty( $links ) ) { ?>
                 <div class="wmc-sub-currency">
 					<?php foreach ( $links as $k => $link ) {
 
@@ -780,6 +787,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
                         </div>
 					<?php } ?>
                 </div>
+		        <?php } ?>
             </div>
         </div>
 		<?php
@@ -803,6 +811,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
 					<?php echo wp_kses_post( $symbol ) ?>
 				</span>
 
+		        <?php if ( ! empty( $links ) ) { ?>
                 <div class="wmc-sub-currency">
 					<?php foreach ( $links as $k => $link ) {
 						if ( $current_currency == $k ) {
@@ -820,6 +829,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
                         </div>
 					<?php } ?>
                 </div>
+		        <?php } ?>
             </div>
         </div>
 		<?php
@@ -920,6 +930,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
                     </span>
                     <span class="wmc-current-currency-arrow"></span>
                 </span>
+                <?php if ( ! empty( $links ) ) { ?>
                 <div class="wmc-sub-currency">
 					<?php
 					foreach ( $links as $k => $link ) {
@@ -946,6 +957,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
 					}
 					?>
                 </div>
+                <?php } ?>
             </div>
         </div>
 		<?php

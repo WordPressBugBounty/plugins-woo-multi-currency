@@ -53,9 +53,35 @@ class WOOMULTI_CURRENCY_F_Plugin_Change_Price_3rd_Plugin {
 			// WooCommerce PDF Vouchers - WordPress Plugin
 			add_filter( 'woo_vou_get_product_price', array( $this, 'woo_vou_reverse_price' ), 10, 2 );
 
+//			add_filter( 'app_woocommerce_price', array( $this, 'app_woocommerce_price' ), 10, 2 );
+			add_filter( 'app_confirmation_total_amount', array( $this, 'app_confirmation_total_amount' ), 10, 2 );
+			add_filter( 'app_wc_price_html', array( $this, 'app_wc_price_html' ), 10, 2 );
+
 			/*WooFunnels Funnel Builder*/
 //			add_filter( 'wfob_product_raw_data', array( $this, 'wfob_product_raw_data' ), 10, 3 );
 		}
+	}
+
+	function app_wc_price_html( $html, $variation ) {
+		if ( function_exists('BASE') && $service_id = BASE()->find_service_for_page( $variation->get_id() ) ) {
+			if ( function_exists('wpb_get_service') && $service = wpb_get_service( $service_id ) ) {
+				if ( ! empty( $service->price ) ) {
+					$price = wmc_get_price( $service->price );
+					return wc_price( $price );
+					// Do whatever you like with this price and generate your own $html
+				}
+			}
+		}
+
+		return $html;
+	}
+
+	public function app_woocommerce_price( $price_raw, $slot ) {
+		return $price_raw ? wmc_get_price( $price_raw ) : $price_raw;
+	}
+
+	public function app_confirmation_total_amount( $price_raw, $slot ) {
+		return $price_raw ? wmc_get_price( $price_raw ) : $price_raw;
 	}
 
 	/**

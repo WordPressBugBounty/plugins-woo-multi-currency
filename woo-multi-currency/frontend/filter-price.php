@@ -48,7 +48,8 @@ class WOOMULTI_CURRENCY_F_Frontend_Filter_Price {
 
 	public function wp_enqueue_scripts() {
 		if ( is_shop() || is_post_type_archive( 'product' ) ) {
-			wp_enqueue_script( 'woocommerce-multi-currency-filter-price', WOOMULTI_CURRENCY_F_JS . 'filter-price.js', array( 'jquery' ), WOOMULTI_CURRENCY_F_VERSION, false );
+			$src_min = WP_DEBUG ? '' : '.min';
+			wp_enqueue_script( 'woocommerce-multi-currency-filter-price', WOOMULTI_CURRENCY_F_JS . 'filter-price' . $src_min . '.js', array( 'jquery' ), WOOMULTI_CURRENCY_F_VERSION, false );
 		}
 	}
 

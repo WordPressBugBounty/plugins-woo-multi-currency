@@ -277,6 +277,19 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </td>
                         </tr>
                         <tr>
+                            <th>
+                                <label>
+			                        <?php esc_html_e( 'Fixed Structure currency', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://1.envato.market/jABDP"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'Fixed currency in schema structure data.', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
                             <th colspan="2">
                                 <label for="<?php echo esc_attr( self::set_field( 'enable_mobile' ) ) ?>">
 									<?php esc_html_e( 'Currency Options', 'woo-multi-currency' ) ?>
@@ -809,6 +822,19 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                         </tr>
                         <tr>
                             <th>
+                                <label>
+			                        <?php esc_html_e( 'Top position', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://1.envato.market/jABDP"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'Fixed currency in schema structure data.', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
                                 <label><?php esc_html_e( 'Text color', 'woo-multi-currency' ) ?></label>
                             </th>
                             <td>
@@ -816,6 +842,19 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                        name="<?php echo esc_attr( self::set_field( 'text_color' ) ) ?>"
                                        value="<?php echo esc_attr( self::get_field( 'text_color', '#fff' ) ) ?>"
                                        style="background-color: <?php echo esc_attr( self::get_field( 'text_color', '#fff' ) ) ?>"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label>
+			                        <?php esc_html_e( 'Sidebar layout', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://1.envato.market/jABDP"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'Fixed currency in schema structure data.', 'woo-multi-currency' ) ?></p>
                             </td>
                         </tr>
                         <tr>
@@ -846,6 +885,19 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                        name="<?php echo esc_attr( self::set_field( 'main_color' ) ) ?>"
                                        value="<?php echo esc_attr( self::get_field( 'main_color', '#f78080' ) ) ?>"
                                        style="background-color: <?php echo esc_attr( self::get_field( 'main_color', '#f78080' ) ) ?>"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label>
+			                        <?php esc_html_e( 'Hover color', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://1.envato.market/jABDP"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'Fixed currency in schema structure data.', 'woo-multi-currency' ) ?></p>
                             </td>
                         </tr>
                         <tr>
@@ -920,15 +972,15 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                         </tr>
                         <tr>
                             <th>
-                                <label>
+                                <h3>
 			                        <?php esc_html_e( 'Currency price collate', 'woo-multi-currency' ) ?>
-                                </label>
+                                </h3>
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
                                    href="https://1.envato.market/jABDP"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
-                                <p class="description"><?php esc_html_e( 'Display product price collated with other currency.', 'woo-multi-currency' ) ?></p>
+                                <p class="description"><?php esc_html_e( 'Display product price collated with other currency and display settings (layout, title, position).', 'woo-multi-currency' ) ?></p>
                             </td>
                         </tr>
                         </tbody>

@@ -69,8 +69,9 @@ class WOOMULTI_CURRENCY_F_Admin_Reports {
 			$currency     = isset( $_GET['wmc-currency'] ) ? strtoupper( sanitize_text_field( wp_unslash( $_GET['wmc-currency'] ) ) ) : '';
 			$view_default = isset( $_GET['wmc-view-default-currency'] ) ? sanitize_text_field( wp_unslash( $_GET['wmc-view-default-currency'] ) ) : '';
 			if ( ( $tab === 'orders' && $report !== 'coupon_usage' ) || ( $tab === 'customers' && $report === 'customers' ) ) {
-				wp_enqueue_style( 'woocommerce-multi-currency-admin-reports', WOOMULTI_CURRENCY_F_CSS . 'reports.css', '', WOOMULTI_CURRENCY_F_VERSION );
-				wp_enqueue_script( 'woocommerce-multi-currency-admin-reports', WOOMULTI_CURRENCY_F_JS . 'reports.js', array( 'jquery' ), WOOMULTI_CURRENCY_F_VERSION, false );
+				$src_min = WP_DEBUG ? '' : '.min';
+				wp_enqueue_style( 'woocommerce-multi-currency-admin-reports', WOOMULTI_CURRENCY_F_CSS . 'reports' . $src_min . '.css', '', WOOMULTI_CURRENCY_F_VERSION );
+				wp_enqueue_script( 'woocommerce-multi-currency-admin-reports', WOOMULTI_CURRENCY_F_JS . 'reports' . $src_min . '.js', array( 'jquery' ), WOOMULTI_CURRENCY_F_VERSION, false );
 				wp_localize_script( 'woocommerce-multi-currency-admin-reports', 'woocommerce_multi_currency_admin_reports', array(
 					'currency' => $currency ? $currency : 'all-currencies'
 				) );

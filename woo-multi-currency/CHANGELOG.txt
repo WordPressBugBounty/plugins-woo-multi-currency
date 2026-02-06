@@ -1,5 +1,11 @@
+/*2.2.11 - 2026.01.22*/
+- Fixed: Conflict with WooCommerce HPOS
+
+/*2.2.10 - 2026.01.20*/
+- Updated: New register Elementor widget hook
+- Updated: Compatibility with WP 6.9 and WC 10.4
+
 /*2.2.9 - 2025.07.23*/
-- Updated: Minify some source code
 - Updated: Add setting descriptions
 
 /*2.2.8 - 2025.04.18*/

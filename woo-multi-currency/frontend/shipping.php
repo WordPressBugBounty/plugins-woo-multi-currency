@@ -8,6 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class WOOMULTI_CURRENCY_F_Frontend_Shipping {
 	protected $settings;
+	protected $fee_cost;
 	protected $cache = array();
 
 	function __construct() {

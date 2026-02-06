@@ -76,11 +76,17 @@ class WOOMULTI_CURRENCY_F_Admin_Order {
 	 * @param $post
 	 */
 	public function order_metabox( $post ) {
-		$order = wc_get_order( $post->ID );
+
+		$order_id = $post->ID ?? wc_clean( wp_unslash( $_GET['id'] ?? '' ) );
+		if ( ! $order_id ) {
+			return;
+		}
+
+		$order = wc_get_order( $order_id );
 
 		$order_currency = $order && is_a( $order, 'WC_Order' ) ? $order->get_currency() : get_woocommerce_currency();
 		$wmc_order_info = $order && is_object( $order ) ? $order->get_meta('wmc_order_info', true ) :
-			get_post_meta( $post->ID, 'wmc_order_info', true );
+			get_post_meta( $order_id, 'wmc_order_info', true );
 
 		//		$rate           = 0;
 		$has_info = 1;

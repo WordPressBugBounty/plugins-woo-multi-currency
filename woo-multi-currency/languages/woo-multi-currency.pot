@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CURCY - Multi Currency for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-10 07:17+0000\n"
+"POT-Creation-Date: 2026-02-06 08:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -16,12 +16,12 @@ msgstr ""
 "X-Loco-Version: 2.6.2; wp-6.0.2\n"
 "X-Domain: woo-multi-currency"
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/admin.php:45
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/admin.php:45
 msgid " to set default currency."
 msgstr ""
 
 #. %s: Woo Discount Rule settings link
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/woo_discount_rules.php:86
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/woo_discount_rules.php:86
 #, php-format
 msgid ""
 "<strong>Multi Currency for WooCommerce and Woo Discount Rules compatibility "
@@ -31,49 +31,57 @@ msgid ""
 "prices set using another plugin or custom code?\""
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:102
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:102
 msgid "[WooCommerce] Your GEO IP"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:96
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:96
 msgid "[WooCommerce] Your IP"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:108
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:108
 msgid "_SERVER system"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:316
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:312
 msgid "Action"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:539
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:553
 msgid "Actions"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:901
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1041
 msgid "Active currency background color"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:890
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1030
 msgid "Active currency text color"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:448
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:446
 msgid "Add Currency"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/reports.php:399
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:276
+msgid "Add loading layer when loading price via AJAX"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:734
+msgid "Adjust which pages will appear using WP's conditional tags."
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/reports.php:400
 msgid "All currencies"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:633
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:647
 msgid ""
 "All product fields of Multi Currency for WooCommerce will be copied. When "
 "you switch language, Currency will change. "
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:66
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:66
 msgid "Allow URL Open"
 msgstr ""
 
@@ -83,74 +91,114 @@ msgid ""
 "Working only with WooCommerce."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:509
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:523
 msgid "API will help detect customer country code base on IP address."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:489
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:487
 msgid "Approximate Price"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/frontend/price.php:321
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/frontend/price.php:322
 msgid "Approximately"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:479
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:477
 msgid "Auto Detect"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:487
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:485
 msgid "Auto select currency"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1022
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1201
 msgid "Auto Update Exchange Rate"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:783
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:879
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:905
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1019
 msgid "Background color"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/order.php:115
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/order.php:121
 msgid "Base on Currency"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:817
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:955
+msgid "Below excerpt"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:953
+msgid "Below price"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:951
+msgid "Below title"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:820
+msgid ""
+"By default, currencies bar will expand on hovering. Enable this option if "
+"you want them to only expand when clicking on."
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:970
+msgid ""
+"By default, dropdown currency selector will expand on hovering. Enable this "
+"option if you want them to only expand when clicking on."
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:707
 msgid "Cart page"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:19
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1151
+msgid "Change currency follow"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1158
+msgid "Change currency when customer change billing or shipping address."
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:19
 msgid ""
 "Change display currency on shop page. Widget of Multi Currency for "
 "WooCommerce by VillaTheme"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:976
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1116
 msgid "Change the currency in cart page to a check out currency."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:164
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:168
 msgid "Checkout"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:983
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1123
 msgid "Checkout currency"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:800
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:690
 msgid "Checkout page"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:794
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:813
+msgid "Click to expand currencies bar"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:963
+msgid "Click to expand currency selector"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:724
 msgid "Conditional Tags"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:538
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:552
 msgid "Countries"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:933
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1073
 msgid "CSS"
 msgstr ""
 
@@ -158,60 +206,74 @@ msgstr ""
 msgid "CURCY - Multi Currency for WooCommerce"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:654
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:668
 msgid "Currencies Bar"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/order.php:109
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:310
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:537
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/order.php:115
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:306
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:551
 msgid "Currency"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:516
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:530
 msgid "Currency by Country"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:299
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1138
+msgid "Currency by Payment method"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/order.php:39
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/order.php:48
+msgid "Currency Information"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:295
 msgid "Currency Options"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:229
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:976
+msgid "Currency price collate"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:922
 msgid "Currency Price Switcher"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/order.php:121
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/order.php:127
 msgid "Currency Rate"
 msgstr ""
 
 #. Base ID
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:18
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:18
 msgid "Currency Selector"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:257
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:240
 msgid ""
 "Currency will be changed but It does not use URL. It is good for SEO. Now It "
 "is not compatible with Caching plugins."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/order.php:69
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/order.php:69
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/order.php:143
 msgid "Currency: "
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:912
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1052
 msgid "Custom"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1069
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1248
 msgid "Custom Email"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:315
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:311
 msgid "Custom symbol"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:464
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:462
 msgid ""
 "Custom symbol: You can set custom symbol for each currency in your list and "
 "how to it will be displayed (used when you have many currency have same "
@@ -221,155 +283,194 @@ msgid ""
 "if you set US #PRICE# $, system will display: US 100 $."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:308
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:758
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:744
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:60
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:304
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:867
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:747
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:60
 msgid "Default"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:167
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:171
 msgid "Design"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:726
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:796
 msgid "Desktop"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:244
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:937
 msgid ""
 "Display a currency switcher under product price in single product pages."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:838
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1171
+msgid ""
+"Display currencies both in the store pages and checkout page if they are "
+"different at the checkout page. This option and Fixed price option don't "
+"work together."
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1164
+msgid "Display multi currencies"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:983
+msgid ""
+"Display product price collated with other currency and display settings "
+"(layout, title, position)."
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:728
 msgid "eg: !is_page(array(34,98,73))"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:183
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:618
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:660
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:952
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1004
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:187
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:632
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:674
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1092
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1183
 msgid "Enable"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:968
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1108
 msgid "Enable Cart Page"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:735
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:805
 msgid "Enable Collapse"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:275
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:258
 msgid ""
 "Enable this if you are using a caching plugin(WP Super cache, W3 total cache,"
 " WP rocket, ...) and currency does not remain after being switched by "
 "customers in the frontend"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:928
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1068
 msgid ""
 "Enable this if you want rel=\"nofollow\" to be added to currency switcher "
 "buttons"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:828
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1145
+msgid ""
+"Enable this option to change the currency immediately at the checkout order "
+"detail when the customer selects a payment gateway, instead of after "
+"clicking the 'place order' button."
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:718
 msgid "Enable to hide Currencies Bar on Cart page."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:811
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:701
 msgid "Enable to hide Currencies Bar on Checkout page."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/cryptocurrency.php:27
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/cryptocurrency.php:27
 msgid "Ethereum"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:593
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:596
 msgid "European Union"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1042
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1221
 msgid "Exchange rate resources."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1030
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1209
 msgid "Exchange will be updated automatically."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:507
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:519
 msgid "External"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1035
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1214
 msgid "Finance API"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:199
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:289
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:833
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:857
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:900
+msgid "Fixed currency in schema structure data."
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:203
 msgid "Fixed Price"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:238
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:762
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:282
+msgid "Fixed Structure currency"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:871
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:931
 msgid "Flag"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:755
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:758
 msgid "Flag + Country + Currency + Symbol"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:240
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:933
 msgid "Flag + Currency Code"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:764
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:873
 msgid "Flag + Currency code"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:766
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:875
 msgid "Flag + Currency symbol"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:242
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:935
 msgid "Flag + Price"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:853
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:993
 msgid "Flag Custom"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:70
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:78
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:70
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:78
 msgid "Flag size"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:158
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:48
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:162
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:48
 msgid "General"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:499
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:511
 msgid "Geo API"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:309
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:305
 msgid "Hidden"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:368
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:369
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:364
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:365
 msgid "Hidden currencies on widget, shortcode and sidebar"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:752
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:68
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:755
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:68
 msgid "Horizontal Currency Slide"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:751
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:67
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:754
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:67
 msgid "Horizontal Currency Symbols"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:893
+msgid "Hover color"
 msgstr ""
 
 #. Author URI of the plugin
@@ -380,425 +481,478 @@ msgstr ""
 msgid "https://villatheme.com/extensions/woo-multi-currency/"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1076
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1255
 msgid "If empty, notification will sent to "
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:406
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:520
+msgid "Inherited from server (Premium)"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:402
 msgid ""
 "It is fixed rate. Eg: (Original rate)1.62 + 0.1(Exchange fee rate) = 1."
 "72(End rate)"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:491
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:489
 msgid "Language Polylang"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:596
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:639
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:610
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:653
 msgid "Language switcher"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:76
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:76
 msgid "Large"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:60
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:60
 msgid "Layout"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:700
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:770
 msgid "Left"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:388
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:384
 msgid "Left $99"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:392
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:388
 msgid "Left with space $ 99"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:843
-msgid "Let you adjust which pages will appear using WP's conditional tags."
-msgstr ""
-
 #. Base ID
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-rates.php:18
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-rates.php:18
 msgid "List Currency Rates"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:750
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:66
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:753
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:66
 msgid "List Flag + Currency Code"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:748
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:64
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:751
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:64
 msgid "List Flag Horizontal"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:749
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:65
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:752
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:65
 msgid "List Flag Vertical"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:747
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:63
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:750
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:63
 msgid "Listbox currency code"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/cryptocurrency.php:26
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/cryptocurrency.php:26
 msgid "Litecoin"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:161
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:265
+msgid "Loading price mask"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:165
 msgid "Location"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:772
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:881
 msgid "Main color"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:61
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:521
+msgid "MaxMind Geolocation (Premium)"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:61
 msgid "Memory Limit"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/admin.php:235
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/product.php:75
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:33
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:738
+msgid "more"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/admin.php:240
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/product.php:76
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:33
 msgid "Multi Currency"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/admin.php:235
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:31
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:46
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:61
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:76
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:91
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:105
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:120
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/admin.php:240
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:31
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:46
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:61
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:76
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:91
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:105
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:120
 msgid "Multi Currency for WooCommerce"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/admin.php:45
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/admin.php:45
 msgid "Multi Currency for WooCommerce setting page"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:153
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:157
 msgid "Multi Currency for WooCommerce Settings"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:372
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:485
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:368
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:483
 msgid "No"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:236
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:929
 msgid "Not Show"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:314
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:310
 msgid "Number of Decimals"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:527
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:541
 msgid ""
 "Only working with AUTO SELECT CURRENCY feature. Currency will be selected "
 "base on country."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:834
-msgid "Other pages"
-msgstr ""
-
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:962
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1102
 msgid "Pay in many currencies"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:992
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1132
 msgid ""
 "Payment method depend on Payment Gateway. If Payment Gateway is not support "
 "currency, customer can not checkout with currency. Example: Paypal is not "
 "support IDR, Customer can not checkout IDR by Paypal."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:56
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:56
 msgid "PHP Max Input Vars"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:52
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:52
 msgid "PHP Time Limit"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:745
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:61
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:748
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:61
 msgid "Plain Horizontal"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:746
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:62
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:749
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:62
 msgid "Plain Vertical"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-rates.php:53
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:54
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-rates.php:53
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:54
 msgid "Please enter your title"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/woo-multi-currency.php:80
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/woo-multi-currency.php:81
 msgid ""
 "Please install and activate WooCommerce to use Multi Currency for "
 "WooCommerce plugin."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:553
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:567
 msgid "Please select countries"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/frontend/shortcode.php:74
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/frontend/shortcode.php:74
 msgid "Please select your currency"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:590
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:604
 msgid "Polylang"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:311
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:685
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:307
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:755
 msgid "Position"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:170
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:957
+msgid ""
+"Position of currency switcher in single product pages, it may be affected by "
+"the theme or product template"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:174
 msgid "Price format"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:313
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:916
+msgid "Product currency selector"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:309
 msgid "Rate + Exchange Fee"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1047
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1226
 msgid "Rate Decimals"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/product.php:104
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/yith_product_bundles.php:37
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/product.php:105
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/yith_product_bundles.php:37
 msgid "Regular Price"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/product.php:151
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/product.php:152
 msgid "Regular Price:"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:433
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:434
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:431
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:432
 msgid "Remove"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:576
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:590
 msgid "Remove All"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:716
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:786
 msgid "Right"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:390
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:386
 msgid "Right 99$"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:394
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:390
 msgid "Right with space 99 $"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/product.php:112
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/yith_product_bundles.php:44
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/product.php:113
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/yith_product_bundles.php:44
 msgid "Sale Price"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/product.php:158
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/product.php:159
 msgid "Sale Price:"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1086
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1265
 msgid "Save"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:573
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:587
 msgid "Select all"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:56
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:56
 msgid "Select switcher layout"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1057
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1236
 msgid "Send Email"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1064
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1243
 msgid "Send email to admin when exchange rate is updated."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:78
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:78
 msgid "Session path"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/product.php:82
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/product.php:83
 msgid "Set regular prices"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/product.php:83
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/product.php:84
 msgid "Set sale prices"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:210
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:214
 msgid ""
 "Set up product price in each currency manually, this price will overwrite "
 "the calculated price."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/admin.php:199
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/admin.php:204
 msgid "Settings"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:863
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1003
 msgid "Shortcode"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-rates.php:19
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-rates.php:19
 msgid ""
 "Show list currency exchange rates of Multi Currency for WooCommerce by "
 "VillaTheme"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:737
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:850
+msgid "Sidebar layout"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:807
 msgid "Sidebar will collapse if you have many currencies."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:75
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:75
 msgid "Small"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:858
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:998
 msgid ""
 "Some countries use the same currency. You can choice flag correctly. Each "
 "line is the flag. Structure [currency_code,country_code]. Example: EUR,ES"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:753
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:862
 msgid "Style"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:250
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:233
 msgid "Switch Currency by JS"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:760
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:504
+msgid "Switch currency by user address when user login"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:497
+msgid "Switch when user login"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:943
+msgid "Switcher Position"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:869
 msgid "Symbol"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:22
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:125
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:125
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:22
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:125
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:125
 msgid "System Status"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:742
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:868
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:838
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1008
 msgid "Text color"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/admin.php:45
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/admin.php:45
 msgid ""
 "The following options affect how prices are displayed on the frontend. Multi "
 "Currency for WooCommerce is working. Please go to "
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1010
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1189
 msgid ""
 "This option only works when input price same as output price (both include "
 "tax or exclude tax)"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:675
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:39
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:54
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:69
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:84
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:99
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:113
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:128
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:745
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:39
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:54
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:69
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:84
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:99
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:113
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:128
 msgid "Title"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-rates.php:52
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:53
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-rates.php:52
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/frontend/widgets/widget-selector.php:53
 msgid "Title:"
 msgstr ""
 
 #. %1$s: logging file path
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:85
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:85
 #, php-format
 msgid "To allow logging, make %1$s writable."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:222
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:256
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:462
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:602
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:631
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:645
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:974
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:990
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1009
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1028
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1040
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1063
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1074
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:826
+msgid "Top position"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:490
+msgid "TranslatePress Multilingual (Premium)"
+msgstr ""
+
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:226
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:239
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:288
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:460
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:503
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:616
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:645
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:659
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:819
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:832
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:856
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:899
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:969
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:982
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1114
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1130
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1144
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1157
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1170
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1188
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1207
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1219
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1242
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1253
 msgid "Unlock This Feature"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:173
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:177
 msgid "Update"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:451
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:449
 msgid "Update All Rates"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:427
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:428
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:423
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:424
 msgid "Update Rate"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:263
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:246
 msgid "Use cache plugin"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:918
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:1058
 msgid "Use rel=\"nofollow\""
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:216
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:220
 msgid "Use SESSION"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:223
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:227
 msgid "Use SESSION instead of COOKIE."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:753
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:69
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:756
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:69
 msgid "Vertical Currency Symbols"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:754
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:70
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/data.php:757
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/includes/elementor/widget.php:70
 msgid "Vertical Currency Symbols (circle)"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/reports.php:419
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/reports.php:420
 msgid "View in default currency"
 msgstr ""
 
@@ -806,39 +960,39 @@ msgstr ""
 msgid "VillaTheme"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:848
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:988
 msgid "Widget"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:505
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:35
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:50
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:65
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:80
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:95
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:109
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:124
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:517
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:35
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:50
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:65
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:80
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:95
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:109
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/plugins/visual_composer.php:124
 msgid "WooCommerce"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:613
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:627
 msgid "WPML.org"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:374
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:370
 msgid "Yes"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:459
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/settings.php:457
 msgid ""
 "You can add only 2 currencies. Please update Pro version to add unlimited "
 "currencies."
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:90
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/system.php:90
 msgid "Your IP"
 msgstr ""
 
-#: E:/git-2017/free-version/woo-multi-currency/woo-multi-currency/admin/cryptocurrency.php:28
+#: D:/git/free-version/woo-multi-currency/woo-multi-currency/admin/cryptocurrency.php:28
 msgid "Zimbabwe"
 msgstr ""

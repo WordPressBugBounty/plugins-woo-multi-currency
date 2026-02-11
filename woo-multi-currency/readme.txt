@@ -232,6 +232,9 @@ Check screenshots at https://villatheme.com/woo-multi-currency/ or https://villa
 3. Currency selector widgets using shortcode
 
 == Changelog ==
+/*2.2.12 - 2026.02.06*/
+- Updated: Only specific conditional tags are supported in the “Conditional Tags” option.
+
 /*2.2.11 - 2026.01.22*/
 - Fixed: Conflict with WooCommerce HPOS
 

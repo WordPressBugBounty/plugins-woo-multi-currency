@@ -174,7 +174,11 @@ class WOOMULTI_CURRENCY_F_Admin_Admin {
 			wp_enqueue_style( 'woo-multi-currency', WOOMULTI_CURRENCY_F_CSS . 'woo-multi-currency-admin' . $src_min . '.css', [], WOOMULTI_CURRENCY_F_VERSION );
 			wp_enqueue_style( 'select2', WOOMULTI_CURRENCY_F_CSS . 'select2.min.css', [], '4.0.3' );
 
-			wp_enqueue_script( 'wc-select2' );
+			if ( villatheme_woocommerce_version_check( '10.3.0' ) ) {
+				wp_enqueue_script( 'wc-select2' );
+			}else{
+				wp_enqueue_script( 'select2' );
+			}
 			wp_enqueue_script( 'semantic-ui-transition', WOOMULTI_CURRENCY_F_JS . 'transition.min.js', array( 'jquery' ), '2.1.7', false );
 			wp_enqueue_script( 'semantic-ui-dropdown', WOOMULTI_CURRENCY_F_JS . 'dropdown.js', array( 'jquery' ), '2.1.7', false );
 			wp_enqueue_script( 'semantic-ui-checkbox', WOOMULTI_CURRENCY_F_JS . 'checkbox.js', array( 'jquery' ), '2.1.7', false );

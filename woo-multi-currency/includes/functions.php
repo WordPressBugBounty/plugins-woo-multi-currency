@@ -236,3 +236,14 @@ if ( ! function_exists( 'villatheme_remove_object_filter' ) ) {
 		}
 	}
 }
+if ( ! function_exists( 'villatheme_woocommerce_version_check' ) ) {
+	function villatheme_woocommerce_version_check( $version = '3.0' ) {
+		global $woocommerce;
+
+		if ( version_compare( $woocommerce->version, $version, ">=" ) ) {
+			return true;
+		}
+
+		return false;
+	}
+}

@@ -224,7 +224,7 @@ class WOOMULTI_CURRENCY_F_Admin_Order {
 
 			if ( ! empty( $tax_string_array ) ) {
 				/* translators: %s: taxes */
-				$tax_string = ' <small class="includes_tax">' . sprintf( esc_html__( '(includes %s)', 'woocommerce' ), implode( ', ', $tax_string_array ) ) . '</small>';
+				$tax_string = ' <small class="includes_tax">' . sprintf( esc_html__( '(includes %s)', 'woo-multi-currency' ), implode( ', ', $tax_string_array ) ) . '</small>';
 			}
 		}
 

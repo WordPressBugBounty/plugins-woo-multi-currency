@@ -83,8 +83,8 @@ class WOOMULTI_CURRENCY_F_Plugin_Catna {
 							'custom_attributes' => array( 'data-name' => '_wmc_vicatna_nyp_min_' . $currency ),
 							'value'             => get_post_meta( $thepostid, '_wmc_vicatna_nyp_min_' . $currency, true ),
 							'desc_tip'          => true,
-							'description'       => esc_html__( 'Minimum acceptable price', 'catna-woocommerce-name-your-price-and-offers' ),
-							'label'             => esc_html__( 'Minimum price', 'catna-woocommerce-name-your-price-and-offers' ) . ' (' . $currency . ')',
+							'description'       => esc_html__( 'Minimum acceptable price', 'woo-multi-currency' ),
+							'label'             => esc_html__( 'Minimum price', 'woo-multi-currency' ) . ' (' . $currency . ')',
 							'data_type'         => 'price',
 						)
 					);
@@ -94,8 +94,8 @@ class WOOMULTI_CURRENCY_F_Plugin_Catna {
 //							'name'        => '_wmc_vicatna_nyp_max_' . $currency,
 							'custom_attributes' => array( 'data-name' => '_wmc_vicatna_nyp_max_' . $currency ),
 							'value'             => get_post_meta( $thepostid, '_wmc_vicatna_nyp_max_' . $currency, true ),
-							'placeholder'       => esc_html__( 'Leave blank to not limit that', 'catna-woocommerce-name-your-price-and-offers' ),
-							'label'             => esc_html__( 'Maximum price', 'catna-woocommerce-name-your-price-and-offers' ) . ' (' . $currency . ')',
+							'placeholder'       => esc_html__( 'Leave blank to not limit that', 'woo-multi-currency' ),
+							'label'             => esc_html__( 'Maximum price', 'woo-multi-currency' ) . ' (' . $currency . ')',
 							'data_type'         => 'price',
 						)
 					);

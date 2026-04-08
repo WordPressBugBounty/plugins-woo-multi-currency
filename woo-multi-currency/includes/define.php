@@ -16,6 +16,7 @@ define( 'WOOMULTI_CURRENCY_F_CSS', $plugin_url . "/css/" );
 define( 'WOOMULTI_CURRENCY_F_CSS_DIR', WOOMULTI_CURRENCY_F_DIR . "css" . DIRECTORY_SEPARATOR );
 define( 'WOOMULTI_CURRENCY_F_JS', $plugin_url . "/js/" );
 define( 'WOOMULTI_CURRENCY_F_JS_DIR', WOOMULTI_CURRENCY_F_DIR . "js" . DIRECTORY_SEPARATOR );
+define( 'WOOMULTI_CURRENCY_F_BLOCKS', $plugin_url . "/includes/blocks/" );
 define( 'WOOMULTI_CURRENCY_F_IMAGES', $plugin_url . "/images/" );
 define( 'WOOMULTI_CURRENCY_F_FLAG', WOOMULTI_CURRENCY_F_IMAGES . "flag/" );
 
@@ -35,6 +36,10 @@ if ( is_file( WOOMULTI_CURRENCY_F_INCLUDES . "support.php" ) ) {
 
 if ( is_file( WOOMULTI_CURRENCY_F_INCLUDES . "elementor/elementor.php" ) ) {
 	require_once WOOMULTI_CURRENCY_F_INCLUDES . "elementor/elementor.php";
+}
+
+if ( is_file( WOOMULTI_CURRENCY_F_INCLUDES . 'blocks/block.php' ) ) {
+	require_once WOOMULTI_CURRENCY_F_INCLUDES . 'blocks/block.php';
 }
 
 vi_include_folder( WOOMULTI_CURRENCY_F_ADMIN, 'WOOMULTI_CURRENCY_F_Admin_' );

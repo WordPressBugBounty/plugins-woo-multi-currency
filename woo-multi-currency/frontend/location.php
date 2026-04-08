@@ -186,7 +186,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Location {
 		$auto_detect = $this->settings->get_auto_detect();
 		if ( $auto_detect == 1 ) {
 			/*Auto select currency*/
-			if ( is_array( $geoplugin_arg ) && isset( $geoplugin_arg['currency_code'] ) ) {
+			if ( is_array( $geoplugin_arg ) && isset( $geoplugin_arg['currency_code'] ) && ! empty( $geoplugin_arg['currency_code'] ) ) {
 				$currencies = $this->settings->get_currencies();
 				if ( ! in_array( $geoplugin_arg['currency_code'], $currencies ) ) {
 					$geoplugin_arg['currency_code'] = $this->settings->get_default_currency();
@@ -201,7 +201,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Location {
 			}
 		} elseif ( $auto_detect == 2 ) {
 			/*Approximately price*/
-			if ( is_array( $geoplugin_arg ) && isset( $geoplugin_arg['currency_code'] ) ) {
+			if ( is_array( $geoplugin_arg ) && isset( $geoplugin_arg['currency_code'] ) && ! empty( $geoplugin_arg['currency_code'] ) ) {
 				$currency_code = $geoplugin_arg['currency_code'];
 				$country_code  = $geoplugin_arg['country'];
 				$symbol        = get_woocommerce_currency_symbol( $geoplugin_arg['currency_code'] );

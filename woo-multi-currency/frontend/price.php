@@ -122,12 +122,12 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 			} elseif ( $display_price ) {
 				if ( $product->has_additional_costs() || $product->get_display_cost() ) {
 					/* translators: 1: display price */
-					$price_html = sprintf( esc_html__( 'From: %s', 'woocommerce-bookings' ), wc_price( $display_price ) ) . $product->get_price_suffix();
+					$price_html = sprintf( esc_html__( 'From: %s', 'woo-multi-currency' ), wc_price( $display_price ) ) . $product->get_price_suffix();
 				} else {
 					$price_html = wc_price( $display_price ) . $product->get_price_suffix();
 				}
 			} elseif ( ! $product->has_additional_costs() ) {
-				$price_html = esc_html__( 'Free', 'woocommerce-bookings' );
+				$price_html = esc_html__( 'Free', 'woo-multi-currency' );
 			} else {
 				$price_html = '';
 			}

@@ -403,9 +403,15 @@ class WOOMULTI_CURRENCY_F_Data {
 			'YE' => 'YER',
 			'ZM' => 'ZMW',
 			'ZW' => 'ZWD',
+			'XK' => 'EUR',
+			'PS' => 'ILS',
 		);
 
-		return apply_filters( 'wmc_get_currency_code', $arg[ $country_code ], $arg, $country_code );
+		if ( isset( $arg[ $country_code ] ) ) {
+			return apply_filters( 'wmc_get_currency_code', $arg[ $country_code ], $arg, $country_code );
+		} else {
+			return '';
+		}
 	}
 
 	/**Get country code by currency

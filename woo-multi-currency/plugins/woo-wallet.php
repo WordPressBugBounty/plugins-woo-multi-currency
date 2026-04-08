@@ -99,7 +99,7 @@ class WOOMULTI_CURRENCY_F_Plugin_Woo_Wallet {
 			}
 			?>
             <tr>
-                <td class="label"><?php esc_html_e( 'Cashback', 'woo-wallet' ); ?>:</td>
+                <td class="label"><?php esc_html_e( 'Cashback', 'woo-multi-currency' ); ?>:</td>
                 <td width="1%"></td>
                 <td class="via-wallet">
 					<?php
@@ -254,10 +254,10 @@ class WOOMULTI_CURRENCY_F_Plugin_Woo_Wallet {
 		$cashback_amount = wmc_get_price( $cashback_amount );
 		if ( is_user_logged_in() ) {
 			/* translators: %s: cashback value */
-			$text = sprintf( esc_html__( 'Upon placing this order a cashback of %s will be credited to your wallet.', 'woo-wallet' ), wc_price( $cashback_amount, woo_wallet_wc_price_args() ) );
+			$text = sprintf( esc_html__( 'Upon placing this order a cashback of %s will be credited to your wallet.', 'woo-multi-currency' ), wc_price( $cashback_amount, woo_wallet_wc_price_args() ) );
 		} else {
 			/* translators: %1$s: login url, %2$s: cashback value */
-			$text = sprintf( esc_html__( 'Please <a href="%1$s">log in</a> to avail %2$s cashback from this order.', 'woo-wallet' ), esc_url( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) ), wc_price( $cashback_amount, woo_wallet_wc_price_args() ) );
+			$text = sprintf( esc_html__( 'Please <a href="%1$s">log in</a> to avail %2$s cashback from this order.', 'woo-multi-currency' ), esc_url( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) ), wc_price( $cashback_amount, woo_wallet_wc_price_args() ) );
 		}
 
 		return $text;

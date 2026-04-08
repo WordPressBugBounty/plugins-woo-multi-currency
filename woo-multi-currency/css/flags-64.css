@@ -7,8 +7,9 @@
     display: inline-block !important;
     width: 60px !important;
     height: 40px !important;
-    background-image: url('./images/flags-64.png') !important;
+    background-image: url('../css/images/flags-64.png') !important;
     background-repeat: no-repeat;
+    background-size: 1088px 1024px;
 }
 
 .vi-flag-64.flag-unknown {

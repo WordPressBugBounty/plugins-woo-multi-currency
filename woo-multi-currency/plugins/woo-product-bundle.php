@@ -110,7 +110,7 @@ class WOOMULTI_CURRENCY_F_Plugin_Woo_Product_Bundle {
 							return wc_price( $min_price ) . $product->get_price_suffix();
 							break;
 						case 'from_min':
-							return esc_html__( 'From', 'woo-product-bundle' ) . ' ' . wc_price( $min_price ) . $product->get_price_suffix();
+							return esc_html__( 'From', 'woo-multi-currency' ) . ' ' . wc_price( $min_price ) . $product->get_price_suffix();
 							break;
 					}
 				} elseif ( $product->has_variables() ) {
@@ -141,7 +141,7 @@ class WOOMULTI_CURRENCY_F_Plugin_Woo_Product_Bundle {
 							return wc_price( $min_price ) . ' - ' . wc_price( $max_price ) . $product->get_price_suffix();
 							break;
 						case 'from_min':
-							return esc_html__( 'From', 'woo-product-bundle' ) . ' ' . wc_price( $min_price ) . $product->get_price_suffix();
+							return esc_html__( 'From', 'woo-multi-currency' ) . ' ' . wc_price( $min_price ) . $product->get_price_suffix();
 							break;
 					}
 				} else {

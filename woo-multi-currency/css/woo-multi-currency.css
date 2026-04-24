@@ -252,6 +252,10 @@
   font-weight: 700;
 }
 
+.wp-block-group .woo-multi-currency.wmc-shortcode * {
+  box-sizing: border-box;
+}
+
 .woo-multi-currency.wmc-shortcode.plain-vertical {
   box-sizing: border-box;
   display: inline-block;
@@ -543,6 +547,7 @@
     margin-left: auto;
     margin-right: auto;
   }
+
   .woo-multi-currency.wmc-sidebar .wmc-title {
     margin-left: auto;
     margin-right: auto;
@@ -553,6 +558,7 @@
   .woo-multi-currency.wmc-sidebar .wmc-list-currencies .wmc-sidebar-open {
     display: flex;
   }
+
   .woo-multi-currency.wmc-sidebar.wmc-hover {
     width: 100%;
     top: 0;

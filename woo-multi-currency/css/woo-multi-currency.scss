@@ -339,6 +339,16 @@
   }
 }
 
+.wp-block-group {
+
+  .woo-multi-currency.wmc-shortcode {
+
+    * {
+      box-sizing: border-box;
+    }
+  }
+}
+
 .woo-multi-currency.wmc-shortcode.plain-vertical {
   box-sizing: border-box;
   display: inline-block;

@@ -485,8 +485,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                             value="1"><?php esc_html_e( 'Auto select currency', 'woo-multi-currency' ) ?></option>
                                     <option <?php selected( self::get_field( 'auto_detect' ), 2 ) ?>
                                             value="2"><?php esc_html_e( 'Approximate Price', 'woo-multi-currency' ) ?></option>
-                                    <option <?php selected( self::get_field( 'auto_detect' ), 3 ) ?>
-                                            value="3"><?php esc_html_e( 'Language Polylang', 'woo-multi-currency' ) ?></option>
+                                    <option disabled><?php esc_html_e( 'Language Polylang (Premium)', 'woo-multi-currency' ) ?></option>
                                     <option disabled><?php esc_html_e( 'TranslatePress Multilingual (Premium)', 'woo-multi-currency' ) ?></option>
                                 </select>
                             </td>

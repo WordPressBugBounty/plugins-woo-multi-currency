@@ -4,7 +4,7 @@ Donate link: http://www.villatheme.com/donate
 Tags: ecommerce, multi currency for woo, woocommerce, woocommerce currency switcher, woocommerce multi currency
 Requires at least: 6.0
 Tested up to: 6.9
-WC tested up to: 10.6
+WC tested up to: 10.7
 Requires PHP: 7.0
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -232,6 +232,10 @@ Check screenshots at https://villatheme.com/woo-multi-currency/ or https://villa
 3. Currency selector widgets using shortcode
 
 == Changelog ==
+/*2.2.14 - 2026.04.24*/
+- Fixed: Feature setting display incorrect
+- Fixed: Bulk edit variation price not working properly
+
 /*2.2.13 - 2026.04.08/
 - Updated: Preview blocks
 - Updated: Country code for Currency

@@ -41,6 +41,7 @@ class WOOMULTI_CURRENCY_F_Admin_Product {
 			/*Bulk action*/
 			add_action( 'admin_enqueue_scripts', array( $this, 'init_scripts' ), 12 );
 			add_action( 'woocommerce_variable_product_bulk_edit_actions', array( $this, 'bulk_edit_actions' ) );
+			add_action( 'woocommerce_bulk_edit_variations', array( $this, 'bulk_edit_variations' ), 10, 4 );
 
 		}
 	}
@@ -86,6 +87,53 @@ class WOOMULTI_CURRENCY_F_Admin_Product {
 			} ?>
         </optgroup>
 	<?php }
+
+	/**
+	 * Handle custom bulk actions for WMC variation prices.
+	 *
+	 * @param string $bulk_action Action name from WooCommerce bulk edit selector.
+	 * @param array  $data        Action data sent from JS.
+	 * @param int    $product_id  Parent variable product ID.
+	 * @param array  $variations  Variation IDs.
+	 */
+	public function bulk_edit_variations( $bulk_action, $data, $product_id, $variations ) {
+		unset( $product_id );
+		$meta_key = '';
+		$currency = '';
+
+		if ( 0 === strpos( $bulk_action, 'wbs_regular_price-' ) ) {
+			$meta_key = '_regular_price_wmcp';
+			$currency = substr( $bulk_action, strlen( 'wbs_regular_price-' ) );
+		} elseif ( 0 === strpos( $bulk_action, 'wbs_sale_price-' ) ) {
+			$meta_key = '_sale_price_wmcp';
+			$currency = substr( $bulk_action, strlen( 'wbs_sale_price-' ) );
+		}
+
+		if ( ! $meta_key || ! $currency || ! is_array( $variations ) ) {
+			return;
+		}
+
+		$value = '';
+		if ( isset( $data['value'] ) ) {
+			$value = wc_format_decimal( $data['value'] );
+		}
+
+		foreach ( $variations as $variation_id ) {
+			$variation_product = wc_get_product( $variation_id );
+			if ( ! $variation_product ) {
+				continue;
+			}
+
+			$prices = self::format_json_price_meta( $variation_product->get_meta( $meta_key, true ) );
+			if ( ! is_array( $prices ) ) {
+				$prices = array();
+			}
+
+			$prices[ $currency ] = $value;
+			$variation_product->update_meta_data( $meta_key, wp_json_encode( $prices ) );
+			$variation_product->save_meta_data();
+		}
+	}
 
 	/**
 	 * Add Regular price, Sale price with Simple product
@@ -209,7 +257,7 @@ class WOOMULTI_CURRENCY_F_Admin_Product {
 		}
 		if ( $update_meta ) {
 			$simple_product->save_meta_data();
-        }
+		}
 	}
 
 	/**

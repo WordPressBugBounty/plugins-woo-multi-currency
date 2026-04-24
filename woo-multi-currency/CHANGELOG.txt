@@ -1,3 +1,7 @@
+/*2.2.14 - 2026.04.24*/
+- Fixed: Feature setting display incorrect
+- Fixed: Bulk edit variation price not working properly
+
 /*2.2.13 - 2026.04.08*/
 - Updated: Preview blocks
 - Updated: Country code for Currency

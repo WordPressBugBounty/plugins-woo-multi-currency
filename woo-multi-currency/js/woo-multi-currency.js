@@ -114,7 +114,8 @@ jQuery(document).ready(function ($) {
                         pids: pids,
                         shortcodes: shortcodes,
                         wmc_current_url: $('.wmc-current-url').val(),
-                        exchange: exchangePrice
+                        exchange: exchangePrice,
+                        _woo_multi_currency_nonce: wooMultiCurrencyParams.nonce
                     },
                     success(res) {
                         if (res.success) {

@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WOOMULTI_CURRENCY_Block {
 	protected $settings;
+
 	/**
 	 * Register block
 	 */
@@ -30,9 +31,9 @@ class WOOMULTI_CURRENCY_Block {
 			'wmc/v1',
 			'/preview',
 			array(
-				'methods'  => 'POST',
-				'callback' => array( $this, 'get_preview_html' ),
-				'permission_callback' => function() {
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'get_preview_html' ),
+				'permission_callback' => function () {
 					// Allow access if user can edit posts/pages or template parts
 					return current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) || current_user_can( 'edit_theme_options' );
 				},
@@ -154,7 +155,7 @@ class WOOMULTI_CURRENCY_Block {
 		// Localize script with params
 		if ( class_exists( 'WOOMULTI_CURRENCY_F_Data' ) ) {
 			$settings = WOOMULTI_CURRENCY_F_Data::get_ins();
-			$params = array(
+			$params   = array(
 				'use_session'        => 0,
 				'do_not_reload_page' => 0,
 				'ajax_url'           => admin_url( 'admin-ajax.php' ),
@@ -166,12 +167,14 @@ class WOOMULTI_CURRENCY_Block {
 			$cache_nonce_check = is_plugin_active( 'litespeed-cache/litespeed-cache.php' );
 			// Also localize main script to ensure params are available
 			$woo_params = array(
-				'enableCacheCompatible'          => $settings->get_param( 'cache_compatible' ),
-				'ajaxUrl'                        => admin_url( 'admin-ajax.php' ),
-				'nonce'                          => wp_create_nonce('wmc_currency_nonce'),
-				'cache_nonce'                    => apply_filters( 'wmc_frontend_ignore_nonce_verify', $cache_nonce_check ),
-				'switchByJS'                     => 0,
-				'current_currency'               => $settings->get_current_currency(),
+				'enableCacheCompatible' => apply_filters( 'wmc_enable_cache_compatible_frontend', $settings->get_param( 'cache_compatible' ) ),
+				'ajaxUrl'               => admin_url( 'admin-ajax.php' ),
+				'nonce'                 => wp_create_nonce( 'wmc_currency_nonce' ),
+				'cache_nonce'           => apply_filters( 'wmc_frontend_ignore_nonce_verify', $cache_nonce_check ),
+				'switchByJS'            => 0,
+				'extra_params'          => apply_filters( 'wmc_frontend_extra_params', array() ),
+				'current_currency'      => $settings->get_current_currency(),
+				'woo_subscription'      => is_plugin_active( 'woocommerce-subscriptions/woocommerce-subscriptions.php' ),
 			);
 			wp_localize_script( 'woo-multi-currency', 'wooMultiCurrencyParams', $woo_params );
 		}
@@ -181,7 +184,7 @@ class WOOMULTI_CURRENCY_Block {
 	 * Get all enqueued styles and scripts URLs
 	 */
 	private function get_enqueued_assets() {
-		$styles_urls = array();
+		$styles_urls  = array();
 		$scripts_urls = array();
 
 		global $wp_scripts;
@@ -194,7 +197,7 @@ class WOOMULTI_CURRENCY_Block {
 			'wmc-flags',
 			'wmc-block-editor-style'
 		);
-		
+
 		if ( isset( $wp_styles->queue ) ) {
 			foreach ( $wp_styles->queue as $handle ) {
 				// Only include plugin styles
@@ -232,7 +235,7 @@ class WOOMULTI_CURRENCY_Block {
 		}
 
 		return array(
-			'styles' => $styles_urls,
+			'styles'  => $styles_urls,
 			'scripts' => $scripts_urls
 		);
 	}
@@ -273,7 +276,7 @@ class WOOMULTI_CURRENCY_Block {
 		$assets = $this->get_enqueued_assets();
 
 		return rest_ensure_response( array(
-			'html' => $html,
+			'html'   => $html,
 			'assets' => $assets,
 		) );
 	}
@@ -324,10 +327,10 @@ class WOOMULTI_CURRENCY_Block {
 		}
 
 		$args = array(
-			'editor_script' => 'wmc-block-editor',
+			'editor_script'   => 'wmc-block-editor',
 			'render_callback' => array( $this, 'render_callback' ),
-			'style' => array( 'wmc-block-main-style', 'wmc-flags-style' ),
-			'editor_style' => array( 'wmc-block-main-style', 'wmc-flags-style' ),
+			'style'           => array( 'wmc-block-main-style', 'wmc-flags-style' ),
+			'editor_style'    => array( 'wmc-block-main-style', 'wmc-flags-style' ),
 		);
 
 		// Add block-specific editor style if available
@@ -348,15 +351,15 @@ class WOOMULTI_CURRENCY_Block {
 	/**
 	 * Render callback for the block (frontend)
 	 *
-	 * @param array  $attributes Block attributes.
-	 * @param string $content    Block content.
+	 * @param array $attributes Block attributes.
+	 * @param string $content Block content.
 	 *
 	 * @return string Rendered block HTML.
 	 */
 	public function render_callback( $attributes ) {
 		// Ensure frontend assets are loaded for proper rendering
 		$this->ensure_frontend_assets();
-		
+
 		// Build shortcode attributes
 		$shortcode_atts = array();
 

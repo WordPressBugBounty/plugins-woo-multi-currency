@@ -47,7 +47,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Cache {
 	 * Clear cache browser
 	 */
 	public function clear_browser_cache() {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_cache' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'wmc_currency_nonce' ) ) {
 			return;
 		}
 		if ( isset( $_GET['wmc-currency'] ) ) {
@@ -58,8 +58,10 @@ class WOOMULTI_CURRENCY_F_Frontend_Cache {
 	}
 
 	public function get_products_price() {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_cache' ) ) {
-			return;
+		if ( ! $this->settings->get_param( 'cache_compatible' ) ) {
+			if ( ! isset( $_REQUEST['_woo_multi_currency_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'wmc_currency_nonce' ) ) {
+				return;
+			}
 		}
 		do_action( 'wmc_get_products_price_ajax_handle_before' );
 		$pids             = ! empty( $_POST['pids'] ) ? wc_clean( $_POST['pids'] ) : [];
@@ -82,14 +84,18 @@ class WOOMULTI_CURRENCY_F_Frontend_Cache {
 		$shortcodes_list            = $this->settings->get_list_shortcodes();
 		if ( count( $shortcodes ) ) {
 			foreach ( $shortcodes as $shortcode ) {
-				if ( isset( $shortcodes_list[ $shortcode['layout'] ] ) ) {
-					$flag_size     = isset( $shortcode['flag_size'] ) ? $shortcode['flag_size'] : '';
-					$dropdown_icon = isset( $shortcode['dropdown_icon'] ) ? $shortcode['dropdown_icon'] : '';
-					$custom_format = isset( $shortcode['custom_format'] ) ? $shortcode['custom_format'] : '';
+				$sc_layout = sanitize_text_field( $shortcode['layout'] );
+				if ( isset( $shortcodes_list[ $sc_layout ] ) ) {
+					$flag_size     = isset( $shortcode['flag_size'] ) ? floatval( sanitize_text_field ( $shortcode['flag_size'] ) ) : '';
+					$dropdown_icon = isset( $shortcode['dropdown_icon'] ) ? sanitize_text_field( $shortcode['dropdown_icon'] ) : '';
+					$custom_format = isset( $shortcode['custom_format'] ) ? absint( sanitize_text_field( $shortcode['custom_format'] ) ) : '';
 					if ( $flag_size ) {
 						$flag_size = "flag_size='{$flag_size}'";
 					}
-					$result['shortcodes'][] = do_shortcode( "[woo_multi_currency_{$shortcode['layout']} {$flag_size} dropdown_icon='{$dropdown_icon}' custom_format='{$custom_format}']" );
+					if ( ! in_array( $dropdown_icon, ['arrow', 'triangle'] ) ) {
+						$dropdown_icon = '';
+					}
+					$result['shortcodes'][] = do_shortcode( "[woo_multi_currency_" . esc_attr( $sc_layout ) . " {$flag_size} dropdown_icon='{$dropdown_icon}' custom_format='{$custom_format}']" );
 				} else {
 					$result['shortcodes'][] = do_shortcode( "[woo_multi_currency]" );
 				}
@@ -99,13 +105,18 @@ class WOOMULTI_CURRENCY_F_Frontend_Cache {
 		if ( ! empty( $_POST['exchange'] ) ) {
 			$exchange_sc  = [];
 			$exchange_arr = wc_clean( $_POST['exchange'] );
+			$list_currencies = $this->settings->get_list_currencies();
+			$current_currency = $this->settings->get_current_currency();
 			foreach ( $exchange_arr as $ex ) {
-				$ex_sc_product_id = isset( $ex['product_id'] ) ? esc_html( $ex['product_id'] ) : '';
-				$ex_sc_keep_format = isset( $ex['keep_format'] ) ? esc_html( $ex['keep_format'] ) : '';
-				$ex_sc_price = isset( $ex['price'] ) ? esc_html( $ex['price'] ) : '';
-				$ex_sc_original_price = isset( $ex['original_price'] ) ? esc_html( $ex['original_price'] ) : '';
-				$ex_sc_currency = isset( $ex['currency'] ) ? esc_html( $ex['currency'] ) : '';
-				$exchange_sc[] = array_merge( $ex, [ 'shortcode' => do_shortcode( "[woo_multi_currency_exchange product_id='{$ex_sc_product_id}' keep_format='{$ex_sc_keep_format}' price='{$ex_sc_price}' original_price='{$ex_sc_original_price}' currency='{$ex_sc_currency}']" ) ] );
+				$ex_sc_product_id = isset( $ex['product_id'] ) ? absint( $ex['product_id'] ) : '';
+				$ex_sc_keep_format = isset( $ex['keep_format'] ) ? absint( $ex['keep_format'] ) : '';
+				$ex_sc_price = isset( $ex['price'] ) ? floatval( $ex['price'] ) : '';
+				$ex_sc_original_price = isset( $ex['original_price'] ) ? floatval( $ex['original_price'] ) : '';
+				$ex_sc_currency = isset( $ex['currency'] ) ? sanitize_text_field( $ex['currency'] ) : '';
+				if ( ! in_array( $ex_sc_currency, $list_currencies ) ) {
+					$ex_sc_currency = $current_currency;
+				}
+				$exchange_sc[] = array_merge( $ex, [ 'shortcode' => do_shortcode( "[woo_multi_currency_exchange product_id='" . esc_attr( $ex_sc_product_id ) . "' keep_format='" . esc_attr( $ex_sc_keep_format ) . "' price='" . esc_attr( $ex_sc_price ) . "' original_price='" . esc_attr( $ex_sc_original_price ) . "' currency='" . esc_attr( $ex_sc_currency ) . "']" ) ] );
 			}
 			$result['exchange'] = $exchange_sc;
 		}

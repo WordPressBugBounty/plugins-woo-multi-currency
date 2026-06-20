@@ -73,9 +73,15 @@ class WOOMULTI_CURRENCY_F_Frontend_Design {
 			wp_enqueue_script( 'woo-multi-currency', WOOMULTI_CURRENCY_F_JS . 'woo-multi-currency.min.js', array( 'jquery' ), WOOMULTI_CURRENCY_F_VERSION, false );
 		}
 
+		$cache_nonce_check = is_plugin_active( 'litespeed-cache/litespeed-cache.php' );
+
+
 		wp_localize_script( 'woo-multi-currency', 'wooMultiCurrencyParams', array(
 			'enableCacheCompatible' => apply_filters( 'wmc_enable_cache_compatible_frontend', $this->settings->get_param( 'cache_compatible' ) ),
 			'ajaxUrl'               => admin_url( 'admin-ajax.php' ),
+			'nonce'                 => wp_create_nonce('wmc_currency_nonce'),
+			'cache_nonce'           => apply_filters( 'wmc_frontend_ignore_nonce_verify', $cache_nonce_check ),
+			'switchByJS'            => 0,
 			'extra_params'          => apply_filters( 'wmc_frontend_extra_params', array() ),
 			'current_currency'      => $this->settings->get_current_currency(),
 			'woo_subscription'      => is_plugin_active( 'woocommerce-subscriptions/woocommerce-subscriptions.php' ),

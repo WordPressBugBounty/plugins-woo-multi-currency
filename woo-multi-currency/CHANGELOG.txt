@@ -1,3 +1,6 @@
+/*2.2.15 - 2026.06.20*/
+- Updated: Support Class
+
 /*2.2.14 - 2026.04.24*/
 - Fixed: Feature setting display incorrect
 - Fixed: Bulk edit variation price not working properly
@@ -8,7 +11,7 @@
 - Updated: Compatibility with version WC 10.6
 
 /*2.2.12 - 2026.02.06*/
-- Updated: Only specific conditional tags are supported in the “Conditional Tags” option.
+- Updated: Only specific conditional tags are supported in the "Conditional Tags" option.
 
 /*2.2.11 - 2026.01.22*/
 - Fixed: Conflict with WooCommerce HPOS
@@ -24,7 +27,7 @@
 - Updated: Compatibility with WP 6.8 and WC 9.8
 
 /*2.2.7 - 2025.03.24*/
-- Updated: Add compatible code with GIFT4U – Gift Cards All in One for Woo
+- Updated: Add compatible code with GIFT4U - Gift Cards All in One for Woo
 - Fixed: Conflict with WooCommerce Subscriptions
 - Fixed: Conflict with Learnpress
 
@@ -117,13 +120,13 @@
 - Fixed: Compatibility issues with Visual Products Configurator by ORION - linked options not converting
 
 /*2.1.15 - 2022.04.22*/
-- Fixed: Compatibility issues with LearnPress – WooCommerce Payment Methods Integration
+- Fixed: Compatibility issues with LearnPress - WooCommerce Payment Methods Integration
 - Fixed: Compatibility issues with Flexible Shipping by WP Desk - do not convert INF
 - Updated: Make Approximate price feature work as configured in "Currency by Country" feature if enabled
 - Updated: Support Class
 
 /*2.1.14 - 2022.03.29*/
-- Fixed: Compatibility issues with LearnPress – WooCommerce Payment Methods Integration
+- Fixed: Compatibility issues with LearnPress - WooCommerce Payment Methods Integration
 - Updated: Support Class
 
 /*2.1.13 - 2022.03.21*/
@@ -162,8 +165,8 @@
 - Fixed: Compatibility issue with Yith frequently bought together, OrderBumps: WooCommerce Checkout Offers - WooFunnels
 - Fixed: Shipping issue with CDEK + Aramex shipping methods
 - Updated: [woo_multi_currency_exchange] shortcode can now be used to print out product price
-- Added: Compatibility with Catna – WooCommerce Name Your Price and Offers(convert price + support fixed price for Name your price fields)
-- Added: Compatibility with Bopo – Woo Product Bundle Builder
+- Added: Compatibility with Catna - WooCommerce Name Your Price and Offers(convert price + support fixed price for Name your price fields)
+- Added: Compatibility with Bopo - Woo Product Bundle Builder
 - Added: Compatibility with WooCommerce Boost Sales new feature - dynamic price and discount for bundle
 
 /**2.1.7 - 2021.07.31**/

@@ -26,8 +26,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 				'woocommerce_product_get_sale_price', array(
 				$this,
 				'woocommerce_product_get_sale_price'
-			), 99, 2
-			);
+			), 99, 2 );
 			add_filter( 'woocommerce_product_get_price', array( $this, 'woocommerce_product_get_price' ), 99, 2 );
 			//
 			/*Variable price*/
@@ -35,20 +34,17 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 				'woocommerce_product_variation_get_price', array(
 				$this,
 				'woocommerce_product_variation_get_price'
-			), 99, 2
-			);
+			), 99, 2 );
 			add_filter(
 				'woocommerce_product_variation_get_regular_price', array(
 				$this,
 				'woocommerce_product_variation_get_regular_price'
-			), 99, 2
-			);
+			), 99, 2 );
 			add_filter(
 				'woocommerce_product_variation_get_sale_price', array(
 				$this,
 				'woocommerce_product_variation_get_sale_price'
-			), 99, 2
-			);
+			), 99, 2 );
 
 			/*Variable Parent min max price*/
 			add_filter( 'woocommerce_variation_prices', array( $this, 'get_woocommerce_variation_prices' ), 99, 3 );
@@ -519,6 +515,9 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		if ( ! $price ) {
 			return $price;
 		}
+		if ( defined('B2BKING_VERSION') ) {
+			return floatval( $price );
+		}
 		$product_id = $product->get_id();
 		if ( ! wp_doing_ajax() && isset( $this->price[ $product_id ][ $price ] ) ) {
 			return $this->price[ $product_id ][ $price ];
@@ -551,15 +550,21 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 	 * @return mixed
 	 */
 	public function woocommerce_product_variation_get_price( $price, $product ) {
+//		echo '<pre>' . print_r('woocommerce_product_variation_get_price', true) . '</pre>';
+//		echo '<pre>' . print_r($price, true) . '</pre>';
 		if ( ! $price ) {
 			return $price;
 		}
+//		echo '<pre>' . print_r('111111111', true) . '</pre>';
 		$product_id = $product->get_id();
 		if ( ! wp_doing_ajax() && isset( $this->price[ $product_id ][ $price ] ) ) {
+//			echo '<pre>' . print_r('ajxxxxxxxxxxxxxx', true) . '</pre>';
+//			echo '<pre>' . print_r($this->price[ $product_id ], true) . '</pre>';
 			return $this->price[ $product_id ][ $price ];
 		}
 		$changes = $product->get_changes();
-
+//		echo '<pre>' . print_r('22222222222', true) . '</pre>';
+//		echo '<pre>' . print_r($changes, true) . '</pre>';
 		if ( self::$settings->check_fixed_price() && ( is_array( $changes ) ) && count( $changes ) < 1 ) {
 
 			$currenct_currency = self::$settings->get_current_currency();
@@ -577,9 +582,27 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 				}
 			}
 		}
-
+//		echo '<pre>' . print_r('33333333333', true) . '</pre>';
+		if ( defined('B2BKING_VERSION') ) {
+			if ( is_array( $changes ) && array_key_exists( 'price', $changes ) && count( $changes ) < 2 && floatval( $price ) == floatval( $changes['price'] ) ) {
+//				echo '<pre>' . print_r('vrrrrrr', true) . '</pre>';
+//				echo '<pre>' . print_r($price, true) . '</pre>';
+				return $this->set_cache( floatval( $price ), $product_id, $price );
+			}
+		}
+//		echo '<pre>' . print_r('444444444444', true) . '</pre>';
 		return $this->set_cache( wmc_get_price( $price ), $product_id, $price );
 	}
+
+//	function villatheme_debug_log( $message ) {
+//		$file = trailingslashit( plugin_dir_path( __FILE__ ) ) . "debug.log";
+//		if ( ! file_exists( $file ) ) {
+//			fopen( $file, "a" );
+//		}
+//		$current = file_get_contents( $file );
+//		$current .= date( 'Y-m-d h:i:s' ) . ": " . $message . "\n";
+//		file_put_contents( $file, $current );
+//	}
 
 	/**
 	 * @param $price
@@ -588,13 +611,26 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 	 * @return mixed
 	 */
 	public function woocommerce_product_get_price( $price, $product ) {
+//		echo '<pre>' . print_r('woocommerce_product_get_price', true) . '</pre>';
+//		echo '<pre>' . print_r($price, true) . '</pre>';
+//		self::villatheme_debug_log(print_r('woocommerce_product_get_price', true));
+//		self::villatheme_debug_log(print_r($price, true));
 		if ( ! $price ) {
 			return $price;
 		}
+//		echo '<pre>' . print_r('2222222222', true) . '</pre>';
+//		self::villatheme_debug_log(print_r('2222222222', true));
 		$product_id = $product->get_id();
+
 		if ( ! wp_doing_ajax() && isset( $this->price[ $product_id ][ $price ] ) ) {
+//			echo '<pre>' . print_r('ajjjjjjjjj', true) . '</pre>';
+//			echo '<pre>' . print_r($this->price[ $product_id ], true) . '</pre>';
+//			self::villatheme_debug_log(print_r('ajjjjjjj', true));
+//			self::villatheme_debug_log(print_r($this->price[ $product_id ], true));
 			return $this->price[ $product_id ][ $price ];
 		}
+//		echo '<pre>' . print_r('3333333333', true) . '</pre>';
+//		self::villatheme_debug_log(print_r('333333333', true));
 		$changes = $product->get_changes();
 		$no_fixed_changes = is_array( $changes ) ? count( $changes ) < 1 : false;
 		$sale_price_changes = false;
@@ -632,7 +668,22 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 				}
 			}
 		}
+//		echo '<pre>' . print_r('aaaaaaaaa', true) . '</pre>';
+//		echo '<pre>' . print_r($changes, true) . '</pre>';
+//		echo '<pre>' . print_r($price, true) . '</pre>';
+		if ( defined('B2BKING_VERSION') ) {
+			if ( is_array( $changes ) && array_key_exists( 'price', $changes ) && count( $changes ) < 2 && floatval( $price ) == floatval( $changes['price'] ) ) {
+//				echo '<pre>' . print_r('bbbbbbbb', true) . '</pre>';
+//				echo '<pre>' . print_r($price, true) . '</pre>';
+//				self::villatheme_debug_log(print_r('bbbbbbbb', true));
+//				self::villatheme_debug_log(print_r($price, true));
+				return $this->set_cache( floatval( $price ), $product_id, $price );
+			}
+		}
 
+//		self::villatheme_debug_log(print_r('set enddddddd', true));
+//		self::villatheme_debug_log(print_r($price, true));
+//		self::villatheme_debug_log(print_r(wmc_get_price( $price ), true));
 		return $this->set_cache( wmc_get_price( $price ), $product_id, $price );
 	}
 

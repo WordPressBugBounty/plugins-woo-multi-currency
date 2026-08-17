@@ -145,7 +145,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Location {
 						require_once WOOMULTI_CURRENCY_F_INCLUDES . 'geoplugin.class.php';
 					}
 					$geo_plugin = new geoPlugin();
-					$geoplugin  = $geo_plugin->fetch( "http://www.geoplugin.net/php.gp?ip={$ip_add}&base_currency=" . $this->settings->get_default_currency() );
+					$geoplugin  = $geo_plugin->fetch( "https://www.geoplugin.net/php.gp?ip={$ip_add}&base_currency=" . $this->settings->get_default_currency() );
 
 					if ( $geoplugin ) {
 						$geoplugin = unserialize( $geoplugin );

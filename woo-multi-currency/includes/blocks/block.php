@@ -52,6 +52,7 @@ class WOOMULTI_CURRENCY_Block {
 				require_once $data_path;
 			}
 		}
+		$src_min = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
 
 		// Load functions
 		if ( ! function_exists( 'wmc_get_template' ) ) {
@@ -83,33 +84,18 @@ class WOOMULTI_CURRENCY_Block {
 		}
 
 		// Register frontend styles (same as frontend/design.php)
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			wp_register_style(
-				'woo-multi-currency',
-				WOOMULTI_CURRENCY_F_CSS . 'woo-multi-currency.css',
-				array(),
-				WOOMULTI_CURRENCY_F_VERSION
-			);
-			wp_register_style(
-				'wmc-flags',
-				WOOMULTI_CURRENCY_F_CSS . 'flags-64.css',
-				array(),
-				WOOMULTI_CURRENCY_F_VERSION
-			);
-		} else {
-			wp_register_style(
-				'woo-multi-currency',
-				WOOMULTI_CURRENCY_F_CSS . 'woo-multi-currency.min.css',
-				array(),
-				WOOMULTI_CURRENCY_F_VERSION
-			);
-			wp_register_style(
-				'wmc-flags',
-				WOOMULTI_CURRENCY_F_CSS . 'flags-64.min.css',
-				array(),
-				WOOMULTI_CURRENCY_F_VERSION
-			);
-		}
+		wp_register_style(
+			'woo-multi-currency',
+			WOOMULTI_CURRENCY_F_CSS . 'woo-multi-currency' . $src_min . '.css',
+			array(),
+			WOOMULTI_CURRENCY_F_VERSION
+		);
+		wp_register_style(
+			'wmc-flags',
+			WOOMULTI_CURRENCY_F_CSS . 'flags-64' . $src_min . '.css',
+			array(),
+			WOOMULTI_CURRENCY_F_VERSION
+		);
 
 		// Enqueue styles
 		wp_enqueue_style( 'woo-multi-currency' );
@@ -193,9 +179,8 @@ class WOOMULTI_CURRENCY_Block {
 		// Get styles - only plugin styles, exclude theme/editor CSS
 		$plugin_styles = array(
 			'woo-multi-currency',
-			'wmc-block-main-style',
 			'wmc-flags',
-			'wmc-block-editor-style'
+			'wmc-block-editor-style',
 		);
 
 		if ( isset( $wp_styles->queue ) ) {
@@ -290,6 +275,8 @@ class WOOMULTI_CURRENCY_Block {
 			return;
 		}
 
+		$src_min = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
+
 		// Register the block JavaScript
 		wp_register_script(
 			'wmc-block-editor',
@@ -299,21 +286,28 @@ class WOOMULTI_CURRENCY_Block {
 			true
 		);
 
-		// Register plugin main CSS for consistent styling in all block preview contexts
-		wp_register_style(
-			'wmc-block-main-style',
-			WOOMULTI_CURRENCY_F_CSS . 'woo-multi-currency.css',
-			array(),
-			WOOMULTI_CURRENCY_F_VERSION
-		);
+		/*
+		 * Reuse the same style handles as frontend/design.php (woo-multi-currency, wmc-flags).
+		 * Separate handles (e.g. wmc-block-main-style) load the same CSS file twice when the
+		 * block is present on a page that already enqueues the main plugin stylesheet.
+		 */
+		if ( ! wp_style_is( 'woo-multi-currency', 'registered' ) ) {
+			wp_register_style(
+				'woo-multi-currency',
+				WOOMULTI_CURRENCY_F_CSS . 'woo-multi-currency' . $src_min . '.css',
+				array(),
+				WOOMULTI_CURRENCY_F_VERSION
+			);
+		}
 
-		// Register flags CSS
-		wp_register_style(
-			'wmc-flags-style',
-			WOOMULTI_CURRENCY_F_CSS . 'flags-64.css',
-			array(),
-			WOOMULTI_CURRENCY_F_VERSION
-		);
+		if ( ! wp_style_is( 'wmc-flags', 'registered' ) ) {
+			wp_register_style(
+				'wmc-flags',
+				WOOMULTI_CURRENCY_F_CSS . 'flags-64' . $src_min . '.css',
+				array(),
+				WOOMULTI_CURRENCY_F_VERSION
+			);
+		}
 
 		// Register block styles if exists
 		$css_path = WOOMULTI_CURRENCY_F_DIR . 'css' . DIRECTORY_SEPARATOR . 'blocks' . DIRECTORY_SEPARATOR . 'editor.css';
@@ -329,17 +323,13 @@ class WOOMULTI_CURRENCY_Block {
 		$args = array(
 			'editor_script'   => 'wmc-block-editor',
 			'render_callback' => array( $this, 'render_callback' ),
-			'style'           => array( 'wmc-block-main-style', 'wmc-flags-style' ),
-			'editor_style'    => array( 'wmc-block-main-style', 'wmc-flags-style' ),
+			'style'           => array( 'woo-multi-currency', 'wmc-flags' ),
+			'editor_style'    => array( 'woo-multi-currency', 'wmc-flags' ),
 		);
 
 		// Add block-specific editor style if available
 		if ( file_exists( $css_path ) ) {
-			if ( is_array( $args['editor_style'] ) ) {
-				$args['editor_style'][] = 'wmc-block-editor-style';
-			} else {
-				$args['editor_style'] = array( 'wmc-block-main-style', 'wmc-flags-style', 'wmc-block-editor-style' );
-			}
+			$args['editor_style'][] = 'wmc-block-editor-style';
 		}
 
 		register_block_type(

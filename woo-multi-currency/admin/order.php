@@ -2,7 +2,7 @@
 /*
 Class Name: WOOMULTI_CURRENCY_F_Admin_Order
 Author: Andy Ha (support@villatheme.com)
-Author URI: http://villatheme.com
+Author URI: https://villatheme.com
 Copyright 2015-2017 villatheme.com. All rights reserved.
 */
 

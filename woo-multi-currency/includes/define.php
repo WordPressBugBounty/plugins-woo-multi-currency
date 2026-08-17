@@ -52,7 +52,7 @@ if ( class_exists( 'VillaTheme_Support' ) ) {
 		'support'    => 'https://wordpress.org/support/plugin/woo-multi-currency/',
 		'docs'       => 'https://docs.villatheme.com/?item=woo-multi-currency',
 		'review'     => 'https://wordpress.org/support/plugin/woo-multi-currency/reviews/?rate=5#rate-response',
-		'pro_url'    => 'https://1.envato.market/jABDP',
+		'pro_url'    => 'https://villatheme.com/extensions/woo-multi-currency',
 		'css'        => WOOMULTI_CURRENCY_F_CSS,
 		'image'      => WOOMULTI_CURRENCY_F_IMAGES,
 		'slug'       => 'woo-multi-currency',

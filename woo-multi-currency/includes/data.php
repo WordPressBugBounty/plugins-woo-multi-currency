@@ -643,7 +643,7 @@ class WOOMULTI_CURRENCY_F_Data {
 	 * @return array
 	 */
 	public function get_links() {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_data' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'wmc_currency_nonce' ) ) {
 			return array();
 		}
 

@@ -18,18 +18,18 @@ GNU General Public License for more details.
 $version 1.2
 
 
-This PHP class uses the PHP Webservice of http://www.geoplugin.com/ to geolocate IP addresses
+This PHP class uses the PHP Webservice of https://www.geoplugin.com/ to geolocate IP addresses
 
 Geographical location of the IP address (visitor) and locate currency (symbol, code and exchange rate) are returned.
 
-See http://www.geoplugin.com/webservices/php for more specific details of this free service
+See https://www.geoplugin.com/webservices/php for more specific details of this free service
 
 */
 
 class geoPlugin {
 	
 	//the geoPlugin server
-	var $host = 'http://www.geoplugin.net/php.gp?ip={IP}&base_currency={CURRENCY}&lang={LANG}';
+	var $host = 'https://www.geoplugin.net/php.gp?ip={IP}&base_currency={CURRENCY}&lang={LANG}';
 		
 	//the default base currency
 	var $currency = 'USD';
@@ -166,7 +166,7 @@ zh-CN
 			return array( array() );
 		}
 		
-		$host = "http://www.geoplugin.net/extras/nearby.gp?lat=" . $this->latitude . "&long=" . $this->longitude . "&radius={$radius}";
+		$host = "https://www.geoplugin.net/extras/nearby.gp?lat=" . $this->latitude . "&long=" . $this->longitude . "&radius={$radius}";
 		
 		if ( is_numeric($limit) )
 			$host .= "&limit={$limit}";

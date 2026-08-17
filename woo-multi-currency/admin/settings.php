@@ -3,7 +3,7 @@
 /*
 Class Name: WP_SM_Admin_Settings
 Author: Andy Ha (support@villatheme.com)
-Author URI: http://villatheme.com
+Author URI: https://villatheme.com
 Copyright 2015-2017 villatheme.com. All rights reserved.
 */
 if ( ! defined( 'ABSPATH' ) ) {
@@ -222,7 +222,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( 'Use SESSION instead of COOKIE.', 'woo-multi-currency' ) ?></p>
                             </td>
@@ -235,7 +235,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( 'Currency will be changed but It does not use URL. It is good for SEO. Now It is not compatible with Caching plugins.', 'woo-multi-currency' ) ?></p>
                             </td>
@@ -284,7 +284,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( 'Fixed currency in schema structure data.', 'woo-multi-currency' ) ?></p>
                             </td>
@@ -456,7 +456,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                 <p>
 									<?php esc_html_e( 'You can add only 2 currencies. Please update Pro version to add unlimited currencies.', 'woo-multi-currency' ) ?>
                                     <a class="vi-ui button yellow"
-                                       href="https://1.envato.market/jABDP"
+                                       href="https://villatheme.com/extensions/woo-multi-currency"
                                        target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 </p>
                                 <p class="vi-ui message yellow"><?php esc_html_e( 'Custom symbol: You can set custom symbol for each currency in your list and how to it will be displayed (used when you have many currency have same symbol). Leave it empty to used default symbol. Example: if you set US$ for US dolar, system will display US$100 instead of $100 like default. Or you can use with pramater #PRICE# to display price in special format, example: if you set US #PRICE# $, system will display: US 100 $.', 'woo-multi-currency' ) ?></p>
@@ -498,7 +498,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( 'Switch currency by user address when user login', 'woo-multi-currency' ) ?></p>
                             </td>
@@ -611,7 +611,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                 </th>
                                 <td>
                                     <a class="vi-ui button yellow"
-                                       href="https://1.envato.market/jABDP"
+                                       href="https://villatheme.com/extensions/woo-multi-currency"
                                        target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 </td>
                             </tr>
@@ -640,7 +640,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
 										<?php //echo esc_attr( self::set_field( 'enable_wpml' ) ) ?><!--"/>-->
                                         <!--                                        <label></label>-->
                                         <a class="vi-ui button yellow"
-                                           href="https://1.envato.market/jABDP"
+                                           href="https://villatheme.com/extensions/woo-multi-currency"
                                            target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                     </div>
                                     <p class="description"><?php esc_html_e( 'All product fields of Multi Currency for WooCommerce will be copied. When you switch language, Currency will change. ', 'woo-multi-currency' ) ?></p>
@@ -654,7 +654,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                 </th>
                                 <td>
                                     <a class="vi-ui button yellow"
-                                       href="https://1.envato.market/jABDP"
+                                       href="https://villatheme.com/extensions/woo-multi-currency"
                                        target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 </td>
                             </tr>
@@ -814,7 +814,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( 'By default, currencies bar will expand on hovering. Enable this option if you want them to only expand when clicking on.', 'woo-multi-currency' ) ?></p>
                             </td>
@@ -827,7 +827,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( 'Fixed currency in schema structure data.', 'woo-multi-currency' ) ?></p>
                             </td>
@@ -851,7 +851,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( 'Fixed currency in schema structure data.', 'woo-multi-currency' ) ?></p>
                             </td>
@@ -894,7 +894,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( 'Fixed currency in schema structure data.', 'woo-multi-currency' ) ?></p>
                             </td>
@@ -964,7 +964,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( 'By default, dropdown currency selector will expand on hovering. Enable this option if you want them to only expand when clicking on.', 'woo-multi-currency' ) ?></p>
                             </td>
@@ -977,7 +977,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( 'Display product price collated with other currency and display settings (layout, title, position).', 'woo-multi-currency' ) ?></p>
                             </td>
@@ -1109,7 +1109,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description">
 									<?php esc_html_e( 'Change the currency in cart page to a check out currency.', 'woo-multi-currency' ) ?>
@@ -1125,7 +1125,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
 
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
 
                                 <p class="vi-ui message yellow"><?php esc_html_e( 'Payment method depend on Payment Gateway. If Payment Gateway is not support currency, customer can not checkout with currency. Example: Paypal is not support IDR, Customer can not checkout IDR by Paypal.', 'woo-multi-currency' ) ?></p>
@@ -1139,7 +1139,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( "Enable this option to change the currency immediately at the checkout order detail when the customer selects a payment gateway, instead of after clicking the 'place order' button.", 'woo-multi-currency' ) ?></p>
                             </td>
@@ -1152,7 +1152,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( "Change currency when customer change billing or shipping address.", 'woo-multi-currency' ) ?></p>
                             </td>
@@ -1165,7 +1165,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( "Display currencies both in the store pages and checkout page if they are different at the checkout page. This option and Fixed price option don't work together.", 'woo-multi-currency' ) ?></p>
                             </td>
@@ -1183,7 +1183,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php echo esc_html__( 'This option only works when input price same as output price (both include tax or exclude tax)', 'woo-multi-currency' ) ?></p>
                             </td>
@@ -1202,7 +1202,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             <td>
 
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
 
                                 <p class="description"><?php echo esc_html__( 'Exchange will be updated automatically.', 'woo-multi-currency' ) ?></p>
@@ -1214,7 +1214,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
 
                                 <p class="description"><?php echo esc_html__( 'Exchange rate resources.', 'woo-multi-currency' ) ?></p>
@@ -1237,7 +1237,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( 'Send email to admin when exchange rate is updated.', 'woo-multi-currency' ) ?></p>
                             </td>
@@ -1248,7 +1248,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
-                                   href="https://1.envato.market/jABDP"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
 
                                 <p class="description"><?php echo esc_html__( 'If empty, notification will sent to ', 'woo-multi-currency' ) . esc_html( get_option( 'admin_email' ) ) ?></p>

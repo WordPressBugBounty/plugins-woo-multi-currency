@@ -56,7 +56,12 @@ jQuery(document).ready(function () {
     /*Init JS input*/
     jQuery('.vi-ui.checkbox').checkbox();
     jQuery('select.vi-ui.dropdown').dropdown();
-    jQuery('.select2').select2();
+    if ( typeof jQuery.fn.select2 === 'function' ) {
+        jQuery('.select2').select2();
+        jQuery('.select2-multiple').select2({
+            width: '100%'
+        });
+    }
     /*Select all and Remove all countries in Currency by country*/
     jQuery('.wmc-select-all-countries').on('click', function () {
         var selectedItems = [];
@@ -85,9 +90,6 @@ jQuery(document).ready(function () {
         jQuery(this).addClass('loading');
     });
 
-    jQuery('.select2-multiple').select2({
-        width: '100%', // need to override the changed default
-    });
     /*Color picker*/
     jQuery('.color-picker').iris({
         change: function (event, ui) {
@@ -203,6 +205,20 @@ jQuery(document).ready(function () {
         });
     }
 
+    /**
+     * Rate-only Number of Decimals suggestion (mirrors ceil(-log10(rate))+2, cap 12).
+     *
+     * @param {number|string} rate
+     * @returns {number}
+     */
+    function suggested_currency_decimals(rate) {
+        rate = parseFloat(rate);
+        if (!rate || rate <= 0) {
+            return 0;
+        }
+        return Math.min(12, Math.max(0, Math.ceil(-Math.log10(rate)) + 2));
+    }
+
     function exchange_rate(original_currency, other_currencies) {
         if (original_currency && other_currencies) {
             var str_data = 'original_price=' + original_currency + '&other_currencies=' + other_currencies;
@@ -221,7 +237,9 @@ jQuery(document).ready(function () {
                     console.log(obj)
                     jQuery.each(obj, function (currency, rate) {
                         if (jQuery('tr.' + currency + '-currency').length > 0) {
-                            jQuery('tr.' + currency + '-currency').find('input[name="woo_multi_currency_params[currency_rate][]"]').val(rate);
+                            var $row = jQuery('tr.' + currency + '-currency');
+                            $row.find('input[name="woo_multi_currency_params[currency_rate][]"]').val(rate);
+                            $row.find('input[name="woo_multi_currency_params[currency_decimals][]"]').val(suggested_currency_decimals(rate));
                         }
                         jQuery('.woo-multi-currency').find('.loading').removeClass('loading');
                     });

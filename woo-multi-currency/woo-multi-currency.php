@@ -3,7 +3,7 @@
  * Plugin Name: CURCY - Multi Currency for WooCommerce
  * Plugin URI: https://villatheme.com/extensions/woo-multi-currency/
  * Description: Allows you to display prices and accepts payments in multiple currencies. Working only with WooCommerce.
- * Version: 2.2.16
+ * Version: 2.2.17
  * Author: VillaTheme
  * Author URI: https://villatheme.com
  * License:           GPL v2 or later
@@ -11,16 +11,18 @@
  * Copyright 2016-2026 VillaTheme.com. All rights reserved.
  * Text Domain: woo-multi-currency
  * Requires Plugins: woocommerce
- * Tested up to: 7.0
+ * Tested up to: 7.1
  * WC requires at least: 7.0
- * WC tested up to: 11.0
+ * WC tested up to: 11.1
  * Elementor tested up to: 3.34
- * Requires PHP: 7.0
+ * Requires PHP: 7.4
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-define( 'WOOMULTI_CURRENCY_F_VERSION', '2.2.16' );
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
+define( 'WOOMULTI_CURRENCY_F_VERSION', '2.2.17' );
 define( 'WOOMULTI_CURRENCY_F_FILE', __FILE__ );
 
 /**
@@ -29,7 +31,6 @@ define( 'WOOMULTI_CURRENCY_F_FILE', __FILE__ );
 class WOOMULTI_CURRENCY_F {
 	public function __construct() {
 		register_activation_hook( __FILE__, array( $this, 'install' ) );
-//		add_action( 'admin_notices', array( $this, 'global_note' ) );
 		add_action( 'plugins_loaded', array( $this, 'init' ) );
 
 		//Compatible with High-Performance order storage (COT)
@@ -48,12 +49,12 @@ class WOOMULTI_CURRENCY_F {
 		}
 
 		if ( ! class_exists( 'VillaTheme_Require_Environment' ) ) {
-			require_once WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "woo-multi-currency" . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR . "support.php";
+			require_once plugin_dir_path( WOOMULTI_CURRENCY_F_FILE ) . 'includes/support.php';
 		}
 
 		$environment = new VillaTheme_Require_Environment( [
 				'plugin_name'     => 'CURCY - Multi Currency for WooCommerce',
-				'php_version'     => '7.0',
+				'php_version'     => '7.4',
 				'wp_version'      => '6.0',
 				'require_plugins' => [
 					[
@@ -70,31 +71,13 @@ class WOOMULTI_CURRENCY_F {
 			return;
 		}
 
-		$init_file = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'woo-multi-currency' . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR . "define.php";
-		require_once $init_file;
-	}
-
-	/**
-	 * Notify if WooCommerce is not activated
-	 */
-	function global_note() {
-		if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
-			?>
-            <div id="message" class="error">
-                <p><?php esc_html_e( 'Please install and activate WooCommerce to use Multi Currency for WooCommerce plugin.', 'woo-multi-currency' ); ?></p>
-            </div>
-			<?php
-		}
-		if ( is_plugin_active( 'woo-multi-currency-pro/woo-multi-currency-pro.php' ) ) {
-			deactivate_plugins( 'woo-multi-currency-pro/woo-multi-currency-pro.php' );
-			unset( $_GET['activate'] );
-		}
+		require_once plugin_dir_path( WOOMULTI_CURRENCY_F_FILE ) . 'includes/define.php';
 	}
 
 	public function before_woocommerce_init() {
 		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
 			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-//			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
 		}
 	}
 

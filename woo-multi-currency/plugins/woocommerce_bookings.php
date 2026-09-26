@@ -6,6 +6,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 
 class WOOMULTI_CURRENCY_F_Plugin_WooCommerce_Bookings {
 	protected $settings;
@@ -111,7 +113,7 @@ class WOOMULTI_CURRENCY_F_Plugin_WooCommerce_Bookings {
 		} else {
 			$price_suffix = $product->get_price_suffix();
 		}
-		$output        = apply_filters( 'woocommerce_bookings_booking_cost_string', esc_html__( 'Booking cost', 'woocommerce-bookings' ), $product ) . ': <strong>' . wc_price( $display_price, array(
+		$output        = apply_filters( 'woocommerce_bookings_booking_cost_string', esc_html__( 'Booking cost', 'woo-multi-currency' ), $product ) . ': <strong>' . wc_price( $display_price, array(
 				'currency' => $this->settings->get_current_currency(),
 			) ) . $price_suffix . '</strong>';
 

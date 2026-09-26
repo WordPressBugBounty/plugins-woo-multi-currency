@@ -2,6 +2,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 
 /**
  * Class WOOMULTI_CURRENCY_F_Frontend_Shipping
@@ -118,6 +120,9 @@ class WOOMULTI_CURRENCY_F_Frontend_Shipping {
 						'checkout_envia_shipping',
 						'envia_shipping',
 						'fan_courier',
+						// Converted once via flexible-shipping/shipping-method/calculated-cost (DPD uses FS).
+						'flexible_shipping',
+						'flexible_shipping_single',
 					) ) ) ) {
 					continue;
 				}
@@ -186,11 +191,13 @@ class WOOMULTI_CURRENCY_F_Frontend_Shipping {
 						}
 					}
 				} else {
-					if ( isset( $this->cache[ $k ] ) && $this->cache[ $k ] && $k ) {
-						$method->set_cost( $this->cache[ $k ] );
+					$cache_key = $currency . ':' . $k;
+					if ( isset( $this->cache[ $cache_key ] ) && $this->cache[ $cache_key ] && $k ) {
+						$method->set_cost( $this->cache[ $cache_key ] );
 					} else {
 						$cost = wmc_get_price( $method->cost );
 						$method->set_cost( $cost );
+						$this->cache[ $cache_key ] = $cost;
 						if ( count( $method->get_taxes() ) ) {
 							$new_tax = array();
 							foreach ( $method->get_taxes() as $tax_k => $tax ) {

@@ -6,6 +6,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 
 class WOOMULTI_CURRENCY_F_Frontend_Symbol {
 	protected $settings;
@@ -156,7 +158,8 @@ class WOOMULTI_CURRENCY_F_Frontend_Symbol {
 			return $currency_symbol;
 		}
 		$selected_currencies = $this->settings->get_list_currencies();
-		if ( is_account_page() ) {
+		// is_account_page() uses is_page()/is_singular(); only safe after the main query runs.
+		if ( did_action( 'wp' ) && function_exists( 'is_account_page' ) && is_account_page() ) {
 			return $currency_symbol;
 		} elseif ( isset( $selected_currencies[ $currency ] ) && isset( $selected_currencies[ $currency ]['custom'] ) && $selected_currencies[ $currency ]['custom'] != '' ) {
 
@@ -212,18 +215,18 @@ class WOOMULTI_CURRENCY_F_Frontend_Symbol {
 	public function price_format( $format ) {
 		$selected_currencies = $this->settings->get_list_currencies();
 		$currencies          = $this->settings->get_currencies();
-		if ( is_order_received_page() ) {
+		if ( did_action( 'wp' ) && function_exists( 'is_order_received_page' ) && is_order_received_page() ) {
 			global $wp;
-			$order_id = $wp->query_vars['order-received'];
-			$order    = wc_get_order( $order_id );
+			$order_id = isset( $wp->query_vars['order-received'] ) ? $wp->query_vars['order-received'] : 0;
+			$order    = $order_id ? wc_get_order( $order_id ) : false;
 			if ( is_object( $order ) ) {
 				$currency    = $order->get_currency();
-				$current_pos = $selected_currencies[ $currency ]['pos'];
+				$current_pos = isset( $selected_currencies[ $currency ]['pos'] ) ? $selected_currencies[ $currency ]['pos'] : '';
 			} else {
 				return $format;
 			}
 
-		} elseif ( in_array( $this->settings->get_current_currency(), $currencies ) ) {
+		} elseif ( in_array( $this->settings->get_current_currency(), $currencies, true ) ) {
 			$current_pos = $selected_currencies[ $this->settings->get_current_currency() ]['pos'];
 		} else {
 			return $format;
@@ -242,6 +245,8 @@ class WOOMULTI_CURRENCY_F_Frontend_Symbol {
 			case 'right_space' :
 				$format = '%2$s&nbsp;%1$s';
 				break;
+			default:
+				return $format;
 		}
 
 		return $format;

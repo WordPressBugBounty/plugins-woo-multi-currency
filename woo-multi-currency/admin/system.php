@@ -9,6 +9,8 @@ Copyright 2015-2017 villatheme.com. All rights reserved.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 
 class WOOMULTI_CURRENCY_F_Admin_System {
 
@@ -107,7 +109,7 @@ class WOOMULTI_CURRENCY_F_Admin_System {
 								<?php
 								esc_html_e( '_SERVER system', 'woo-multi-currency' )
 								?></h3>
-                            <pre><?php print_r( array_map( 'esc_html', $_SERVER ) ) ?></pre>
+                            <pre><?php echo esc_html( wp_json_encode( $_SERVER ) ); ?></pre>
                         </li>
                     </ul>
                 </td>

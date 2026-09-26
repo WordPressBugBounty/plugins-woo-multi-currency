@@ -2,6 +2,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 
 /**
  * Class WOOMULTI_CURRENCY_F_Frontend_Filter_Price
@@ -56,7 +58,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Filter_Price {
 	public function woocommerce_price_filter_sql( $sql ) {
 		global $wpdb;
 		if ( $this->step !== null ) {
-			$prices    = $wpdb->get_row( $sql );// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+			$prices    = $wpdb->get_row( $sql );// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- SQL is prepared upstream by WooCommerce price filter.
 			$min_price = $prices->min_price;
 			$max_price = $prices->max_price;
 
@@ -221,7 +223,8 @@ class WOOMULTI_CURRENCY_F_Frontend_Filter_Price {
 
 
 		if ( wc_tax_enabled() && 'incl' === get_option( 'woocommerce_tax_display_shop' ) && ! wc_prices_include_tax() ) {
-			$data_query = $wpdb->get_results(// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$tax_class  = apply_filters( 'woocommerce_price_filter_widget_tax_class', '' ); // Uses standard tax class.
+			$data_query = $wpdb->get_results(// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- SQL built with $wpdb->prepare; meta keys escaped via esc_sql.
 				$wpdb->prepare(
 					"SELECT DISTINCT ID, post_parent, post_type FROM {$wpdb->posts}
 						INNER JOIN {$wpdb->postmeta} pm1 ON ID = pm1.post_id

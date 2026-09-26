@@ -1,5 +1,11 @@
 *** CURCY - Multi Currency for WooCommerce Changelog ***
 
+2026.09.25 - version 2.2.17
+- Fixed: Unauthenticated reflected XSS in layout5 currency switcher (javascript: via wmc_current_url)
+- Fixed: Low exchange rate with insufficient Number of Decimals could round cart/order totals to 0.00 and allow free checkout
+- Updated: Update Rate also fills Number of Decimals from the rate (ceil(-log10(rate))+2, cap 12); merchants can still edit before Save
+- Updated: Admin settings warn when a currency would round amounts to zero; storefront falls back to default currency with a once-per-session notice
+
 2026.08.17 - version 2.2.16
 - Updated: Compatible WooCommerce 11.0
 

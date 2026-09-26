@@ -3,6 +3,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 
 /**
  * Class WOOMULTI_CURRENCY_F_Plugin_Woo_Discount_Rules
@@ -96,7 +98,7 @@ class WOOMULTI_CURRENCY_F_Plugin_Woo_Discount_Rules {
 		$config                   = new FlycartWooDiscountBase();
 		$display_you_saved_string = $config->getConfigData( 'display_you_saved_text_value', " You saved: {{total_discount_price}}" );
 		$display_you_saved_string = str_replace( '{{total_discount_price}}', '%s', $display_you_saved_string );// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
-		$subtotal_additional_text .= sprintf( esc_html__( $display_you_saved_string, 'woo-discount-rules' ), $total_discounted_price );// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+		$subtotal_additional_text .= sprintf( esc_html__( $display_you_saved_string, 'woo-multi-currency' ), $total_discounted_price );// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 		$subtotal_additional_text .= '</span>';
 
 		return $subtotal_additional_text;

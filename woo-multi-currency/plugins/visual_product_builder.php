@@ -6,6 +6,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 
 class WOOMULTI_CURRENCY_F_Plugin_Visual_Product_Builder {
 	protected $settings;
@@ -188,7 +190,17 @@ class WOOMULTI_CURRENCY_F_Plugin_Visual_Product_Builder {
 		$unslashed_searched_component = vpc_remove_special_characters( $searched_component );
 		$field                        = apply_filters( 'extracted_option_field_from_config', $field, $config );
 		if ( ! is_array( $config ) ) {
-			$config = unserialize( $config );
+			if ( is_string( $config ) ) {
+				$json = json_decode( $config, true );
+				if ( is_array( $json ) ) {
+					$config = $json;
+				} elseif ( function_exists( 'is_serialized' ) && is_serialized( $config ) ) {
+					$config = unserialize( $config, array( 'allowed_classes' => false ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize -- Object injection blocked.
+				}
+			}
+			if ( ! is_array( $config ) ) {
+				return false;
+			}
 		}
 		if ( isset( $config['components'] ) ) {
 			foreach ( $config['components'] as $i => $component ) {

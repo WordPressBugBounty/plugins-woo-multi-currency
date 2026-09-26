@@ -2,6 +2,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 
 class WOOMULTI_CURRENCY_F_Plugin_Change_Price_3rd_Plugin {
 	protected $settings;
@@ -19,6 +21,8 @@ class WOOMULTI_CURRENCY_F_Plugin_Change_Price_3rd_Plugin {
 
 			/*Flexible shipping*/
 			add_filter( 'flexible_shipping_value_in_currency', array( $this, 'flexible_shipping_value_in_currency' ) );
+			// Convert FS rate cost once at calculation time (avoids double convert in woocommerce_package_rates).
+			add_filter( 'flexible-shipping/shipping-method/calculated-cost', array( $this, 'flexible_shipping_calculated_cost' ) );
 
 			// Discussion on RnB - WooCommerce Booking & Rental Plugin
 			add_filter( 'redq_pickup_locations', array( $this, 'redq_change_price' ) );
@@ -111,6 +115,21 @@ class WOOMULTI_CURRENCY_F_Plugin_Change_Price_3rd_Plugin {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Convert Flexible Shipping calculated cost to the current currency.
+	 *
+	 * @param float $cost Calculated shipping cost in shop currency.
+	 *
+	 * @return float|int|mixed
+	 */
+	public function flexible_shipping_calculated_cost( $cost ) {
+		if ( $this->settings->get_current_currency() === $this->settings->get_default_currency() ) {
+			return $cost;
+		}
+
+		return wmc_get_price( $cost );
 	}
 
 

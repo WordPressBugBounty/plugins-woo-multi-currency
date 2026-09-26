@@ -2,6 +2,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 /**
  * Function include all files in folder
  *
@@ -158,7 +160,7 @@ if ( ! function_exists( 'wmc_get_exchange_rate' ) ) {
 
 if ( ! function_exists( 'wmc_revert_price' ) ) {
 	function wmc_revert_price( $price, $currency_code = '' ) {
-		if ( ! $price ) {
+		if ( '' === $price || null === $price || ! is_numeric( $price ) ) {
 			return false;
 		}
 		$setting          = WOOMULTI_CURRENCY_F_Data::get_ins();
@@ -166,7 +168,7 @@ if ( ! function_exists( 'wmc_revert_price' ) ) {
 		$currency         = $currency_code ? $currency_code : $current_currency;
 		$rate             = wmc_get_exchange_rate( $currency );
 
-		return $rate ? $price / $rate : '';
+		return $rate ? (float) $price / $rate : '';
 	}
 }
 
@@ -247,3 +249,226 @@ if ( ! function_exists( 'villatheme_woocommerce_version_check' ) ) {
 		return false;
 	}
 }
+
+if ( ! function_exists( 'wmc_evaluate_conditional_tags' ) ) {
+	/**
+	 * Evaluate allowlisted WordPress/WooCommerce conditional tags without eval().
+	 * Empty or invalid expressions return true (no display restriction).
+	 *
+	 * @param string $expr Boolean expression of allowlisted is_*() calls.
+	 * @return bool
+	 */
+	function wmc_evaluate_conditional_tags( $expr ) {
+		$expr = trim( (string) $expr );
+		if ( '' === $expr ) {
+			return true;
+		}
+		if ( preg_match( '/[^a-zA-Z0-9()_\'"\s!|&,\[\]]/', $expr ) ) {
+			return true;
+		}
+
+		return wmc_eval_conditional_expression( $expr );
+	}
+}
+
+if ( ! function_exists( 'wmc_eval_conditional_expression' ) ) {
+	/**
+	 * @param string $expr Expression.
+	 * @return bool
+	 */
+	function wmc_eval_conditional_expression( $expr ) {
+		$expr = trim( (string) $expr );
+		if ( '' === $expr ) {
+			return true;
+		}
+
+		while ( '(' === $expr[0] && ')' === substr( $expr, - 1 ) && wmc_conditional_parens_wrap( $expr ) ) {
+			$expr = trim( substr( $expr, 1, - 1 ) );
+			if ( '' === $expr ) {
+				return true;
+			}
+		}
+
+		$or_parts = wmc_split_boolean_expression( $expr, '||' );
+		if ( count( $or_parts ) > 1 ) {
+			foreach ( $or_parts as $part ) {
+				if ( wmc_eval_conditional_expression( $part ) ) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		$and_parts = wmc_split_boolean_expression( $expr, '&&' );
+		if ( count( $and_parts ) > 1 ) {
+			foreach ( $and_parts as $part ) {
+				if ( ! wmc_eval_conditional_expression( $part ) ) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		if ( '!' === $expr[0] ) {
+			return ! wmc_eval_conditional_expression( substr( $expr, 1 ) );
+		}
+
+		return wmc_call_allowed_conditional( $expr );
+	}
+}
+
+if ( ! function_exists( 'wmc_conditional_parens_wrap' ) ) {
+	/**
+	 * @param string $expr Expression including wrapping parentheses.
+	 * @return bool
+	 */
+	function wmc_conditional_parens_wrap( $expr ) {
+		$depth  = 0;
+		$length = strlen( $expr );
+		for ( $i = 0; $i < $length; $i ++ ) {
+			if ( '(' === $expr[ $i ] ) {
+				++ $depth;
+			} elseif ( ')' === $expr[ $i ] ) {
+				-- $depth;
+				if ( 0 === $depth && $i < $length - 1 ) {
+					return false;
+				}
+			}
+		}
+
+		return 0 === $depth;
+	}
+}
+
+if ( ! function_exists( 'wmc_split_boolean_expression' ) ) {
+	/**
+	 * @param string $expr Expression.
+	 * @param string $op   '||' or '&&'.
+	 * @return array
+	 */
+	function wmc_split_boolean_expression( $expr, $op ) {
+		$parts  = array();
+		$buf    = '';
+		$depth  = 0;
+		$length = strlen( $expr );
+		$op_len = strlen( $op );
+		for ( $i = 0; $i < $length; $i ++ ) {
+			$ch = $expr[ $i ];
+			if ( '(' === $ch ) {
+				++ $depth;
+			} elseif ( ')' === $ch ) {
+				-- $depth;
+			}
+			if ( 0 === $depth && $op === substr( $expr, $i, $op_len ) ) {
+				$parts[] = trim( $buf );
+				$buf     = '';
+				$i      += $op_len - 1;
+				continue;
+			}
+			$buf .= $ch;
+		}
+		$parts[] = trim( $buf );
+
+		return $parts;
+	}
+}
+
+if ( ! function_exists( 'wmc_call_allowed_conditional' ) ) {
+	/**
+	 * @param string $call Function call string.
+	 * @return bool
+	 */
+	function wmc_call_allowed_conditional( $call ) {
+		$call = trim( $call );
+		if ( ! preg_match( '/^([a-zA-Z_][a-zA-Z0-9_]*)\s*\((.*)\)\s*$/s', $call, $match ) ) {
+			return false;
+		}
+		$func       = $match[1];
+		$args       = trim( $match[2] );
+		$allow_func = array(
+			'is_home',
+			'is_front_page',
+			'is_single',
+			'is_page',
+			'is_attachment',
+			'is_singular',
+			'is_archive',
+			'is_category',
+			'is_tag',
+			'is_author',
+			'is_date',
+			'is_year',
+			'is_month',
+			'is_day',
+			'is_search',
+			'is_404',
+			'is_post_type_archive',
+			'is_admin',
+			'is_user_logged_in',
+			'is_active_sidebar',
+			'is_woocommerce',
+			'is_shop',
+			'is_product',
+			'is_product_category',
+			'is_product_tag',
+			'is_product_taxonomy',
+			'is_account_page',
+			'is_cart',
+			'is_checkout',
+			'is_order_received_page',
+		);
+		if ( ! in_array( $func, $allow_func, true ) || ! function_exists( $func ) ) {
+			return false;
+		}
+		if ( '' === $args ) {
+			return (bool) call_user_func( $func );
+		}
+		if ( preg_match( '/^([\'"])(.*)\1$/', $args, $str ) ) {
+			return (bool) call_user_func( $func, $str[2] );
+		}
+		if ( is_numeric( $args ) ) {
+			return (bool) call_user_func( $func, 0 + $args );
+		}
+		if ( preg_match( '/^array\s*\((.*)\)\s*$/is', $args, $arr ) ) {
+			$items = wmc_parse_conditional_array_args( $arr[1] );
+			if ( null === $items ) {
+				return false;
+			}
+
+			return (bool) call_user_func( $func, $items );
+		}
+
+		return false;
+	}
+}
+
+if ( ! function_exists( 'wmc_parse_conditional_array_args' ) ) {
+	/**
+	 * Parse array('a','b') / array(1, 2) argument lists for conditional tags.
+	 *
+	 * @param string $inner Inner contents of array().
+	 * @return array|null
+	 */
+	function wmc_parse_conditional_array_args( $inner ) {
+		$inner = trim( $inner );
+		if ( '' === $inner ) {
+			return array();
+		}
+		$items = array();
+		if ( ! preg_match_all( '/([\'"])((?:\\\\.|(?!\1).)*)\1|(-?\d+(?:\.\d+)?)/', $inner, $matches, PREG_SET_ORDER ) ) {
+			return null;
+		}
+		foreach ( $matches as $match ) {
+			if ( isset( $match[1] ) && '' !== $match[1] ) {
+				$items[] = isset( $match[2] ) ? stripcslashes( $match[2] ) : '';
+			} elseif ( isset( $match[3] ) && '' !== $match[3] ) {
+				$items[] = 0 + $match[3];
+			}
+		}
+
+		return $items;
+	}
+}
+

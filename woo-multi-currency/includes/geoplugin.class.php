@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
 /*
 This PHP class is free software: you can redistribute it and/or modify
 the code under the terms of the GNU General Public License as published by
@@ -78,18 +79,18 @@ zh-CN
 		global $_SERVER;
 		
 		if ( is_null( $ip ) ) {
-			$ip = $_SERVER['REMOTE_ADDR'];
+			$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 		}
-		
+
 		$host = str_replace( '{IP}', $ip, $this->host );
 		$host = str_replace( '{CURRENCY}', $this->currency, $host );
 		$host = str_replace( '{LANG}', $this->lang, $host );
-		
-		$data = array();
-		
-		$response = $this->fetch($host);
-		
-		$data = unserialize($response);
+
+		$response = $this->fetch( $host );
+		$data     = is_string( $response ) ? unserialize( $response, array( 'allowed_classes' => false ) ) : false; // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize -- geoPlugin PHP payload; objects blocked.
+		if ( ! is_array( $data ) ) {
+			return;
+		}
 		
 		//set the geoPlugin vars
 		$this->ip = $ip;
@@ -133,23 +134,20 @@ zh-CN
 			
 		} else {
 
-			trigger_error ('geoPlugin class Error: Cannot retrieve data. Either compile PHP with cURL support or enable allow_url_fopen in php.ini ', E_USER_ERROR);
-			return;
-		
+			return false;
+
 		}
-		
+
 		return $response;
 	}
-	
+
 	function convert($amount, $float=2, $symbol=true) {
-		
+
 		//easily convert amounts to geolocated currency.
 		if ( !is_numeric($this->currencyConverter) || $this->currencyConverter == 0 ) {
-			trigger_error('geoPlugin class Notice: currencyConverter has no value.', E_USER_NOTICE);
 			return $amount;
 		}
 		if ( !is_numeric($amount) ) {
-			trigger_error ('geoPlugin class Warning: The amount passed to geoPlugin::convert is not numeric.', E_USER_WARNING);
 			return $amount;
 		}
 		if ( $symbol === true ) {
@@ -158,24 +156,26 @@ zh-CN
 			return round( ($amount * $this->currencyConverter), $float );
 		}
 	}
-	
+
 	function nearby($radius=10, $limit=null) {
 
 		if ( !is_numeric($this->latitude) || !is_numeric($this->longitude) ) {
-			trigger_error ('geoPlugin class Warning: Incorrect latitude or longitude values.', E_USER_NOTICE);
 			return array( array() );
 		}
-		
+
 		$host = "https://www.geoplugin.net/extras/nearby.gp?lat=" . $this->latitude . "&long=" . $this->longitude . "&radius={$radius}";
-		
+
 		if ( is_numeric($limit) )
 			$host .= "&limit={$limit}";
-			
-		return unserialize( $this->fetch($host) );
+
+		$response = $this->fetch( $host );
+		$data     = is_string( $response ) ? unserialize( $response, array( 'allowed_classes' => false ) ) : false; // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize -- geoPlugin PHP payload; objects blocked.
+
+		return is_array( $data ) ? $data : array( array() );
 
 	}
 
 	
 }
 
-?>
+

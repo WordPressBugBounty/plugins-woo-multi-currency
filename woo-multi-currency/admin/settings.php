@@ -9,6 +9,8 @@ Copyright 2015-2017 villatheme.com. All rights reserved.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 
 class WOOMULTI_CURRENCY_F_Admin_Settings {
 	static $params;
@@ -27,7 +29,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
 		}
 
 		$original_price   = sanitize_text_field( wp_unslash( $_POST['original_price'] ) );
-		$other_currencies = wc_clean( wp_unslash( $_POST['other_currencies'] ) );
+		$other_currencies = map_deep( wp_unslash( $_POST['other_currencies'] ), 'sanitize_text_field' );
 
 		if ( ! is_array( $other_currencies ) ) {
 			$other_currencies = (array) $other_currencies;
@@ -42,12 +44,6 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
 		wp_send_json( $rates );
 	}
 
-	private function stripslashes_deep( $value ) {
-		$value = is_array( $value ) ? array_map( 'stripslashes_deep', $value ) : stripslashes( $value );
-
-		return $value;
-	}
-
 	/**
 	 *
 	 */
@@ -55,35 +51,71 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
 		if ( ! isset( $_POST['_woo_multi_currency_nonce'] ) || ! isset( $_POST['woo_multi_currency_params'] ) ) {
 			return;
 		}
-		if ( ! wp_verify_nonce( sanitize_text_field( $_POST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_settings' ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_settings' ) ) {
 			return;
 		}
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
 			return;
 		}
-		$data                     = wc_clean( $_POST['woo_multi_currency_params'] );
-		$data['conditional_tags'] = $this->stripslashes_deep( $data['conditional_tags'] );
-		$data['custom_css']       = $this->stripslashes_deep( $data['custom_css'] );
+		$data = map_deep( wp_unslash( $_POST['woo_multi_currency_params'] ), 'sanitize_text_field' );
+		if ( isset( $_POST['woo_multi_currency_params']['conditional_tags'] ) ) {
+			$data['conditional_tags'] = sanitize_textarea_field( wp_unslash( $_POST['woo_multi_currency_params']['conditional_tags'] ) );
+		}
+		if ( isset( $_POST['woo_multi_currency_params']['custom_css'] ) ) {
+			$data['custom_css'] = wp_strip_all_tags( wp_unslash( $_POST['woo_multi_currency_params']['custom_css'] ) );
+		}
 
 		/*Override WooCommerce Currency*/
 		if ( isset( $data['currency_default'] ) && $data['currency_default'] && isset( $data['currency'] ) ) {
 			update_option( 'woocommerce_currency', $data['currency_default'] );
-			$index = array_search( $data['currency_default'], $data['currency'] );
+			$index = array_search( $data['currency_default'], $data['currency'], true );
 			/*Override WooCommerce Currency*/
-			if ( isset( $data['currency_pos'][ $index ] ) && $index && $data['currency_pos'][ $index ] ) {
+			if ( false !== $index && isset( $data['currency_pos'][ $index ] ) && $data['currency_pos'][ $index ] ) {
 				update_option( 'woocommerce_currency_pos', $data['currency_pos'][ $index ] );
 			}
 			if ( isset( $data['currency_decimals'][ $index ] ) ) {
 				update_option( 'woocommerce_price_num_decimals', $data['currency_decimals'][ $index ] );
 			}
-			if ( count( $data['currency'] ) > 2 ) {
-				array_splice( $data['currency'], 0, 2 );
-				array_splice( $data['currency_decimals'], 0, 2 );
-				array_splice( $data['currency_pos'], 0, 2 );
-				array_splice( $data['currency_rate'], 0, 2 );
-				array_splice( $data['currency_custom'], 0, 2 );
+			if ( isset( $data['currency'] ) && is_array( $data['currency'] ) && count( $data['currency'] ) > 2 ) {
+				// Free version: keep only the first two currencies (array_splice( $arr, 0, 2 ) would remove them).
+				$data['currency']          = array_slice( $data['currency'], 0, 2 );
+				$data['currency_decimals'] = isset( $data['currency_decimals'] ) && is_array( $data['currency_decimals'] ) ? array_slice( $data['currency_decimals'], 0, 2 ) : array();
+				$data['currency_pos']      = isset( $data['currency_pos'] ) && is_array( $data['currency_pos'] ) ? array_slice( $data['currency_pos'], 0, 2 ) : array();
+				$data['currency_rate']     = isset( $data['currency_rate'] ) && is_array( $data['currency_rate'] ) ? array_slice( $data['currency_rate'], 0, 2 ) : array();
+				$data['currency_custom']   = isset( $data['currency_custom'] ) && is_array( $data['currency_custom'] ) ? array_slice( $data['currency_custom'], 0, 2 ) : array();
+				if ( isset( $data['currency_rate_fee'] ) && is_array( $data['currency_rate_fee'] ) ) {
+					$data['currency_rate_fee'] = array_slice( $data['currency_rate_fee'], 0, 2 );
+				}
+				if ( isset( $data['currency_hidden'] ) && is_array( $data['currency_hidden'] ) ) {
+					$data['currency_hidden'] = array_slice( $data['currency_hidden'], 0, 2 );
+				}
 			}
 		}
+
+		$checkbox_keys = array(
+			'enable',
+			'enable_fixed_price',
+			'cache_compatible',
+			'loading_price_mask',
+			'enable_currency_by_country',
+			'enable_design',
+			'is_checkout',
+			'is_cart',
+			'enable_collapse',
+			'enable_multi_payment',
+			'rel_nofollow',
+		);
+		foreach ( $checkbox_keys as $checkbox_key ) {
+			if ( ! isset( $data[ $checkbox_key ] ) ) {
+				$data[ $checkbox_key ] = 0;
+			}
+		}
+
+		$existing = get_option( 'woo_multi_currency_params', array() );
+		if ( is_array( $existing ) ) {
+			$data = array_merge( $existing, $data );
+		}
+
 		update_option( 'woo_multi_currency_params', $data );
 		delete_transient( 'wmc_update_exchange_rate' );
 	}
@@ -152,9 +184,35 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
 	 */
 	public static function page_callback() {
 		self::$params = get_option( 'woo_multi_currency_params', array() );
+		$settings     = WOOMULTI_CURRENCY_F_Data::get_ins();
+		$default      = $settings->get_default_currency();
+		$unsafe_codes = array();
+		foreach ( $settings->get_list_currencies() as $code => $currency_data ) {
+			if ( $code === $default ) {
+				continue;
+			}
+			if ( $settings->is_currency_amount_unsafe( $code, 1.0 ) ) {
+				$unsafe_codes[] = $code;
+			}
+		}
 		?>
         <div class="wrap woo-multi-currency">
             <h2><?php esc_attr_e( 'Multi Currency for WooCommerce Settings', 'woo-multi-currency' ) ?></h2>
+			<?php if ( ! empty( $unsafe_codes ) ) : ?>
+                <div class="notice notice-error">
+                    <p>
+						<?php
+						echo esc_html(
+							sprintf(
+								/* translators: %s: comma-separated currency codes */
+								__( 'These currencies would round amounts to zero with the current exchange rate and Number of Decimals: %s. Please update the exchange rate and Number of Decimals, then save.', 'woo-multi-currency' ),
+								implode( ', ', $unsafe_codes )
+							)
+						);
+						?>
+                    </p>
+                </div>
+			<?php endif; ?>
             <form method="post" action="" class="vi-ui form">
 				<?php wp_nonce_field( 'woo_multi_currency_settings', '_woo_multi_currency_nonce' ); ?>
                 <div class="vi-ui attached tabular menu">
@@ -478,7 +536,8 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                 </label>
                             </th>
                             <td>
-                                <select name="<?php echo esc_attr( self::set_field( 'auto_detect' ) ) ?>">
+                                <select class="vi-ui dropdown"
+                                        name="<?php echo esc_attr( self::set_field( 'auto_detect' ) ) ?>">
                                     <option <?php selected( self::get_field( 'auto_detect' ), 0 ) ?>
                                             value="0"><?php esc_html_e( 'No', 'woo-multi-currency' ) ?></option>
                                     <option <?php selected( self::get_field( 'auto_detect' ), 1 ) ?>
@@ -511,7 +570,8 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                 </label>
                             </th>
                             <td>
-                                <select name="<?php echo esc_attr( self::set_field( 'geo_api' ) ) ?>">
+                                <select class="vi-ui dropdown"
+                                        name="<?php echo esc_attr( self::set_field( 'geo_api' ) ) ?>">
                                     <option <?php selected( self::get_field( 'geo_api' ), 0 ) ?>
                                             value="0"><?php esc_html_e( 'WooCommerce', 'woo-multi-currency' ) ?></option>
                                     <option <?php selected( self::get_field( 'geo_api' ), 1 ) ?>

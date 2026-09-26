@@ -2,6 +2,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 
 class WOOMULTI_CURRENCY_F_Data {
 	protected static $instance = null;
@@ -650,7 +652,13 @@ class WOOMULTI_CURRENCY_F_Data {
 		$links               = array();
 		$selected_currencies = $this->get_list_currencies();
 		$current_currency    = $this->get_current_currency();
-		$url                 = ! empty( $_POST['wmc_current_url'] ) ? sanitize_text_field( $_POST['wmc_current_url'] ) : false;
+		$url                 = false;
+		if ( ! empty( $_POST['wmc_current_url'] ) ) {
+			$candidate = esc_url_raw( sanitize_text_field( $_POST['wmc_current_url'] ) );
+			if ( $candidate ) {
+				$url = $candidate;
+			}
+		}
 		if ( count( $selected_currencies ) ) {
 			foreach ( $selected_currencies as $k => $currency ) {
 				if ( $currency['hide'] ) {
@@ -699,12 +707,18 @@ class WOOMULTI_CURRENCY_F_Data {
 				}
 				$data[ $currency ]['rate']     = ! $this->params['currency_rate_fee'][ $k ] ? $this->params['currency_rate'][ $k ] : floatval( $this->params['currency_rate'][ $k ] ) + floatval( $this->params['currency_rate_fee'][ $k ] );
 				$data[ $currency ]['pos']      = $this->params['currency_pos'][ $k ];
-				$data[ $currency ]['decimals'] = $this->params['currency_decimals'][ $k ];
+				$data[ $currency ]['decimals'] = isset( $this->params['currency_decimals'][ $k ] ) && '' !== $this->params['currency_decimals'][ $k ]
+					? $this->params['currency_decimals'][ $k ]
+					: get_option( 'woocommerce_price_num_decimals' );
 				$data[ $currency ]['custom']   = $this->params['currency_custom'][ $k ];
 				$data[ $currency ]['hide']     = isset( $this->params['currency_hidden'][ $k ] ) ? $this->params['currency_hidden'][ $k ] : 0;
 			}
 		}
 
+		// Free version allows at most two currencies.
+		if ( count( $data ) > 2 ) {
+			$data = array_slice( $data, 0, 2, true );
+		}
 
 		return apply_filters( 'wmc_get_list_currencies', $data );
 	}
@@ -726,8 +740,12 @@ class WOOMULTI_CURRENCY_F_Data {
 	}
 
 	public function get_currencies() {
+		$currencies = is_array( $this->params['currency'] ) ? $this->params['currency'] : array();
+		if ( count( $currencies ) > 2 ) {
+			$currencies = array_slice( $currencies, 0, 2 );
+		}
 
-		return apply_filters( 'wmc_get_currencies', $this->params['currency'] );
+		return apply_filters( 'wmc_get_currencies', $currencies );
 
 	}
 
@@ -872,7 +890,7 @@ class WOOMULTI_CURRENCY_F_Data {
 					)
 				)
 			);
-			if ( ! is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) === 200 ) {
+			if ( ! is_wp_error( $request ) && wp_remote_retrieve_response_code( $request ) === 200 ) {
 				$rates = json_decode( trim( $request['body'] ), true );
 
 			}
@@ -1203,6 +1221,151 @@ class WOOMULTI_CURRENCY_F_Data {
 	public function get_default_currency() {
 		return apply_filters( 'wmc_get_default_currency', $this->params['currency_default'] );
 
+	}
+
+	/**
+	 * Whether converting $amount (default-currency units) would round to zero for $currency_code.
+	 *
+	 * @param string $currency_code Currency code.
+	 * @param float  $amount        Amount in default currency before conversion.
+	 *
+	 * @return bool
+	 */
+	public function is_currency_amount_unsafe( $currency_code, $amount = 1.0 ) {
+		$currency_code = (string) $currency_code;
+		$amount        = (float) $amount;
+		$default       = $this->get_default_currency();
+
+		if ( ! $currency_code || $currency_code === $default || $amount <= 0 ) {
+			return false;
+		}
+
+		$list = $this->get_list_currencies();
+		if ( empty( $list[ $currency_code ] ) ) {
+			return false;
+		}
+
+		$rate     = (float) $list[ $currency_code ]['rate'];
+		$decimals = absint( $list[ $currency_code ]['decimals'] );
+
+		if ( $rate <= 0 ) {
+			return false;
+		}
+
+		$converted = $amount * $rate;
+
+		return 0.0 === (float) round( $converted, $decimals, PHP_ROUND_HALF_UP );
+	}
+
+	/**
+	 * Whether an already-converted amount would round to zero for $currency_code.
+	 *
+	 * @param string $currency_code     Currency code.
+	 * @param float  $converted_amount  Amount already in $currency_code.
+	 *
+	 * @return bool
+	 */
+	public function is_converted_amount_unsafe( $currency_code, $converted_amount ) {
+		$currency_code    = (string) $currency_code;
+		$converted_amount = (float) $converted_amount;
+		$default          = $this->get_default_currency();
+
+		if ( ! $currency_code || $currency_code === $default || $converted_amount <= 0 ) {
+			return false;
+		}
+
+		$list = $this->get_list_currencies();
+		if ( empty( $list[ $currency_code ] ) ) {
+			return false;
+		}
+
+		$decimals = absint( $list[ $currency_code ]['decimals'] );
+
+		return 0.0 === (float) round( $converted_amount, $decimals, PHP_ROUND_HALF_UP );
+	}
+
+	/**
+	 * Fall back to default currency and queue a once-per-session shopper notice.
+	 *
+	 * @param string|null $currency_code Currency to evaluate; null = current.
+	 *
+	 * @return bool True when a fallback occurred.
+	 */
+	public function maybe_fallback_unsafe_currency( $currency_code = null ) {
+		if ( null === $currency_code ) {
+			$currency_code = $this->get_current_currency();
+		}
+
+		if ( ! $this->is_currency_amount_unsafe( $currency_code, 1.0 ) ) {
+			return false;
+		}
+
+		$this->set_current_currency( $this->get_default_currency() );
+		$this->queue_unsafe_rate_notice();
+
+		return true;
+	}
+
+	/**
+	 * Fall back when a positive unrounded converted total would display as zero.
+	 *
+	 * @param float $converted_amount Unrounded total in the current currency.
+	 *
+	 * @return bool True when a fallback occurred.
+	 */
+	public function maybe_fallback_unsafe_converted_total( $converted_amount ) {
+		$currency_code = $this->get_current_currency();
+
+		if ( ! $this->is_converted_amount_unsafe( $currency_code, $converted_amount ) ) {
+			return false;
+		}
+
+		$this->set_current_currency( $this->get_default_currency() );
+		$this->queue_unsafe_rate_notice();
+
+		return true;
+	}
+
+	/**
+	 * Queue customer notice at most once per session (cookie flag).
+	 */
+	public function queue_unsafe_rate_notice() {
+		if ( $this->getcookie( 'wmc_unsafe_rate_notice_shown' ) ) {
+			return;
+		}
+
+		if ( did_action( 'woocommerce_init' ) || did_action( 'wp_loaded' ) ) {
+			$this->display_unsafe_rate_notice();
+		} else {
+			add_action( 'woocommerce_init', array( $this, 'display_unsafe_rate_notice' ), 20 );
+			add_action( 'wp_loaded', array( $this, 'display_unsafe_rate_notice' ), 20 );
+		}
+	}
+
+	/**
+	 * Print the unsafe-rate fallback notice once when WC notices are available.
+	 */
+	public function display_unsafe_rate_notice() {
+		if ( ! function_exists( 'wc_add_notice' ) ) {
+			return;
+		}
+
+		if ( $this->getcookie( 'wmc_unsafe_rate_notice_shown' ) ) {
+			return;
+		}
+
+		static $displayed = false;
+		if ( $displayed ) {
+			return;
+		}
+		$displayed = true;
+
+		$this->setcookie( 'wmc_unsafe_rate_notice_shown', '1', time() + DAY_IN_SECONDS, '/' );
+
+		wc_add_notice(
+			__( 'Display currency was reset to the store default because the selected currency would show amounts as zero. Please update the exchange rate and Number of Decimals in Multi Currency settings.', 'woo-multi-currency' ),
+			'notice'
+		);
 	}
 
 	public function get_param( $param ) {

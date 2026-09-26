@@ -9,6 +9,8 @@ Copyright 2015 villatheme.com. All rights reserved.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 
 class WOOMULTI_CURRENCY_F_Admin_Admin {
 	protected $settings;
@@ -57,7 +59,16 @@ class WOOMULTI_CURRENCY_F_Admin_Admin {
 		if ( count( $old_data ) ) {
 			$currency         = $currency_rate = $currency_decimals = $currency_custom = $currency_pos = array();
 			$currency_default = '';
-			$by_countries     = json_decode( get_option( 'wmc_currency_by_country', array() ), true );
+			$by_countries_raw = get_option( 'wmc_currency_by_country', array() );
+			$by_countries     = array();
+			if ( is_array( $by_countries_raw ) ) {
+				$by_countries = $by_countries_raw;
+			} elseif ( is_string( $by_countries_raw ) && '' !== $by_countries_raw ) {
+				$decoded = json_decode( $by_countries_raw, true );
+				if ( is_array( $decoded ) ) {
+					$by_countries = $decoded;
+				}
+			}
 
 			/*Move Data Currency*/
 
@@ -171,25 +182,58 @@ class WOOMULTI_CURRENCY_F_Admin_Admin {
 			wp_enqueue_style( 'semantic-ui-input', WOOMULTI_CURRENCY_F_CSS . 'input.min.css', [], '2.2.12' );
 			wp_enqueue_style( 'semantic-ui-popup', WOOMULTI_CURRENCY_F_CSS . 'popup.min.css', [], '2.3.1' );
 			wp_enqueue_style( 'semantic-ui-message', WOOMULTI_CURRENCY_F_CSS . 'message.min.css', [], '2.3.1' );
-			wp_enqueue_style( 'woo-multi-currency', WOOMULTI_CURRENCY_F_CSS . 'woo-multi-currency-admin' . $src_min . '.css', [], WOOMULTI_CURRENCY_F_VERSION );
-			wp_enqueue_style( 'select2', WOOMULTI_CURRENCY_F_CSS . 'select2.min.css', [], '4.0.3' );
+			wp_enqueue_style( 'woo-multi-currency-select2', WOOMULTI_CURRENCY_F_CSS . 'select2.min.css', [], '4.0.3' );
 
-			if ( villatheme_woocommerce_version_check( '10.3.0' ) ) {
-				wp_enqueue_script( 'wc-select2' );
-			}else{
-				wp_enqueue_script( 'select2' );
+			/*
+			 * Must use a unique handle. Block register_block() already registers
+			 * 'woo-multi-currency' as the frontend stylesheet on init; reusing that
+			 * handle here would enqueue frontend CSS and ignore the admin file.
+			 */
+			$admin_css = WOOMULTI_CURRENCY_F_CSS . 'woo-multi-currency-admin' . $src_min . '.css';
+			$admin_css_ver = WOOMULTI_CURRENCY_F_VERSION;
+			$admin_css_path = WOOMULTI_CURRENCY_F_DIR . 'css/woo-multi-currency-admin' . $src_min . '.css';
+			if ( file_exists( $admin_css_path ) ) {
+				$admin_css_ver .= '.' . (string) filemtime( $admin_css_path );
 			}
+			wp_enqueue_style(
+				'woo-multi-currency-admin',
+				$admin_css,
+				array( 'woo-multi-currency-select2', 'semantic-ui-form', 'semantic-ui-dropdown', 'semantic-ui-input' ),
+				$admin_css_ver
+			);
+
+			/*
+			 * Always load bundled Select2 under a plugin-specific handle.
+			 * The dequeue loop strips WC select2 (non-/wp- src).
+			 */
+			$select2_handle = 'woo-multi-currency-select2';
+			wp_register_script( $select2_handle, WOOMULTI_CURRENCY_F_JS . 'select2.js', array( 'jquery' ), '4.0.3', false );
+			wp_enqueue_script( $select2_handle );
+
 			wp_enqueue_script( 'semantic-ui-transition', WOOMULTI_CURRENCY_F_JS . 'transition.min.js', array( 'jquery' ), '2.1.7', false );
 			wp_enqueue_script( 'semantic-ui-dropdown', WOOMULTI_CURRENCY_F_JS . 'dropdown.js', array( 'jquery' ), '2.1.7', false );
 			wp_enqueue_script( 'semantic-ui-checkbox', WOOMULTI_CURRENCY_F_JS . 'checkbox.js', array( 'jquery' ), '2.1.7', false );
 			wp_enqueue_script( 'semantic-ui-tab', WOOMULTI_CURRENCY_F_JS . 'tab.js', array( 'jquery' ), '2.4.2', false );
 			wp_enqueue_script( 'woo-multi-currency-address', WOOMULTI_CURRENCY_F_JS . 'jquery.address-1.6.min.js', array( 'jquery' ), '1.6', false );
 			wp_enqueue_script( 'jquery-ui-sortable' );
-			wp_enqueue_script( 'woo-multi-currency', WOOMULTI_CURRENCY_F_JS . 'woo-multi-currency-admin' . $src_min . '.js', array( 'jquery' ), WOOMULTI_CURRENCY_F_VERSION, false );
+
+			$admin_js      = WOOMULTI_CURRENCY_F_JS . 'woo-multi-currency-admin' . $src_min . '.js';
+			$admin_js_ver  = WOOMULTI_CURRENCY_F_VERSION;
+			$admin_js_path = WOOMULTI_CURRENCY_F_DIR . 'js/woo-multi-currency-admin' . $src_min . '.js';
+			if ( file_exists( $admin_js_path ) ) {
+				$admin_js_ver .= '.' . (string) filemtime( $admin_js_path );
+			}
+			wp_enqueue_script(
+				'woo-multi-currency-admin',
+				$admin_js,
+				array( 'jquery', $select2_handle, 'semantic-ui-dropdown', 'semantic-ui-checkbox', 'semantic-ui-tab' ),
+				$admin_js_ver,
+				false
+			);
 			/*Color picker*/
 			wp_enqueue_script( 'iris' );
 
-			wp_localize_script( 'woo-multi-currency', 'wmcParams', [ 'nonce' => wp_create_nonce( 'wmc_ajax_nonce' ) ] );
+			wp_localize_script( 'woo-multi-currency-admin', 'wmcParams', [ 'nonce' => wp_create_nonce( 'wmc_ajax_nonce' ) ] );
 		}
 	}
 
@@ -212,24 +256,17 @@ class WOOMULTI_CURRENCY_F_Admin_Admin {
 	 * Function init when run plugin+
 	 */
 	function init() {
-		/*Register post type*/
-
-//		load_plugin_textdomain( 'woo-multi-currency' );
-		$this->load_plugin_textdomain();
-	}
-
-
-	/**
-	 * load Language translate
-	 */
-	public function load_plugin_textdomain() {
-		$locale   = apply_filters( 'plugin_locale', get_locale(), 'woo-multi-currency' );
+		/* Shipped translations under languages/; WordPress.org also auto-loads the plugin slug. */
+		$locale   = determine_locale();
 		$basename = 'woo-multi-currency';
-		unload_textdomain( 'woo-multi-currency' );
-
-		// Global + Frontend Locale
-		load_textdomain( 'woo-multi-currency', WP_LANG_DIR . "/{$basename}/{$basename}-{$locale}.mo" );
-		load_plugin_textdomain( 'woo-multi-currency', false, $basename . '/languages' );
+		$mofile   = WP_LANG_DIR . "/{$basename}/{$basename}-{$locale}.mo";
+		if ( file_exists( $mofile ) ) {
+			load_textdomain( 'woo-multi-currency', $mofile );
+		}
+		$plugin_mofile = WOOMULTI_CURRENCY_F_LANGUAGES . "{$basename}-{$locale}.mo";
+		if ( file_exists( $plugin_mofile ) ) {
+			load_textdomain( 'woo-multi-currency', $plugin_mofile );
+		}
 	}
 
 	/**

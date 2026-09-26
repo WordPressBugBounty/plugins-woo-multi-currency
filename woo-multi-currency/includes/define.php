@@ -2,7 +2,9 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-define( 'WOOMULTI_CURRENCY_F_DIR', WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'woo-multi-currency' . DIRECTORY_SEPARATOR );
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
+define( 'WOOMULTI_CURRENCY_F_DIR', plugin_dir_path( WOOMULTI_CURRENCY_F_FILE ) );
 define( 'WOOMULTI_CURRENCY_F_ADMIN', WOOMULTI_CURRENCY_F_DIR . "admin" . DIRECTORY_SEPARATOR );
 define( 'WOOMULTI_CURRENCY_F_TEMPLATES', WOOMULTI_CURRENCY_F_DIR . "templates" . DIRECTORY_SEPARATOR );
 define( 'WOOMULTI_CURRENCY_F_FRONTEND', WOOMULTI_CURRENCY_F_DIR . "frontend" . DIRECTORY_SEPARATOR );

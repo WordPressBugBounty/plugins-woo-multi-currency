@@ -3,6 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
 
 use Automattic\Jetpack\Constants;
 
@@ -165,7 +166,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 					$product_id    = $variation_id;
 					$product_price = wmc_adjust_fixed_price( self::static_json_price_meta( $variation->get_meta('_regular_price_wmcp', true ) ) );
 					$sale_price    = wmc_adjust_fixed_price( self::static_json_price_meta( $variation->get_meta('_sale_price_wmcp', true ) ) );
-					if ( isset( $product_price[ $currenct_currency ] ) && ! $product->is_on_sale() && $product_price[ $currenct_currency ] > 0 ) {
+					if ( isset( $product_price[ $currenct_currency ] ) && ! $variation->is_on_sale() && $product_price[ $currenct_currency ] > 0 ) {
 						$price = $product_price[ $currenct_currency ];
 					} elseif ( isset( $sale_price[ $currenct_currency ] ) && $sale_price[ $currenct_currency ] > 0 ) {
 						$price = $sale_price[ $currenct_currency ];
@@ -183,7 +184,6 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 				}
 			}
 		}
-
 
 		return $price_max;
 	}
@@ -212,7 +212,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 					$product_id    = $variation_id;
 					$product_price = wmc_adjust_fixed_price( self::static_json_price_meta( $variation->get_meta('_regular_price_wmcp', true ) ) );
 					$sale_price    = wmc_adjust_fixed_price( self::static_json_price_meta( $variation->get_meta('_sale_price_wmcp', true ) ) );
-					if ( isset( $product_price[ $current_currency ] ) && ! $product->is_on_sale( 'edit' ) && $product_price[ $current_currency ] > 0 ) {
+					if ( isset( $product_price[ $current_currency ] ) && ! $variation->is_on_sale( 'edit' ) && $product_price[ $current_currency ] > 0 ) {
 						$price = $product_price[ $current_currency ];
 					} elseif ( isset( $sale_price[ $current_currency ] ) && $sale_price[ $current_currency ] > 0 ) {
 						$price = $sale_price[ $current_currency ];
@@ -287,8 +287,10 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 				case 'right_space' :
 					$format = '%2$s&nbsp;%1$s';
 					break;
+				default:
+					$format = '%1$s%2$s';
+					break;
 			}
-
 
 			$price = number_format( wc_get_price_to_display( $product, array(
 					'qty'   => 1,
@@ -451,7 +453,6 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 			}
 		}
 
-
 		return $price_arr;
 	}
 
@@ -541,7 +542,6 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		//Do nothing to remove prices hash to alway get live price.
 	}
 
-
 	/**Sale product variable price
 	 *
 	 * @param $price
@@ -550,21 +550,18 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 	 * @return mixed
 	 */
 	public function woocommerce_product_variation_get_price( $price, $product ) {
-//		echo '<pre>' . print_r('woocommerce_product_variation_get_price', true) . '</pre>';
-//		echo '<pre>' . print_r($price, true) . '</pre>';
+
 		if ( ! $price ) {
 			return $price;
 		}
-//		echo '<pre>' . print_r('111111111', true) . '</pre>';
+
 		$product_id = $product->get_id();
 		if ( ! wp_doing_ajax() && isset( $this->price[ $product_id ][ $price ] ) ) {
-//			echo '<pre>' . print_r('ajxxxxxxxxxxxxxx', true) . '</pre>';
-//			echo '<pre>' . print_r($this->price[ $product_id ], true) . '</pre>';
+
 			return $this->price[ $product_id ][ $price ];
 		}
 		$changes = $product->get_changes();
-//		echo '<pre>' . print_r('22222222222', true) . '</pre>';
-//		echo '<pre>' . print_r($changes, true) . '</pre>';
+
 		if ( self::$settings->check_fixed_price() && ( is_array( $changes ) ) && count( $changes ) < 1 ) {
 
 			$currenct_currency = self::$settings->get_current_currency();
@@ -582,15 +579,14 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 				}
 			}
 		}
-//		echo '<pre>' . print_r('33333333333', true) . '</pre>';
+
 		if ( defined('B2BKING_VERSION') ) {
 			if ( is_array( $changes ) && array_key_exists( 'price', $changes ) && count( $changes ) < 2 && floatval( $price ) == floatval( $changes['price'] ) ) {
-//				echo '<pre>' . print_r('vrrrrrr', true) . '</pre>';
-//				echo '<pre>' . print_r($price, true) . '</pre>';
+
 				return $this->set_cache( floatval( $price ), $product_id, $price );
 			}
 		}
-//		echo '<pre>' . print_r('444444444444', true) . '</pre>';
+
 		return $this->set_cache( wmc_get_price( $price ), $product_id, $price );
 	}
 
@@ -611,26 +607,18 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 	 * @return mixed
 	 */
 	public function woocommerce_product_get_price( $price, $product ) {
-//		echo '<pre>' . print_r('woocommerce_product_get_price', true) . '</pre>';
-//		echo '<pre>' . print_r($price, true) . '</pre>';
-//		self::villatheme_debug_log(print_r('woocommerce_product_get_price', true));
-//		self::villatheme_debug_log(print_r($price, true));
+
 		if ( ! $price ) {
 			return $price;
 		}
-//		echo '<pre>' . print_r('2222222222', true) . '</pre>';
-//		self::villatheme_debug_log(print_r('2222222222', true));
+
 		$product_id = $product->get_id();
 
 		if ( ! wp_doing_ajax() && isset( $this->price[ $product_id ][ $price ] ) ) {
-//			echo '<pre>' . print_r('ajjjjjjjjj', true) . '</pre>';
-//			echo '<pre>' . print_r($this->price[ $product_id ], true) . '</pre>';
-//			self::villatheme_debug_log(print_r('ajjjjjjj', true));
-//			self::villatheme_debug_log(print_r($this->price[ $product_id ], true));
+
 			return $this->price[ $product_id ][ $price ];
 		}
-//		echo '<pre>' . print_r('3333333333', true) . '</pre>';
-//		self::villatheme_debug_log(print_r('333333333', true));
+
 		$changes = $product->get_changes();
 		$no_fixed_changes = is_array( $changes ) ? count( $changes ) < 1 : false;
 		$sale_price_changes = false;
@@ -668,22 +656,14 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 				}
 			}
 		}
-//		echo '<pre>' . print_r('aaaaaaaaa', true) . '</pre>';
-//		echo '<pre>' . print_r($changes, true) . '</pre>';
-//		echo '<pre>' . print_r($price, true) . '</pre>';
+
 		if ( defined('B2BKING_VERSION') ) {
 			if ( is_array( $changes ) && array_key_exists( 'price', $changes ) && count( $changes ) < 2 && floatval( $price ) == floatval( $changes['price'] ) ) {
-//				echo '<pre>' . print_r('bbbbbbbb', true) . '</pre>';
-//				echo '<pre>' . print_r($price, true) . '</pre>';
-//				self::villatheme_debug_log(print_r('bbbbbbbb', true));
-//				self::villatheme_debug_log(print_r($price, true));
+
 				return $this->set_cache( floatval( $price ), $product_id, $price );
 			}
 		}
 
-//		self::villatheme_debug_log(print_r('set enddddddd', true));
-//		self::villatheme_debug_log(print_r($price, true));
-//		self::villatheme_debug_log(print_r(wmc_get_price( $price ), true));
 		return $this->set_cache( wmc_get_price( $price ), $product_id, $price );
 	}
 

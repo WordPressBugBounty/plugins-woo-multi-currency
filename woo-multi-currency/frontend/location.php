@@ -3,6 +3,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 
 /**
  * Class WOOMULTI_CURRENCY_F_Frontend_Location
@@ -22,10 +24,12 @@ class WOOMULTI_CURRENCY_F_Frontend_Location {
 					if ( ! empty( $list_currencies[ $target_currency ] ) ) {
 						if ( $list_currencies[ $target_currency ]['hide'] !== '1' ) {
 							$this->settings->set_current_currency( $target_currency );
+							$this->settings->maybe_fallback_unsafe_currency( $target_currency );
 						}
 					}
 				}
 			}
+			$this->settings->maybe_fallback_unsafe_currency();
 			add_action( 'init', array( $this, 'init' ), 1 );
 		}
 	}
@@ -96,11 +100,14 @@ class WOOMULTI_CURRENCY_F_Frontend_Location {
 					}
 					if ( $currency_detected ) {
 						$this->settings->set_current_currency( $currency_detected );
+						$this->settings->maybe_fallback_unsafe_currency( $currency_detected );
 					} else {
 						$this->settings->set_current_currency( $detect_ip_currency['currency_code'] );
+						$this->settings->maybe_fallback_unsafe_currency( $detect_ip_currency['currency_code'] );
 					}
 				} elseif ( isset( $detect_ip_currency['currency_code'] ) && in_array( $detect_ip_currency['currency_code'], $currencies ) ) {
 					$this->settings->set_current_currency( $detect_ip_currency['currency_code'] );
+					$this->settings->maybe_fallback_unsafe_currency( $detect_ip_currency['currency_code'] );
 				} else {
 					$this->settings->set_fallback_currency();
 				}
@@ -148,7 +155,12 @@ class WOOMULTI_CURRENCY_F_Frontend_Location {
 					$geoplugin  = $geo_plugin->fetch( "https://www.geoplugin.net/php.gp?ip={$ip_add}&base_currency=" . $this->settings->get_default_currency() );
 
 					if ( $geoplugin ) {
-						$geoplugin = unserialize( $geoplugin );
+						$geoplugin = is_string( $geoplugin )
+							? unserialize( $geoplugin, array( 'allowed_classes' => false ) ) // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize -- geoPlugin PHP payload; objects blocked.
+							: array();
+						if ( ! is_array( $geoplugin ) ) {
+							$geoplugin = array();
+						}
 					}
 
 					$geoplugin_arg = array(

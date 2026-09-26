@@ -6,6 +6,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 if ( is_plugin_active( 'woocommerce-wholesale-prices/woocommerce-wholesale-prices.bootstrap.php' ) ) {
 	class WOOMULTI_CURRENCY_F_Plugin_Woocommerce_Wholesale_Prices {
 		protected $settings;
@@ -76,7 +78,7 @@ if ( is_plugin_active( 'woocommerce-wholesale-prices/woocommerce-wholesale-price
                          style="border-top: 1px solid #EEEEEE;">
 
                         <header>
-                            <h4 style="padding-bottom: 10px;"><?php esc_html_e( 'Wholesale Prices', 'woocommerce-wholesale-prices' );
+                            <h4 style="padding-bottom: 10px;"><?php esc_html_e( 'Wholesale Prices', 'woo-multi-currency' );
 								echo esc_html( "($key)" ); ?></h4>
                         </header>
 
@@ -92,7 +94,7 @@ if ( is_plugin_active( 'woocommerce-wholesale-prices/woocommerce-wholesale-price
 							$field_name      = "_wholesale_prices_wmcp_variable[$loop][$key][$role_key]";
 							$field_label     = $role['roleName'] . " (" . $currency_symbol . ")";
 							/* translators: %1$s: user role name */
-							$field_desc      = sprintf( esc_html__( 'Only applies to users with the role of %1$s', 'woocommerce-wholesale-prices' ), $role['roleName'] );
+							$field_desc      = sprintf( esc_html__( 'Only applies to users with the role of %1$s', 'woo-multi-currency' ), $role['roleName'] );
 
 							woocommerce_wp_text_input( array(
 								'id'          => $field_id,
@@ -158,7 +160,7 @@ if ( is_plugin_active( 'woocommerce-wholesale-prices/woocommerce-wholesale-price
                          style="border-top: 1px solid #EEEEEE;">
 
                         <header>
-                            <h3 style="padding-bottom: 10px;"><?php esc_html_e( 'Wholesale Prices', 'woocommerce-wholesale-prices' );
+                            <h3 style="padding-bottom: 10px;"><?php esc_html_e( 'Wholesale Prices', 'woo-multi-currency' );
 								echo esc_html( "($key)" ); ?></h3>
                         </header>
 
@@ -174,7 +176,7 @@ if ( is_plugin_active( 'woocommerce-wholesale-prices/woocommerce-wholesale-price
 							$field_name      = "_wholesale_prices_wmcp[$key][$role_key]";
 							$field_label     = $role['roleName'] . " (" . $currency_symbol . ")";
 							/* translators: %1$s: user role name */
-							$field_desc      = sprintf( esc_html__( 'Only applies to users with the role of %1$s', 'woocommerce-wholesale-prices' ), $role['roleName'] );
+							$field_desc      = sprintf( esc_html__( 'Only applies to users with the role of %1$s', 'woo-multi-currency' ), $role['roleName'] );
 
 							woocommerce_wp_text_input( array(
 								'id'          => $field_id,

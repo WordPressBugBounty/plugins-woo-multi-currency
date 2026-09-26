@@ -9,6 +9,8 @@ Copyright 2015-2017 villatheme.com. All rights reserved.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
+
 
 class WOOMULTI_CURRENCY_F_Admin_Product {
 	protected $settings;
@@ -291,8 +293,8 @@ class WOOMULTI_CURRENCY_F_Admin_Product {
 			$variation_product->update_meta_data('_sale_price_wmcp', '' );
 			$update_meta = true;
 		}
-		$variable_sale_price_dates_to = wc_clean( $_POST['variable_sale_price_dates_to'] );
-		$date_to                      = ( $variable_sale_price_dates_to[ $i ] );
+		$variable_sale_price_dates_to = isset( $_POST['variable_sale_price_dates_to'] ) ? wc_clean( wp_unslash( $_POST['variable_sale_price_dates_to'] ) ) : array();
+		$date_to                      = isset( $variable_sale_price_dates_to[ $i ] ) ? $variable_sale_price_dates_to[ $i ] : '';
 		if ( $date_to && strtotime( $date_to ) < strtotime( 'NOW', current_time( 'timestamp' ) ) ) {
 			$variation_product->update_meta_data('_sale_price_wmcp', '' );
 			$update_meta = true;

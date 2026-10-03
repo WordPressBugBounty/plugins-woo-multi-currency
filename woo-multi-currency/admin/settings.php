@@ -117,6 +117,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
 		}
 
 		update_option( 'woo_multi_currency_params', $data );
+		delete_option( WOOMULTI_CURRENCY_F_UNIT_CHECK_OPTION );
 		delete_transient( 'wmc_update_exchange_rate' );
 	}
 
@@ -184,35 +185,9 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
 	 */
 	public static function page_callback() {
 		self::$params = get_option( 'woo_multi_currency_params', array() );
-		$settings     = WOOMULTI_CURRENCY_F_Data::get_ins();
-		$default      = $settings->get_default_currency();
-		$unsafe_codes = array();
-		foreach ( $settings->get_list_currencies() as $code => $currency_data ) {
-			if ( $code === $default ) {
-				continue;
-			}
-			if ( $settings->is_currency_amount_unsafe( $code, 1.0 ) ) {
-				$unsafe_codes[] = $code;
-			}
-		}
 		?>
         <div class="wrap woo-multi-currency">
             <h2><?php esc_attr_e( 'Multi Currency for WooCommerce Settings', 'woo-multi-currency' ) ?></h2>
-			<?php if ( ! empty( $unsafe_codes ) ) : ?>
-                <div class="notice notice-error">
-                    <p>
-						<?php
-						echo esc_html(
-							sprintf(
-								/* translators: %s: comma-separated currency codes */
-								__( 'These currencies would round amounts to zero with the current exchange rate and Number of Decimals: %s. Please update the exchange rate and Number of Decimals, then save.', 'woo-multi-currency' ),
-								implode( ', ', $unsafe_codes )
-							)
-						);
-						?>
-                    </p>
-                </div>
-			<?php endif; ?>
             <form method="post" action="" class="vi-ui form">
 				<?php wp_nonce_field( 'woo_multi_currency_settings', '_woo_multi_currency_nonce' ); ?>
                 <div class="vi-ui attached tabular menu">
@@ -451,6 +426,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                             <td>
 
                                                 <input <?php echo esc_attr( $disabled ) ?> type="text"
+                                                                                           class="wmc-currency-rate"
                                                                                            name="<?php echo esc_attr( self::set_field( 'currency_rate', 1 ) ) ?>"
                                                                                            value="<?php echo esc_attr( self::data_isset( $currency_rate, $key, '1' ) ) ?>"/>
 
@@ -460,6 +436,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                                      data-tooltip="<?php esc_attr_e( 'It is fixed rate. Eg: (Original rate)1.62 + 0.1(Exchange fee rate) = 1.72(End rate)', 'woo-multi-currency' ) ?>">
                                                     <i class="vi-ui icon plus"></i>
                                                     <input <?php echo esc_attr( $disabled ) ?> type="number"
+                                                                                               class="wmc-currency-rate-fee"
                                                                                                name="<?php echo esc_attr( self::set_field( 'currency_rate_fee', 1 ) ) ?>"
                                                                                                value="<?php echo esc_attr( self::data_isset( $currency_rate_fee, $key, '0.0000' ) ) ?>"
                                                                                                step="any"/>
@@ -511,6 +488,20 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                     </tr>
                                     </tfoot>
                                 </table>
+								<?php
+								$currency_unit_messages = self::get_currency_unit_messages();
+								if ( ! empty( $currency_unit_messages ) ) {
+									?>
+                                    <div class="vi-ui red message wmc-currency-unit-warning">
+                                        <ul class="list">
+											<?php foreach ( $currency_unit_messages as $currency_unit_message ) { ?>
+                                                <li><?php echo esc_html( $currency_unit_message ); ?></li>
+											<?php } ?>
+                                        </ul>
+                                    </div>
+									<?php
+								}
+								?>
                                 <p>
 									<?php esc_html_e( 'You can add only 2 currencies. Please update Pro version to add unlimited currencies.', 'woo-multi-currency' ) ?>
                                     <a class="vi-ui button yellow"
@@ -1328,5 +1319,26 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
         </div>
 		<?php
 		do_action( 'villatheme_support_woo-multi-currency' );
+	}
+
+	/**
+	 * Warnings for currencies whose converted unit is not positive.
+	 *
+	 * @return array
+	 */
+	private static function get_currency_unit_messages() {
+		if ( ! class_exists( 'WOOMULTI_CURRENCY_F_Frontend_Price' ) ) {
+			require_once WOOMULTI_CURRENCY_F_FRONTEND . 'price.php';
+		}
+		$unit_check = WOOMULTI_CURRENCY_F_Frontend_Price::refresh_currency_unit_check();
+		$messages   = array();
+		foreach ( $unit_check as $currency => $row ) {
+			if ( ! isset( $row['value'] ) || (float) $row['value'] > 0 ) {
+				continue;
+			}
+			$messages[] = WOOMULTI_CURRENCY_F_Frontend_Price::currency_unit_check_message( $currency, $row );
+		}
+
+		return $messages;
 	}
 }

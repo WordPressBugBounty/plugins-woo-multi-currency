@@ -233,7 +233,13 @@ class WOOMULTI_CURRENCY_F_Admin_Admin {
 			/*Color picker*/
 			wp_enqueue_script( 'iris' );
 
-			wp_localize_script( 'woo-multi-currency-admin', 'wmcParams', [ 'nonce' => wp_create_nonce( 'wmc_ajax_nonce' ) ] );
+			wp_localize_script( 'woo-multi-currency-admin', 'wmcParams', array(
+				'nonce'       => wp_create_nonce( 'wmc_ajax_nonce' ),
+				/* translators: %s: currency code */
+				'msgRate'     => __( 'The %s exchange rate must be greater than 0. Please update the exchange rate.', 'woo-multi-currency' ),
+				/* translators: 1: currency code, 2: minimum decimals */
+				'msgDecimals' => __( 'Decimals of %1$s must be at least %2$d. Please update the Number of Decimals.', 'woo-multi-currency' ),
+			) );
 		}
 	}
 

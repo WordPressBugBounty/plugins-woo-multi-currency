@@ -21,6 +21,7 @@ define( 'WOOMULTI_CURRENCY_F_JS_DIR', WOOMULTI_CURRENCY_F_DIR . "js" . DIRECTORY
 define( 'WOOMULTI_CURRENCY_F_BLOCKS', $plugin_url . "/includes/blocks/" );
 define( 'WOOMULTI_CURRENCY_F_IMAGES', $plugin_url . "/images/" );
 define( 'WOOMULTI_CURRENCY_F_FLAG', WOOMULTI_CURRENCY_F_IMAGES . "flag/" );
+define( 'WOOMULTI_CURRENCY_F_UNIT_CHECK_OPTION', 'wmc_currency_unit_check' );
 
 
 /*Include functions file*/

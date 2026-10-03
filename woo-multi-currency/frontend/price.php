@@ -356,6 +356,112 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 				self::$settings->set_current_currency( $old_currency, false );
 			}
 		}
+
+		$this->guard_currency_unit();
+	}
+
+	/**
+	 * Rebuild the stored result of converting 1 for every currency.
+	 *
+	 * @return array
+	 */
+	public static function refresh_currency_unit_check() {
+		if ( ! self::$settings instanceof WOOMULTI_CURRENCY_F_Data ) {
+			self::$settings = WOOMULTI_CURRENCY_F_Data::get_ins();
+		}
+
+		$list   = self::$settings->get_list_currencies();
+		$stored = array();
+
+		if ( is_array( $list ) ) {
+			foreach ( $list as $currency => $data ) {
+				$decimals   = ( isset( $data['decimals'] ) && $data['decimals'] !== '' ) ? (int) $data['decimals'] : 0;
+				$final_rate = isset( $data['rate'] ) ? (float) $data['rate'] : 0.0;
+				if ( $decimals < 0 ) {
+					$decimals = 0;
+				}
+
+				$value = (float) WOOMULTI_CURRENCY_F_Data::convert_price_to_float( $final_rate, array( 'decimals' => $decimals ) );
+
+				$reason       = '';
+				$min_decimals = 0;
+				if ( $final_rate <= 0 || $value <= 0 ) {
+					if ( $final_rate <= 0 ) {
+						$reason = 'rate';
+						$value  = $final_rate;
+					} else {
+						$reason       = 'decimals';
+						$min_decimals = self::minimum_decimals_for_positive_rate( $final_rate );
+					}
+				}
+
+				$stored[ $currency ] = array(
+					'value'        => $value,
+					'reason'       => $reason,
+					'min_decimals' => $min_decimals,
+				);
+			}
+		}
+
+		update_option( WOOMULTI_CURRENCY_F_UNIT_CHECK_OPTION, $stored );
+
+		return $stored;
+	}
+
+	/**
+	 * Smallest decimals count that keeps the final rate above 0.
+	 *
+	 * @param float $final_rate Final rate.
+	 *
+	 * @return int
+	 */
+	public static function minimum_decimals_for_positive_rate( $final_rate ) {
+		$final_rate = (float) $final_rate;
+		if ( $final_rate <= 0 ) {
+			return 0;
+		}
+
+		return min( 30, max( 0, ceil( - log10( $final_rate ) ) ) );
+	}
+
+	/**
+	 * @param string $currency Currency code.
+	 * @param array  $row      Stored unit-check row.
+	 *
+	 * @return string
+	 */
+	public static function currency_unit_check_message( $currency, $row ) {
+		if ( isset( $row['reason'] ) && 'rate' === $row['reason'] ) {
+			/* translators: %s: currency code */
+			return sprintf( __( 'The %s exchange rate must be greater than 0. Please update the exchange rate.', 'woo-multi-currency' ), $currency );
+		}
+
+		/* translators: 1: currency code, 2: minimum decimals */
+		return sprintf( __( 'Decimals of %1$s must be at least %2$d. Please update the Number of Decimals.', 'woo-multi-currency' ), $currency, isset( $row['min_decimals'] ) ? (int) $row['min_decimals'] : 0 );
+	}
+
+	/**
+	 * Send the shopper back to the default currency when converting 1 is not positive.
+	 */
+	protected function guard_currency_unit() {
+		$unit_check = get_option( WOOMULTI_CURRENCY_F_UNIT_CHECK_OPTION, array() );
+		if ( ! is_array( $unit_check ) || ! $unit_check ) {
+			$unit_check = self::refresh_currency_unit_check();
+		}
+
+		$current = self::$settings->get_current_currency();
+		if ( ! isset( $unit_check[ $current ]['value'] ) || (float) $unit_check[ $current ]['value'] > 0 ) {
+			return;
+		}
+
+		$default = self::$settings->get_default_currency();
+		if ( $current !== $default ) {
+			self::$settings->set_current_currency( $default );
+		}
+
+		if ( function_exists( 'wc_add_notice' ) && did_action( 'woocommerce_init' ) ) {
+			wc_add_notice( self::currency_unit_check_message( $current, $unit_check[ $current ] ), 'notice' );
+		}
 	}
 
 	public function is_checkout() {
@@ -761,7 +867,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		}
 		if ( $price && $id && $key ) {
 			/*Default decimal is "."*/
-			$this->price[ $id ][ $key ] = str_replace( ',', '.', $price );
+			$this->price[ $id ][ $key ] = (float)str_replace( ',', '.', $price );
 
 			return $this->price[ $id ][ $key ];
 		} else {

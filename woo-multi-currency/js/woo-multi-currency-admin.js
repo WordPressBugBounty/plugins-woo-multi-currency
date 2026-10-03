@@ -85,9 +85,107 @@ jQuery(document).ready(function () {
 
     // jQuery("#IncludeFieldsMulti").select2("val", selectedItems);
 
-    /*Save Submit button*/
-    jQuery('.wmc-submit').one('click', function () {
-        jQuery(this).addClass('loading');
+    function wmcTrim(value) {
+        return String(value == null ? '' : value).trim();
+    }
+
+    function wmcFinalRate(row) {
+        let rate = parseFloat(row.find('.wmc-currency-rate').val());
+        if (isNaN(rate)) {
+            rate = 0;
+        }
+        let feeRaw = wmcTrim(row.find('.wmc-currency-rate-fee').val());
+        let fee = parseFloat(feeRaw);
+        if (isNaN(fee)) {
+            fee = 0;
+        }
+        // Free uses fixed fee only (mirrors PHP get_list_currencies).
+        let feeSet = feeRaw !== '' && feeRaw !== '0';
+        return feeSet ? rate + fee : rate;
+    }
+
+    function wmcDecimals(row) {
+        let raw = wmcTrim(row.find('input[name="woo_multi_currency_params[currency_decimals][]"]').val());
+        if (raw === '') {
+            return 0;
+        }
+        let decimals = parseInt(raw, 10);
+        if (isNaN(decimals) || decimals < 0) {
+            return 0;
+        }
+        return decimals;
+    }
+
+    function wmcRoundPrice(price, decimals) {
+        const negative = price < 0;
+        let value = Math.abs(parseFloat(price));
+        if (isNaN(value)) {
+            value = 0;
+        }
+        const factor = Math.pow(10, decimals);
+        const rounded = Math.round(value * factor) / factor;
+        return negative ? -rounded : rounded;
+    }
+
+    function wmcMinDecimals(rate) {
+        return Math.min(30, Math.max(0, Math.ceil(-Math.log10(rate))));
+    }
+
+    function wmcSuggestedDecimals(rate) {
+        let parsed = parseFloat(rate);
+        if (isNaN(parsed) || parsed <= 0) {
+            return null;
+        }
+        return Math.min(12, wmcMinDecimals(parsed));
+    }
+
+    function wmcUnitMessage(currency, reason, minDecimals) {
+        if (reason === 'rate') {
+            return String(wmcParams.msgRate).replace('%s', currency);
+        }
+        return String(wmcParams.msgDecimals).replace('%1$s', currency).replace('%2$d', String(minDecimals));
+    }
+
+    function wmcShowUnitWarning($form, messages) {
+        let $box = $form.find('.wmc-currency-unit-warning').first();
+        if (!$box.length) {
+            $box = jQuery('<div class="vi-ui red message wmc-currency-unit-warning"><ul class="list"></ul></div>');
+            $form.find('.wmc-currency-options').first().after($box);
+        }
+        let $list = $box.find('ul').empty();
+        messages.forEach(function (message) {
+            jQuery('<li></li>').text(message).appendTo($list);
+        });
+    }
+
+    /*Save Submit button — validate unit rate/decimals before save (Pro-parity).*/
+    jQuery('.woo-multi-currency form').on('submit', function () {
+        let $form = jQuery(this);
+        let unitMessages = [];
+        $form.find('.wmc-currency-options .wmc-currency-data').each(function () {
+            let row = jQuery(this);
+            let currency = row.find('select[name="woo_multi_currency_params[currency][]"]').val();
+            if (!currency) {
+                return;
+            }
+            let finalRate = wmcFinalRate(row);
+            let decimals = wmcDecimals(row);
+            let result = wmcRoundPrice(finalRate, decimals);
+            if (finalRate <= 0 || result <= 0) {
+                if (finalRate <= 0) {
+                    unitMessages.push(wmcUnitMessage(currency, 'rate', 0));
+                } else {
+                    unitMessages.push(wmcUnitMessage(currency, 'decimals', wmcMinDecimals(finalRate)));
+                }
+            }
+        });
+        if (unitMessages.length) {
+            wmcShowUnitWarning($form, unitMessages);
+            jQuery('.wmc-submit').removeClass('loading');
+            return false;
+        }
+        $form.find('.wmc-currency-unit-warning').remove();
+        jQuery('.wmc-submit').addClass('loading');
     });
 
     /*Color picker*/
@@ -205,20 +303,6 @@ jQuery(document).ready(function () {
         });
     }
 
-    /**
-     * Rate-only Number of Decimals suggestion (mirrors ceil(-log10(rate))+2, cap 12).
-     *
-     * @param {number|string} rate
-     * @returns {number}
-     */
-    function suggested_currency_decimals(rate) {
-        rate = parseFloat(rate);
-        if (!rate || rate <= 0) {
-            return 0;
-        }
-        return Math.min(12, Math.max(0, Math.ceil(-Math.log10(rate)) + 2));
-    }
-
     function exchange_rate(original_currency, other_currencies) {
         if (original_currency && other_currencies) {
             var str_data = 'original_price=' + original_currency + '&other_currencies=' + other_currencies;
@@ -234,12 +318,14 @@ jQuery(document).ready(function () {
                 },
                 url: ajaxurl,
                 success: function (obj) {
-                    console.log(obj)
                     jQuery.each(obj, function (currency, rate) {
                         if (jQuery('tr.' + currency + '-currency').length > 0) {
-                            var $row = jQuery('tr.' + currency + '-currency');
+                            let $row = jQuery('tr.' + currency + '-currency');
                             $row.find('input[name="woo_multi_currency_params[currency_rate][]"]').val(rate);
-                            $row.find('input[name="woo_multi_currency_params[currency_decimals][]"]').val(suggested_currency_decimals(rate));
+                            let suggested = wmcSuggestedDecimals(rate);
+                            if (suggested !== null) {
+                                $row.find('input[name="woo_multi_currency_params[currency_decimals][]"]').val(suggested);
+                            }
                         }
                         jQuery('.woo-multi-currency').find('.loading').removeClass('loading');
                     });

@@ -16,4 +16,5 @@ delete_option( 'wmc_selected_currencies' );
 delete_option( 'wmc_currency_by_country' );
 delete_option( 'wmc_oder_id' );
 delete_option( 'wmc_email' );
+delete_option( 'wmc_currency_unit_check' );
 delete_transient( 'wmc_update_exchange_rate' );

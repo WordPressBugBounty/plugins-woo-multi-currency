@@ -233,6 +233,8 @@ Check screenshots at https://villatheme.com/woo-multi-currency/ or https://villa
 3. Currency selector widgets using shortcode
 
 == Changelog ==
+2026.10.03 - version 2.2.18
+- Updated: Low exchange rates with insufficient decimal places rounding totals to 0.00 and allowing free checkouts.
 
 2026.09.25 - version 2.2.17
 - Fixed: Unauthenticated reflected XSS in layout5 currency switcher (javascript: via wmc_current_url)

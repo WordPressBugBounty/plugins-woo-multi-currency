@@ -21,12 +21,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
 		add_filter( 'wmc_shortcode', array( $this, 'replace_shortcode' ), 10, 2 );
 
 		if ( ! isset( $_REQUEST['_woo_multi_currency_nonce'] ) || wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_shortcode' ) ) {
-			if ( ! empty( $_POST['wmc_current_url'] ) ) {
-				$candidate         = esc_url_raw( sanitize_text_field( $_POST['wmc_current_url'] ) );
-				$this->current_url = $candidate ? $candidate : remove_query_arg( 'wmc-currency' );
-			} else {
-				$this->current_url = remove_query_arg( 'wmc-currency' );
-			}
+			$this->current_url = ! empty( $_POST['wmc_current_url'] ) ? sanitize_text_field( $_POST['wmc_current_url'] ) : remove_query_arg( 'wmc-currency' );
 		}
 	}
 
@@ -712,7 +707,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
 					}
 					?>
 	<a rel="nofollow" title="<?php echo esc_attr( $country['name'] ) ?>"
-	class="wmc-currency-redirect" href="<?php echo esc_url( $link ) ?>"
+	class="wmc-currency-redirect" href="<?php echo esc_attr( $link ) ?>"
 	data-currency="<?php echo esc_attr( $k ) ?>">
 	<?php
 	if ( is_array( $list_flag ) && isset( $list_flag[$k] ) && ! empty( $list_flag[$k] ) ) {

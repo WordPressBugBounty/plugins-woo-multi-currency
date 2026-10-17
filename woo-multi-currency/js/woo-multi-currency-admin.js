@@ -1,5 +1,6 @@
-'use strict';
+
 jQuery(document).ready(function () {
+    'use strict';
     jQuery('.vi-ui.tabular.menu .item').vi_tab({
         history: true,
         historyType: 'hash'
@@ -317,18 +318,27 @@ jQuery(document).ready(function () {
                     other_currencies: other_currencies,
                 },
                 url: ajaxurl,
-                success: function (obj) {
-                    jQuery.each(obj, function (currency, rate) {
-                        if (jQuery('tr.' + currency + '-currency').length > 0) {
-                            let $row = jQuery('tr.' + currency + '-currency');
-                            $row.find('input[name="woo_multi_currency_params[currency_rate][]"]').val(rate);
-                            let suggested = wmcSuggestedDecimals(rate);
-                            if (suggested !== null) {
-                                $row.find('input[name="woo_multi_currency_params[currency_decimals][]"]').val(suggested);
+                success: function (res) {
+                    if (res.data) {
+                        let minDecimals = parseFloat(jQuery('[name="woo_multi_currency_params[rate_decimals]"]').val());
+                        let rates = res.data;
+                        let newRateDecimals = res && res.new_rate_decimals;
+                        jQuery.each(rates, function (currency, rate) {
+                            if (jQuery('tr.' + currency + '-currency').length > 0) {
+                                if (newRateDecimals) {
+                                    let tmpMinDecimals = wmcMinDecimals(rate);
+                                    rate = wmcRoundPrice(rate, tmpMinDecimals);
+                                    minDecimals = Math.max(minDecimals, tmpMinDecimals);
+                                    jQuery('tr.' + currency + '-currency').find('input[name="woo_multi_currency_params[currency_decimals][]"]').val(tmpMinDecimals);
+                                }
+                                jQuery('tr.' + currency + '-currency').find('input[name="woo_multi_currency_params[currency_rate][]"]').val(rate);
                             }
-                        }
+                        });
                         jQuery('.woo-multi-currency').find('.loading').removeClass('loading');
-                    });
+                        if (newRateDecimals) {
+                            jQuery('[name="woo_multi_currency_params[rate_decimals]"]').val(minDecimals);
+                        }
+                    }
                 },
                 error: function (html) {
                 }

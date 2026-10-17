@@ -3,7 +3,7 @@
  * Plugin Name: CURCY - Multi Currency for WooCommerce
  * Plugin URI: https://villatheme.com/extensions/woo-multi-currency/
  * Description: Allows you to display prices and accepts payments in multiple currencies. Working only with WooCommerce.
- * Version: 2.2.18
+ * Version: 2.2.19
  * Author: VillaTheme
  * Author URI: https://villatheme.com
  * License:           GPL v2 or later
@@ -13,16 +13,14 @@
  * Requires Plugins: woocommerce
  * Tested up to: 7.1
  * WC requires at least: 7.0
- * WC tested up to: 11.1
- * Elementor tested up to: 3.34
+ * WC tested up to: 11.2
  * Requires PHP: 7.4
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
 
-define( 'WOOMULTI_CURRENCY_F_VERSION', '2.2.18' );
+define( 'WOOMULTI_CURRENCY_F_VERSION', '2.2.19' );
 define( 'WOOMULTI_CURRENCY_F_FILE', __FILE__ );
 
 /**
@@ -55,7 +53,7 @@ class WOOMULTI_CURRENCY_F {
 		$environment = new VillaTheme_Require_Environment( [
 				'plugin_name'     => 'CURCY - Multi Currency for WooCommerce',
 				'php_version'     => '7.4',
-				'wp_version'      => '6.0',
+				'wp_version'      => '5.0',
 				'require_plugins' => [
 					[
 						'slug'    => 'woocommerce',
@@ -92,10 +90,7 @@ class WOOMULTI_CURRENCY_F {
 			return;
 		}
 		global $wp_version;
-		if ( version_compare( $wp_version, "5.0", "<" ) ) {
-//			deactivate_plugins( basename( __FILE__ ) ); // Deactivate our plugin
-//			wp_die( "This plugin requires WordPress version 5.0 or higher." );
-		} else {
+		if ( version_compare( $wp_version, "5.0", ">=" ) ) {
 
 			$data_init = array(
 				"auto_detect"          => "0",

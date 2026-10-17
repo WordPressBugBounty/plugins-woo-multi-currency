@@ -6,8 +6,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
-
 
 class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
 	protected $settings;
@@ -21,7 +19,14 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
 		add_filter( 'wmc_shortcode', array( $this, 'replace_shortcode' ), 10, 2 );
 
 		if ( ! isset( $_REQUEST['_woo_multi_currency_nonce'] ) || wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_shortcode' ) ) {
-			$this->current_url = ! empty( $_POST['wmc_current_url'] ) ? sanitize_text_field( $_POST['wmc_current_url'] ) : remove_query_arg( 'wmc-currency' );
+			$posted_url = '';
+			if ( ! empty( $_POST['wmc_current_url'] ) ) {
+				$posted_url = esc_url_raw( sanitize_text_field( wp_unslash( $_POST['wmc_current_url'] ) ) );
+				if ( $posted_url ) {
+					$posted_url = wp_validate_redirect( $posted_url, '' );
+				}
+			}
+			$this->current_url = $posted_url ?: remove_query_arg( 'wmc-currency' );
 		}
 	}
 
@@ -707,7 +712,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
 					}
 					?>
 	<a rel="nofollow" title="<?php echo esc_attr( $country['name'] ) ?>"
-	class="wmc-currency-redirect" href="<?php echo esc_attr( $link ) ?>"
+	class="wmc-currency-redirect" href="<?php echo esc_url( $link ) ?>"
 	data-currency="<?php echo esc_attr( $k ) ?>">
 	<?php
 	if ( is_array( $list_flag ) && isset( $list_flag[$k] ) && ! empty( $list_flag[$k] ) ) {

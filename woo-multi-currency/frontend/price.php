@@ -3,7 +3,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
 
 use Automattic\Jetpack\Constants;
 
@@ -13,6 +12,8 @@ use Automattic\Jetpack\Constants;
 class WOOMULTI_CURRENCY_F_Frontend_Price {
 	protected static $settings;
 	protected $price;
+	protected static $request_decimal_places = 0;
+	protected static $settled_prices         = array();
 
 	public function __construct() {
 		self::$settings = WOOMULTI_CURRENCY_F_Data::get_ins();
@@ -360,6 +361,100 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		$this->guard_currency_unit();
 	}
 
+	public static function get_request_decimal_places() {
+		return (int) self::$request_decimal_places;
+	}
+
+	public static function reset_request_decimal_places() {
+		self::$request_decimal_places = 0;
+	}
+
+	public static function remember_request_decimal_places( $places ) {
+		$places = (int) $places;
+		if ( $places < 0 ) {
+			$places = 0;
+		}
+		if ( $places > 30 ) {
+			$places = 30;
+		}
+		if ( $places > self::$request_decimal_places ) {
+			self::$request_decimal_places = $places;
+		}
+	}
+
+	public static function fractional_places( $amount ) {
+		$amount = abs( (float) $amount );
+		if ( $amount <= 0 ) {
+			return 0;
+		}
+		for ( $places = 0; $places <= 30; $places ++ ) {
+			$rounded = (float) number_format( $amount, $places, '.', '' );
+			if ( abs( $amount - $rounded ) < 1.0e-12 ) {
+				return $places;
+			}
+		}
+
+		return 30;
+	}
+
+	protected static function ensure_settings() {
+		if ( ! is_object( self::$settings ) ) {
+			self::$settings = WOOMULTI_CURRENCY_F_Data::get_ins();
+		}
+	}
+
+	protected static function currency_saved_decimals( $currency ) {
+		self::ensure_settings();
+		$list = self::$settings->get_list_currencies();
+		if ( $currency && is_array( $list ) && isset( $list[ $currency ]['decimals'] ) && $list[ $currency ]['decimals'] !== '' ) {
+			return max( 0, (int) $list[ $currency ]['decimals'] );
+		}
+
+		return 0;
+	}
+
+	public static function fit_signed_amount( $amount, $saved_decimals ) {
+		$saved_decimals = max( 0, (int) $saved_decimals );
+		$negative       = $amount < 0;
+		$absolute       = abs( (float) $amount );
+		$places         = $saved_decimals;
+		$fitted         = (float) WOOMULTI_CURRENCY_F_Data::convert_price_to_float( $absolute, array( 'decimals' => $saved_decimals ) );
+		if ( $absolute > 0 && 0.0 === $fitted ) {
+			$places = min( 30, max( 1, (int) WOOMULTI_CURRENCY_F_Data::get_trimmed_decimal_places( $absolute ) ) );
+			$fitted = (float) WOOMULTI_CURRENCY_F_Data::convert_price_to_float( $absolute, array( 'decimals' => $places ) );
+		}
+		if ( $negative ) {
+			$fitted *= -1;
+		}
+
+		return array(
+			'amount' => (float) $fitted,
+			'places' => (int) $places,
+		);
+	}
+
+	public static function settle_price( $price, $currency ) {
+		if ( $price === '' || $price === null || ! is_numeric( $price ) ) {
+			return $price;
+		}
+		$currency_key = (string) $currency;
+		$amount_key   = (string) (float) $price;
+		if ( isset( self::$settled_prices[ $currency_key ][ $amount_key ] ) ) {
+			return self::$settled_prices[ $currency_key ][ $amount_key ];
+		}
+		if (!isset( self::$settled_prices[ $currency_key ])){
+			self::$settled_prices[ $currency_key ]=[];
+		}
+		$saved  = self::currency_saved_decimals( $currency );
+		$fit    = self::fit_signed_amount( (float) $price, $saved );
+		$result = (float) $fit['amount'];
+		self::remember_request_decimal_places( max( $saved, (int) $fit['places'], self::fractional_places( $result ) ) );
+		$result = (float) $result;
+		self::$settled_prices[ $currency_key ][ $amount_key ] = $result;
+
+		return $result;
+	}
+
 	/**
 	 * Rebuild the stored result of converting 1 for every currency.
 	 *
@@ -373,37 +468,36 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		$list   = self::$settings->get_list_currencies();
 		$stored = array();
 
-		if ( is_array( $list ) ) {
-			foreach ( $list as $currency => $data ) {
-				$decimals   = ( isset( $data['decimals'] ) && $data['decimals'] !== '' ) ? (int) $data['decimals'] : 0;
-				$final_rate = isset( $data['rate'] ) ? (float) $data['rate'] : 0.0;
-				if ( $decimals < 0 ) {
-					$decimals = 0;
-				}
+		try {
+			if ( is_array( $list ) ) {
+				foreach ( $list as $currency => $data ) {
+					$final_rate = isset( $data['rate'] ) ? (float) $data['rate'] : 0.0;
+					$value      = (float) self::settle_price( $final_rate, $currency );
 
-				$value = (float) WOOMULTI_CURRENCY_F_Data::convert_price_to_float( $final_rate, array( 'decimals' => $decimals ) );
-
-				$reason       = '';
-				$min_decimals = 0;
-				if ( $final_rate <= 0 || $value <= 0 ) {
-					if ( $final_rate <= 0 ) {
-						$reason = 'rate';
-						$value  = $final_rate;
-					} else {
-						$reason       = 'decimals';
-						$min_decimals = self::minimum_decimals_for_positive_rate( $final_rate );
+					$reason       = '';
+					$min_decimals = 0;
+					if ( $final_rate <= 0 || $value <= 0 ) {
+						if ( $final_rate <= 0 ) {
+							$reason = 'rate';
+							$value  = $final_rate;
+						} else {
+							$reason       = 'decimals';
+							$min_decimals = self::minimum_decimals_for_positive_rate( $final_rate );
+						}
 					}
+
+					$stored[ $currency ] = array(
+						'value'        => $value,
+						'reason'       => $reason,
+						'min_decimals' => $min_decimals,
+					);
 				}
-
-				$stored[ $currency ] = array(
-					'value'        => $value,
-					'reason'       => $reason,
-					'min_decimals' => $min_decimals,
-				);
 			}
-		}
 
-		update_option( WOOMULTI_CURRENCY_F_UNIT_CHECK_OPTION, $stored );
+			update_option( WOOMULTI_CURRENCY_F_UNIT_CHECK_OPTION, $stored );
+		} finally {
+			self::reset_request_decimal_places();
+		}
 
 		return $stored;
 	}

@@ -2,8 +2,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
-
 
 class WOOMULTI_CURRENCY_F_Data {
 	protected static $instance = null;
@@ -652,7 +650,16 @@ class WOOMULTI_CURRENCY_F_Data {
 		$links               = array();
 		$selected_currencies = $this->get_list_currencies();
 		$current_currency    = $this->get_current_currency();
-		$url                 = ! empty( $_POST['wmc_current_url'] ) ? sanitize_text_field( $_POST['wmc_current_url'] ) : false;
+		$url                 = false;
+		if ( ! empty( $_POST['wmc_current_url'] ) ) {
+			$url = esc_url_raw( sanitize_text_field( wp_unslash( $_POST['wmc_current_url'] ) ) );
+			if ( $url ) {
+				$url = wp_validate_redirect( $url, '' );
+			}
+			if ( ! $url ) {
+				$url = false;
+			}
+		}
 		if ( count( $selected_currencies ) ) {
 			foreach ( $selected_currencies as $k => $currency ) {
 				if ( $currency['hide'] ) {
@@ -844,7 +851,7 @@ class WOOMULTI_CURRENCY_F_Data {
 	 *
 	 * @return array
 	 */
-	public function get_exchange( $orginal_price = '', $other_price = '' ) {
+	public function get_exchange( $orginal_price = '', $other_price = '', $check_rate = false ) {
 		$rates = array();
 
 		$data_rates = $this->get_default_exchange( $orginal_price, $other_price );
@@ -852,10 +859,23 @@ class WOOMULTI_CURRENCY_F_Data {
 		if ( ! isset( $rates[ $orginal_price ] ) ) {
 			$rates[ $orginal_price ] = 1;
 		}
+		$rate_decimals     = $this->get_rate_decimals();
+		$new_rate_decimals = false;
 		if ( ( is_array( $data_rates ) || $data_rates instanceof Countable ) && count( $rates ) ) {
 			foreach ( $data_rates as $k => $rate ) {
-				$rates[ $k ] = $rate == 1 ? 1 : number_format( round( $rate, $this->get_rate_decimals() ), $this->get_rate_decimals(), '.', '' );
+				$tmp_rate = ( 1 == $rate ) ? 1 : round( $rate, $rate_decimals );
+				if ( $check_rate && ! $tmp_rate ) {
+					$new_rate_decimals = true;
+					$tmp_rate          = $rate;
+				}
+				$rates[ $k ] = $tmp_rate;
 			}
+		}
+		if ( $check_rate ) {
+			$rates = array(
+				'data'              => $rates,
+				'new_rate_decimals' => $new_rate_decimals,
+			);
 		}
 
 		return $rates;
@@ -1287,6 +1307,15 @@ class WOOMULTI_CURRENCY_F_Data {
 			'',
 			'.'
 		), $price ) );
+	}
+
+	public static function get_trimmed_decimal_places( $value ) {
+		$value = (float) $value;
+		if ( $value <= 0 ) {
+			return (int) apply_filters( 'wmc_get_trimmed_decimal_places', 0, $value );
+		}
+
+		return (int) apply_filters( 'wmc_get_trimmed_decimal_places', ceil( - log10( $value ) ), $value );
 	}
 
 	public function set_fallback_currency() {

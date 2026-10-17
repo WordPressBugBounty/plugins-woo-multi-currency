@@ -8,7 +8,6 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
-// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals -- Uninstall script runs in isolation.
 
 delete_option( 'woo_multi_currency_params' );
 delete_option( 'woo_multi_currency_old_version' );

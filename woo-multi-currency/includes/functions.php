@@ -2,7 +2,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput -- Historical WOOMULTI_CURRENCY_F / wmc_ / vi_ / VillaTheme_ prefixes. Cache-compat allows a missing plugin nonce (invalid nonce is still rejected). Inputs are unslashed/sanitized; PCP does not treat wc_clean() as a sanitizer.
 
 /**
  * Function include all files in folder
@@ -134,6 +133,7 @@ if ( ! function_exists( 'wmc_get_price' ) ) {
 					$price = WOOMULTI_CURRENCY_F_Data::convert_price_to_float( $price, array( 'decimals' => absint( $selected_currencies[ $currency_code ]['decimals'] ) ) );
 				}
 				$price = $is_shipping ? $price : apply_filters( 'wmc_get_price', $price, $currency_code );
+				$price = WOOMULTI_CURRENCY_F_Frontend_Price::settle_price( $price, $currency_code );
 //				$price = apply_filters( 'wmc_get_price', $price, $currency_code );
 			} else {
 				$price = $price * (float) $selected_currencies[ $current_currency ]['rate'];
@@ -141,6 +141,7 @@ if ( ! function_exists( 'wmc_get_price' ) ) {
 					$price = WOOMULTI_CURRENCY_F_Data::convert_price_to_float( $price, array( 'decimals' => absint( $selected_currencies[ $current_currency ]['decimals'] ) ) );
 				}
 				$price = $is_shipping ? $price : apply_filters( 'wmc_get_price', $price, $current_currency );
+				$price = WOOMULTI_CURRENCY_F_Frontend_Price::settle_price( $price, $current_currency );
 //				$price = apply_filters( 'wmc_get_price', $price, $current_currency );
 			}
 		}

@@ -4,7 +4,7 @@ Donate link: https://www.villatheme.com/donate
 Tags: ecommerce, multi currency for woo, woocommerce, woocommerce currency switcher, woocommerce multi currency
 Requires at least: 6.0
 Tested up to: 7.1
-WC tested up to: 11.1
+WC tested up to: 11.2
 Requires PHP: 7.4
 WC requires at least: 7.0
 License: GPL v2 or later
@@ -233,6 +233,11 @@ Check screenshots at https://villatheme.com/woo-multi-currency/ or https://villa
 3. Currency selector widgets using shortcode
 
 == Changelog ==
+2026.10.17 - version 2.2.19
+- Updated: The currency switcher only follows a return URL that WordPress accepts.
+- Updated: Update Rate keeps the raw exchange rate and raises rate decimals when rounding would turn the rate into 0.
+- Updated: Price decimal trimming uses the magnitude of the price so small amounts keep enough decimal places.
+
 2026.10.03 - version 2.2.18
 - Updated: Low exchange rates with insufficient decimal places rounding totals to 0.00 and allowing free checkouts.
 

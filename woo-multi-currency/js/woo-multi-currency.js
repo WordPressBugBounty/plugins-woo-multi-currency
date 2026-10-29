@@ -130,7 +130,7 @@ jQuery(document).ready(function ($) {
                             }
 
                             if (wooMultiCurrencyParams.switchByJS !== '1') {
-                                $('.wmc-currency a').unbind();
+                                $('.wmc-currency a').off();
                             }
 
                             if (currentCurrency) {

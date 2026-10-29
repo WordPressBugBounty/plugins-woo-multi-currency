@@ -1,57 +1,10 @@
 
-jQuery(document).ready(function () {
+jQuery(document).ready(function ($) {
     'use strict';
-    jQuery('.vi-ui.tabular.menu .item').vi_tab({
-        history: true,
-        historyType: 'hash'
-    });
 
-    /*Setup tab*/
-    var tabs,
-        tabEvent = false,
-        initialTab = 'general',
-        navSelector = '.vi-ui.menu',
-        navFilter = function (el) {
-            // return jQuery(el).attr('href').replace(/^#/, '');
-        },
-        panelSelector = '.vi-ui.tab',
-        panelFilter = function () {
-            jQuery(panelSelector + ' a').filter(function () {
-                return jQuery(navSelector + ' a[title=' + jQuery(this).attr('title') + ']').size() != 0;
-            });
-        };
-
-    // Initializes plugin features
-    jQuery.address.strict(false).wrap(true);
-
-    if (jQuery.address.value() == '') {
-        jQuery.address.history(false).value(initialTab).history(true);
+    if ($('.vi-ui.tabular.menu').length) {
+        $('.vi-ui.tabular.menu .item').tab({history: true, historyType: 'hash'});
     }
-
-    // Address handler
-    jQuery.address.init(function (event) {
-
-        // Adds the ID in a lazy manner to prevent scrolling
-        jQuery(panelSelector).attr('id', initialTab);
-
-        panelFilter();
-
-        // Tabs setup
-        tabs = jQuery('.vi-ui.menu')
-            .vi_tab({
-                history: true,
-                historyType: 'hash'
-            })
-
-        // Enables the plugin for all the tabs
-        jQuery(navSelector + ' a').click(function (event) {
-            tabEvent = true;
-            // jQuery.address.value(navFilter(event.target));
-            tabEvent = false;
-            return true;
-        });
-
-    });
 
 
     /*Init JS input*/
@@ -204,15 +157,15 @@ jQuery(document).ready(function () {
         },
         hide: true,
         border: true
-    }).click(function () {
+    }).on('click', function () {
         jQuery('.iris-picker').hide();
         jQuery(this).closest('td').find('.iris-picker').show();
     });
 
-    jQuery('body').click(function () {
+    jQuery('body').on('click', function () {
         jQuery('.iris-picker').hide();
     });
-    jQuery('.color-picker').click(function (event) {
+    jQuery('.color-picker').on('click', function (event) {
         event.stopPropagation();
     });
     /*Update all rates*/
@@ -232,10 +185,10 @@ jQuery(document).ready(function () {
     remove_currency();
 
     function insert_currency() {
-        jQuery('.vi-ui.checkbox').unbind();
+        jQuery('.vi-ui.checkbox').off();
         jQuery('.vi-ui.checkbox').checkbox();
 
-        jQuery('.wmc-add-currency').unbind();
+        jQuery('.wmc-add-currency').off();
         jQuery('.wmc-add-currency').on('click', function () {
             if (jQuery('.wmc-currency-data').length >= 2) {
                 alert('Please upgrade to Premium version');
@@ -247,7 +200,7 @@ jQuery(document).ready(function () {
             new_row.find('input[name="woo_multi_currency_params[currency_default]"]').attr('checked', false);
             jQuery(new_row).appendTo('.wmc-currency-options tbody');
             remove_currency();
-            jQuery('.wmc-currency-data').last().find('select.select2').select2().change();
+            jQuery('.wmc-currency-data').last().find('select.select2').select2().trigger('change');
 
         });
 
@@ -260,7 +213,7 @@ jQuery(document).ready(function () {
         jQuery('.wmc-currency-options tbody').sortable();
 
         /*Change currency default*/
-        jQuery('input[name="woo_multi_currency_params[currency_default]"]').unbind('change');
+        jQuery('input[name="woo_multi_currency_params[currency_default]"]').off('change');
         jQuery('input[name="woo_multi_currency_params[currency_default]"]').on('change', function () {
             jQuery('.wmc-currency-options').find('input[name="woo_multi_currency_params[currency_rate][]"]').removeAttr('readonly');
             jQuery('.wmc-currency-options').find('input[name="woo_multi_currency_params[currency_rate_fee][]"]').removeAttr('readonly');
@@ -291,7 +244,7 @@ jQuery(document).ready(function () {
     }
 
     function remove_currency() {
-        jQuery('.wmc-remove-currency').unbind();
+        jQuery('.wmc-remove-currency').off();
         insert_currency();
         jQuery('.wmc-remove-currency').on('click', function () {
             if (confirm("Would you want to remove this currency?")) {
@@ -354,5 +307,15 @@ jQuery(document).ready(function () {
     jQuery('input[name="woo_multi_currency_params[checkout_currency]"]').on('change', function () {
         jQuery('select[name="woo_multi_currency_params[checkout_currency_args][]"]').removeAttr('disabled');
         jQuery(this).closest('tr').find('select[name="woo_multi_currency_params[checkout_currency_args][]"]').attr('disabled', 'disabled').find('option').removeAttr('selected').last().attr('selected', true);
-    })
+    });
+
+    jQuery('select[name="woo_multi_currency_params[geo_api]"]').on('change', function () {
+        switch (true) {
+            case jQuery(this).val() === '1':
+                jQuery('.wmc-external-geo-api-key-row').show();
+                break;
+            default:
+                jQuery('.wmc-external-geo-api-key-row').hide();
+        }
+    });
 });

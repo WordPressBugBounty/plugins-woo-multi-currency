@@ -69,7 +69,7 @@ class WOOMULTI_CURRENCY_F_Plugin_Extra_Product_Options {
 	public function woocommerce_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $quantity ) {
 		$current_currency = $this->settings->get_current_currency();
 		$default_currency = $this->settings->get_default_currency();
-		if ( is_array( $cart_item_data['thwepo_options'] ) && count( $cart_item_data['thwepo_options'] ) ) {
+		if ( isset( $cart_item_data['thwepo_options'] ) && is_array( $cart_item_data['thwepo_options'] ) && count( $cart_item_data['thwepo_options'] ) ) {
 			foreach ( $cart_item_data['thwepo_options'] as $key => $value ) {
 				if ( $value['price_type'] == 'custom' ) {
 					if ( $current_currency != $default_currency ) {

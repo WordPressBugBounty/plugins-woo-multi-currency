@@ -4,6 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class WOOMULTI_CURRENCY_F_Data {
+	public static $current_currency;
 	protected static $instance = null;
 	protected static $allow_html = null;
 	private $params;
@@ -73,6 +74,7 @@ class WOOMULTI_CURRENCY_F_Data {
 			'checkout_currency'          => $wmc_settings['currency_core'],
 			'checkout_currency_args'     => array(),
 			'geo_api'                    => 0,
+			'geo_api_key'                => '',
 			'rel_nofollow'               => 0,
 			'bot_currency'               => 'default_currency',
 		);
@@ -119,6 +121,15 @@ class WOOMULTI_CURRENCY_F_Data {
 	 */
 	public function get_geo_api() {
 		return apply_filters( 'wmc_get_geo_api', $this->params['geo_api'] );
+	}
+
+	/**
+	 * External geo API key.
+	 *
+	 * @return mixed
+	 */
+	public function get_geo_api_key() {
+		return apply_filters( 'wmc_get_geo_api_key', $this->params['geo_api_key'] );
 	}
 
 	/**
@@ -700,9 +711,10 @@ class WOOMULTI_CURRENCY_F_Data {
 	 * @return mixed
 	 */
 	public function get_list_currencies() {
-		$data = array();
-		if ( count( $this->params['currency'] ) ) {
-			foreach ( $this->params['currency'] as $k => $currency ) {
+		$data          = array();
+		$currency_list = ( isset( $this->params['currency'] ) && is_array( $this->params['currency'] ) ) ? $this->params['currency'] : array();
+		if ( count( $currency_list ) ) {
+			foreach ( $currency_list as $k => $currency ) {
 				if ( ! isset( $this->params['currency_rate_fee'][ $k ] ) ) {
 					$this->params['currency_rate_fee'][ $k ] = 0;
 				}
@@ -725,23 +737,27 @@ class WOOMULTI_CURRENCY_F_Data {
 	}
 
 	/**
-	 * Get current currency
+	 * Get current currency (request-level cached for performance).
+	 *
 	 * @return mixed
 	 */
 	public function get_current_currency() {
-
-		/*Check currency*/
-		$selected_currencies = $this->get_currencies();
+		if ( self::$current_currency !== null && self::$current_currency !== false ) {
+			return self::$current_currency;
+		}
 		$current_currency    = $this->getcookie( 'wmc_current_currency' );
-		if ( ! $current_currency || ! in_array( $current_currency, $selected_currencies ) ) {
+		$selected_currencies = $this->get_currencies();
+
+		if ( ! is_array( $selected_currencies ) || ! in_array( $current_currency, $selected_currencies, true ) ) {
 			$current_currency = get_option( 'woocommerce_currency' );
 		}
+		self::$current_currency = $current_currency;
 
 		return $current_currency;
 	}
 
 	public function get_currencies() {
-		$currencies = is_array( $this->params['currency'] ) ? $this->params['currency'] : array();
+		$currencies = ( isset( $this->params['currency'] ) && is_array( $this->params['currency'] ) ) ? $this->params['currency'] : array();
 		if ( count( $currencies ) > 2 ) {
 			$currencies = array_slice( $currencies, 0, 2 );
 		}
@@ -863,7 +879,13 @@ class WOOMULTI_CURRENCY_F_Data {
 		$new_rate_decimals = false;
 		if ( ( is_array( $data_rates ) || $data_rates instanceof Countable ) && count( $rates ) ) {
 			foreach ( $data_rates as $k => $rate ) {
-				$tmp_rate = ( 1 == $rate ) ? 1 : round( $rate, $rate_decimals );
+				if ( 1 == $rate ) {
+					$tmp_rate = 1;
+				} elseif ( is_numeric( $rate ) ) {
+					$tmp_rate = round( $rate, $rate_decimals );
+				} else {
+					$tmp_rate = 0;
+				}
 				if ( $check_rate && ! $tmp_rate ) {
 					$new_rate_decimals = true;
 					$tmp_rate          = $rate;
@@ -1087,11 +1109,21 @@ class WOOMULTI_CURRENCY_F_Data {
 	 * @param bool $checkout
 	 */
 	public function set_current_currency( $currency_code, $checkout = true ) {
+		if ( ! empty( $_SERVER['HTTP_ACCEPT'] ) ) {
+			if ( strpos( sanitize_text_field( wp_unslash( $_SERVER['HTTP_ACCEPT'] ) ), 'text/css' ) !== false ) {
+				return;
+			}
+		}
+		// Update request cache so get_current_currency() returns new value in same request.
+		if ( $currency_code ) {
+			self::$current_currency = $currency_code;
+		}
+
 		if ( $currency_code ) {
 			$this->setcookie( 'wmc_current_currency', $currency_code, time() + 60 * 60 * 24, '/' );
-		}
-		if ( ! $this->get_enable_multi_payment() && $checkout ) {
-			$this->setcookie( 'wmc_current_currency_old', $currency_code, time() + 60 * 60 * 24, '/' );
+			if ( ! $this->get_enable_multi_payment() && $checkout ) {
+				$this->setcookie( 'wmc_current_currency_old', $currency_code, time() + 60 * 60 * 24, '/' );
+			}
 		}
 	}
 
@@ -1298,15 +1330,17 @@ class WOOMULTI_CURRENCY_F_Data {
 				)
 			)
 		);
-		$original_price = $price;
-		$negative       = $price < 0;
-		$price          = apply_filters( 'raw_woocommerce_price', floatval( $negative ? $price * - 1 : $price ), $original_price );
-		$price          = apply_filters( 'formatted_woocommerce_price', number_format( $price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] ), $price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
+		$decimal_separator  = null === $args['decimal_separator'] ? '.' : (string) $args['decimal_separator'];
+		$thousand_separator = null === $args['thousand_separator'] ? '' : (string) $args['thousand_separator'];
+		$original_price     = $price;
+		$negative           = $price < 0;
+		$price              = apply_filters( 'raw_woocommerce_price', (float) ( $negative ? $price * - 1 : $price ), $original_price );
+		$price              = apply_filters( 'formatted_woocommerce_price', number_format( $price, $args['decimals'], $decimal_separator, $thousand_separator ), $price, $args['decimals'], $decimal_separator, $thousand_separator );
 
-		return floatval( str_replace( array( $args['thousand_separator'], $args['decimal_separator'] ), array(
+		return (float) str_replace( array( $thousand_separator, $decimal_separator ), array(
 			'',
 			'.'
-		), $price ) );
+		), $price );
 	}
 
 	public static function get_trimmed_decimal_places( $value ) {
@@ -1428,5 +1462,25 @@ class WOOMULTI_CURRENCY_F_Data {
 		$css[] = 'transform';
 
 		return $css;
+	}
+
+	public static function get_price_format( $pos ) {
+		switch ( $pos ) {
+			case 'left' :
+				$format = '%1$s%2$s';
+				break;
+			case 'right' :
+				$format = '%2$s%1$s';
+				break;
+			case 'left_space' :
+				$format = '%1$s&nbsp;%2$s';
+				break;
+			case 'right_space' :
+			default:
+				$format = '%2$s&nbsp;%1$s';
+				break;
+		}
+
+		return $format;
 	}
 }

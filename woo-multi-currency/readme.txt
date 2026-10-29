@@ -41,7 +41,7 @@ If you have a WooCommerce store, CURCY - Multi Currency for WooCommerce is a mus
 
  - **Auto Detect**: Automatically detect a customer's country code based on IP address and display respective currency set for their country.
 
- - **Geo API**: Choose between WooCommerce and External service. If this option is set to WooCommerce, our plugin will geolocate IP from ipinfo.io or ip-api.com. If this option is set to External, our plugin will use [IP Geolocation](https://www.geoplugin.com/geolocation/) by [geoPlugin](https://www.geoplugin.com/). For more details, please read geoPlugin's [Privacy Policy and User Agreement](https://www.geoplugin.com/privacy).
+ - **Geo API**: Choose between WooCommerce and External service. If this option is set to WooCommerce, our plugin will geolocate IP from ipinfo.io or ip-api.com. If this option is set to External, our plugin will use [IP2Location](https://www.ip2location.io/) with your API key.
 
  - **Display approximate price**: If you do not want the plugin to detect customer's country and show the price in their native currency directly when they come to your store, WooCommerce Multi Currency can still show the price in default currency AND the approximate price in the customer's native currency
 
@@ -233,6 +233,15 @@ Check screenshots at https://villatheme.com/woo-multi-currency/ or https://villa
 3. Currency selector widgets using shortcode
 
 == Changelog ==
+
+2026.10.29 - version 2.2.20
+- Added: External geo API key setting; auto-detect uses ip2location.io when External geo API is enabled
+- Fixed: Variation fixed prices when multi-currency price meta is already stored as an array
+- Fixed: Catalog price filter min/max handling and flat-rate shipping cost conversion
+- Fixed: wmc_get_exchange_rate() no longer rounds the raw rate by Number of Decimals, so wmc_revert_price() and third-party converters using the rate work correctly
+- Updated: wmc_revert_price() formats the reverted amount with settle_price after dividing by the raw rate
+- Updated: Cache-compatible AJAX prices with Woodmart, Goya, and Alukas theme AJAX requests
+
 2026.10.17 - version 2.2.19
 - Updated: The currency switcher only follows a return URL that WordPress accepts.
 - Updated: Update Rate keeps the raw exchange rate and raises rate decimals when rounding would turn the rate into 0.

@@ -133,8 +133,8 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
 											} else {
 												if ( $this->settings->check_fixed_price() ) {
 													$product_id    = $product->get_id();
-													$product_price = wmc_adjust_fixed_price( self::format_json_price_meta( $product->get_meta('_regular_price_wmcp', true ) ) );
-													$sale_price    = wmc_adjust_fixed_price( self::format_json_price_meta( $product->get_meta('_sale_price_wmcp', true ) ) );
+													$product_price = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $product->get_meta('_regular_price_wmcp', true ) ) );
+													$sale_price    = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $product->get_meta('_sale_price_wmcp', true ) ) );
 													if ( isset( $product_price[ $k ] ) && ! $product->is_on_sale( 'edit' ) && $product_price[ $k ] > 0 ) {
 														$price = $product_price[ $k ];
 													} elseif ( isset( $sale_price[ $k ] ) && $sale_price[ $k ] > 0 ) {
@@ -394,7 +394,9 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
 		?>
         <div class="woo-multi-currency wmc-shortcode plain-horizontal" data-layout="plain_horizontal">
             <input type="hidden" class="wmc-current-url" value="<?php echo esc_url( $this->current_url ) ?>">
-			<?php foreach ( $links as $k => $link ) {
+			<?php
+			$class = '';
+			foreach ( $links as $k => $link ) {
 				if ( $current_currency ) {
 					if ( $current_currency == $k ) {
 						$class = "wmc-active";
@@ -662,10 +664,10 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
 		}
 		$arrow = '';
 		switch ( $dropdown_icon ) {
-			case 'arrow';
+			case 'arrow':
 				$arrow = '<i class="wmc-open-dropdown-currencies"></i>';
 				break;
-			case 'triangle';
+			case 'triangle':
 				$arrow = '<span class="wmc-current-currency-arrow"></span>';
 				break;
 			default:
@@ -762,6 +764,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
         <div class="woo-multi-currency wmc-shortcode plain-horizontal layout6" data-layout="layout6">
             <input type="hidden" class="wmc-current-url" value="<?php echo esc_url( $this->current_url ) ?>">
 			<?php
+			$class = '';
 			foreach ( $links as $k => $link ) {
 				if ( $current_currency ) {
 					if ( $current_currency == $k ) {
@@ -1032,11 +1035,6 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
 		}
 
 		return $format;
-	}
-
-	function format_json_price_meta( $price_meta ) {
-
-		return is_string( $price_meta ) ? json_decode( $price_meta, true ) : $price_meta;
 	}
 
 }

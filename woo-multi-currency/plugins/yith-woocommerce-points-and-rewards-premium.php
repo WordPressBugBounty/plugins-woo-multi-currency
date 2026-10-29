@@ -53,7 +53,7 @@ class WOOMULTI_CURRENCY_F_Plugin_Yith_WooCommerce_Points_And_Rewards_Premium {
 			if ( empty( $conversion ) ) {
 				$conversion = $this->get_main_conversion_rate( $currency );
 			}
-			if ( ! empty( $conversion['money'] && ! empty( $conversion['points'] ) ) ) {
+			if ( ! empty( $conversion['money'] ) && ! empty( $conversion['points'] ) ) {
 				$conversion['money'] = wmc_get_price( $conversion['money'] );
 				$conversion_rate     = $conversion;
 			}

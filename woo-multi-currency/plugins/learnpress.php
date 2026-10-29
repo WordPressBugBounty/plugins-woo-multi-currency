@@ -317,6 +317,7 @@ class WOOMULTI_CURRENCY_F_Plugin_LearnPress {
 			)
 		);
 
+		$price    = floatval( $price );
 		$negative = $price < 0;
 		$price    = apply_filters( 'raw_woocommerce_price', floatval( $negative ? $price * - 1 : $price ) );
 		$price    = apply_filters( 'formatted_woocommerce_price', number_format( $price, $decimals, $decimal_separator, $thousand_separator ), $price, $decimals, $decimal_separator, $thousand_separator );

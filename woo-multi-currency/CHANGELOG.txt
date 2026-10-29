@@ -1,4 +1,12 @@
 *** CURCY - Multi Currency for WooCommerce Changelog ***
+2026.10.29 - version 2.2.20
+- Added: External geo API key setting; auto-detect uses ip2location.io when External geo API is enabled
+- Fixed: Variation fixed prices when multi-currency price meta is already stored as an array
+- Fixed: Catalog price filter min/max handling and flat-rate shipping cost conversion
+- Fixed: wmc_get_exchange_rate() no longer rounds the raw rate by Number of Decimals, so wmc_revert_price() and third-party converters using the rate work correctly
+- Updated: wmc_revert_price() formats the reverted amount with settle_price after dividing by the raw rate
+- Updated: Cache-compatible AJAX prices with Woodmart, Goya, and Alukas theme AJAX requests
+
 2026.10.17 - version 2.2.19
 - Updated: The currency switcher only follows a return URL that WordPress accepts.
 - Updated: Update Rate keeps the raw exchange rate and raises rate decimals when rounding would turn the rate into 0.

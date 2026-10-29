@@ -321,7 +321,7 @@ class WOOMULTI_CURRENCY_F_Admin_Product {
 		return $fixed_price;
 	}
 
-	function format_json_price_meta( $price_meta ) {
+	public static function format_json_price_meta( $price_meta ) {
 
 		return is_string( $price_meta ) ? json_decode( $price_meta, true ) : $price_meta;
 	}

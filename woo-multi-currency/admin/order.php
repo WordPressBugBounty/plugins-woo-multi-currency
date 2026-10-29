@@ -16,7 +16,7 @@ class WOOMULTI_CURRENCY_F_Admin_Order {
 		add_action( 'manage_shop_order_posts_custom_column', array( $this, 'currency_columns' ), 2 );
 		if ( ! is_plugin_active( 'woocommerce-pdf-invoices-packing-slips/woocommerce-pdf-invoices-packingslips.php' ) ) {
 			add_filter( 'woocommerce_get_formatted_order_total', array( $this, 'get_formatted_order_total' ), 10, 4 );
-			if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+			if ( class_exists( '\Automattic\WooCommerce\Utilities\OrderUtil' ) && OrderUtil::custom_orders_table_usage_is_enabled() ) {
 				add_filter( 'woocommerce_get_formatted_order_total', array(
 					$this,
 					'get_formatted_order_total_custom_column'
@@ -29,16 +29,11 @@ class WOOMULTI_CURRENCY_F_Admin_Order {
 	 * Add metabox to order post
 	 */
 	public function add_metabox() {
-//		add_meta_box( 'wmc_order_metabox', esc_html__( 'Currency Information', 'woo-multi-currency' ), array(
-//			$this,
-//			'order_metabox'
-//		), 'shop_order', 'side', 'default' );
-
-		if ( ! OrderUtil::custom_orders_table_usage_is_enabled() ) {
+		if ( ! class_exists( '\Automattic\WooCommerce\Utilities\OrderUtil' ) || ! OrderUtil::custom_orders_table_usage_is_enabled() ) {
 			add_meta_box( 'wmc_order_metabox', esc_html__( 'Currency Information', 'woo-multi-currency' ),
-				array( $this, 'order_metabox' ), [ 'shop_order', 'shop_subscription' ], 'side', 'default' );
+				array( $this, 'order_metabox' ), array( 'shop_order', 'shop_subscription' ), 'side', 'default' );
 		} else {
-			$screen = class_exists( '\Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController' )
+			$screen = ( function_exists( 'wc_get_page_screen_id' ) && class_exists( '\Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController' ) )
 				? wc_get_page_screen_id( 'shop-order' )
 				: 'shop_order';
 

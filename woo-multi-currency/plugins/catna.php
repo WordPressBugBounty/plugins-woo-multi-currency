@@ -184,7 +184,7 @@ class WOOMULTI_CURRENCY_F_Plugin_Catna {
 		} elseif ( ! empty( $product->vicatna_so ) ) {
 			$data = $product->vicatna_so;
 		}
-		if ( count( $data ) ) {
+		if ( is_array( $data ) && count( $data ) ) {
 			$current_currency = $this->settings->get_current_currency();
 			$currency         = isset( $data['currency'] ) ? sanitize_text_field( $data['currency'] ) : '';
 			$currencies       = $this->settings->get_list_currencies();

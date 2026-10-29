@@ -33,7 +33,7 @@ class WOOMULTI_CURRENCY_F_Plugin_Woocommerce_Product_Addons {
 	}
 
 	public function woocommerce_product_addon_cart_item_data( $data, $addon, $product_id, $post_data ) {
-		if ( count( $data ) ) {
+		if ( is_array( $data ) && count( $data ) ) {
 			foreach ( $data as $key => $value ) {
 				if ( isset( $value['field_type'] ) && $value['field_type'] === 'custom_price' ) {
 					$data[ $key ]['price'] = wmc_revert_price( $value['price'] );
@@ -104,7 +104,7 @@ class WOOMULTI_CURRENCY_F_Plugin_Woocommerce_Product_Addons {
 		$product       = $item->get_product();
 		$product_price = $product->get_price();
 
-		if ( $addon['price'] && 'percentage_based' === $price_type && 0 != $product_price ) {
+		if ( $addon['price'] && 'percentage_based' === $price_type && is_numeric( $product_price ?? '' ) && 0 != $product_price ) {
 			$addon_price = $product_price * ( $addon['price'] / 100 );
 		} else {
 			$addon_price = $addon['price'];

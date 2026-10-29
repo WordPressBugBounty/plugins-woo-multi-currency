@@ -19,12 +19,15 @@ if ( ! function_exists( 'vi_include_folder' ) ) {
 			$ext = array_map( 'trim', $ext );
 		}
 		$sfiles = scandir( $path );
+		if ( ! is_array( $sfiles ) ) {
+			return;
+		}
 		foreach ( $sfiles as $sfile ) {
 			if ( $sfile != '.' && $sfile != '..' ) {
 				if ( is_file( $path . "/" . $sfile ) ) {
 					$ext_file  = pathinfo( $path . "/" . $sfile );
 					$file_name = $ext_file['filename'];
-					if ( $ext_file['extension'] ) {
+					if ( isset( $ext_file['extension'] ) && $ext_file['extension'] ) {
 						if ( in_array( $ext_file['extension'], $ext ) ) {
 							$class = preg_replace( '/\W/i', '_', $prefix . ucfirst( $file_name ) );
 
@@ -155,7 +158,14 @@ if ( ! function_exists( 'wmc_get_exchange_rate' ) ) {
 			return 1;
 		}
 
-		return wmc_get_price( 1, $currency_code );
+		$setting             = WOOMULTI_CURRENCY_F_Data::get_ins();
+		$selected_currencies = $setting->get_list_currencies();
+		$rate                = 0.0;
+		if ( ( is_string( $currency_code ) || is_int( $currency_code ) ) && is_array( $selected_currencies ) && isset( $selected_currencies[ $currency_code ] ) && is_array( $selected_currencies[ $currency_code ] ) && isset( $selected_currencies[ $currency_code ]['rate'] ) ) {
+			$rate = (float) $selected_currencies[ $currency_code ]['rate'];
+		}
+
+		return $rate;
 	}
 }
 
@@ -169,7 +179,7 @@ if ( ! function_exists( 'wmc_revert_price' ) ) {
 		$currency         = $currency_code ? $currency_code : $current_currency;
 		$rate             = wmc_get_exchange_rate( $currency );
 
-		return $rate ? (float) $price / $rate : '';
+		return $rate ? (float)WOOMULTI_CURRENCY_F_Frontend_Price::settle_price( $price / $rate, $currency, false ) : '';
 	}
 }
 
@@ -187,7 +197,11 @@ if ( ! function_exists( 'wmc_adjust_fixed_price' ) ) {
 		}
 		if ( $wmc_decimal_separator !== '.' && is_array( $fixed_price ) && count( $fixed_price ) ) {
 			foreach ( $fixed_price as $key => $value ) {
-				$fixed_price[ $key ] = str_replace( $wmc_decimal_separator, '.', $value );
+				if ( is_array( $value ) ) {
+					$fixed_price[ $key ] = str_replace( $wmc_decimal_separator, '.', $value );
+				} else {
+					$fixed_price[ $key ] = str_replace( $wmc_decimal_separator, '.', (string) $value );
+				}
 			}
 		}
 

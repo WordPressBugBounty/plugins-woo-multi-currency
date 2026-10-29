@@ -53,7 +53,7 @@ class WOOMULTI_CURRENCY_F_Admin_Admin {
 	public function admin_init() {
 
 		$old_data = get_option( 'wmc_selected_currencies', array() );
-		if ( count( $old_data ) ) {
+		if ( is_array( $old_data ) && count( $old_data ) ) {
 			$currency         = $currency_rate = $currency_decimals = $currency_custom = $currency_pos = array();
 			$currency_default = '';
 			$by_countries_raw = get_option( 'wmc_currency_by_country', array() );
@@ -147,14 +147,14 @@ class WOOMULTI_CURRENCY_F_Admin_Admin {
 	 * Init Script in Admin
 	 */
 	public function admin_enqueue_scripts() {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_settings' ) ) {
-			return;
-		}
 		$page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : '';
 		if ( $page == 'woo-multi-currency' ) {
 			global $wp_scripts;
 			$scripts = $wp_scripts->registered;
 			foreach ( $scripts as $k => $script ) {
+				if ( ! is_string( $script->src ) ) {
+					continue;
+				}
 				preg_match( '/^\/wp-/i', $script->src, $result );
 				if ( count( array_filter( $result ) ) < 1 ) {
 					if ( $script->handle == 'query-monitor' ) {

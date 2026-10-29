@@ -6,12 +6,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'VillaTheme_Support' ) ) {
     /**
      * Class VillaTheme_Support
-     * 1.1.21
+     * 1.1.22
      */
     class VillaTheme_Support {
         protected $plugin_base_name;
         protected $ads_data = null;
-        protected $version = '1.1.21';
+        protected $version = '1.1.22';
         protected $data = [];
 
         public function __construct( $data ) {
@@ -137,7 +137,7 @@ if ( ! class_exists( 'VillaTheme_Support' ) ) {
                                         '&#8220;',
                                         '&#8243;',
                                         '„',
-                                ), '"', $match[1] ) );
+                                ), '"', $match[1] ), ENT_COMPAT );
                                 if ( $is_ads ) {
                                     $json = '{' . $json . '}';
                                 } else {

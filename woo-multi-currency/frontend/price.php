@@ -13,6 +13,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 	protected static $settings;
 	protected $price;
 	protected static $request_decimal_places = 0;
+	protected static $scanning_cart_places   = false;
 	protected static $settled_prices         = array();
 
 	public function __construct() {
@@ -163,14 +164,13 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 				} elseif ( ! $raw ) {
 					$currenct_currency = $currency_code;
 				}
-				if ( self::$settings->check_fixed_price() && ! $raw ) {
-					$product_id    = $variation_id;
-					$product_price = wmc_adjust_fixed_price( self::static_json_price_meta( $variation->get_meta('_regular_price_wmcp', true ) ) );
-					$sale_price    = wmc_adjust_fixed_price( self::static_json_price_meta( $variation->get_meta('_sale_price_wmcp', true ) ) );
-					if ( isset( $product_price[ $currenct_currency ] ) && ! $variation->is_on_sale() && $product_price[ $currenct_currency ] > 0 ) {
-						$price = $product_price[ $currenct_currency ];
-					} elseif ( isset( $sale_price[ $currenct_currency ] ) && $sale_price[ $currenct_currency ] > 0 ) {
-						$price = $sale_price[ $currenct_currency ];
+				if ( self::$settings->check_fixed_price() && ! $raw && $currenct_currency !== self::$settings->get_default_currency() ) {
+					$product_price = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $variation->get_meta( '_regular_price_wmcp', true ) ) );
+					$sale_price    = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $variation->get_meta( '_sale_price_wmcp', true ) ) );
+					if ( isset( $product_price[ $currenct_currency ] ) && ! $variation->is_on_sale() && is_numeric( $product_price[ $currenct_currency ] ) ) {
+						$price = self::settle_price( $product_price[ $currenct_currency ], $currenct_currency );
+					} elseif ( isset( $sale_price[ $currenct_currency ] ) && is_numeric( $sale_price[ $currenct_currency ] ) ) {
+						$price = self::settle_price( $sale_price[ $currenct_currency ], $currenct_currency );
 					}
 				}
 
@@ -209,14 +209,13 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 				} elseif ( ! $raw ) {
 					$current_currency = $currency_code;
 				}
-				if ( $check_fixed_price && ! $raw ) {
-					$product_id    = $variation_id;
-					$product_price = wmc_adjust_fixed_price( self::static_json_price_meta( $variation->get_meta('_regular_price_wmcp', true ) ) );
-					$sale_price    = wmc_adjust_fixed_price( self::static_json_price_meta( $variation->get_meta('_sale_price_wmcp', true ) ) );
-					if ( isset( $product_price[ $current_currency ] ) && ! $variation->is_on_sale( 'edit' ) && $product_price[ $current_currency ] > 0 ) {
-						$price = $product_price[ $current_currency ];
-					} elseif ( isset( $sale_price[ $current_currency ] ) && $sale_price[ $current_currency ] > 0 ) {
-						$price = $sale_price[ $current_currency ];
+				if ( $check_fixed_price && ! $raw && $current_currency !== self::$settings->get_default_currency() ) {
+					$product_price = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $variation->get_meta( '_regular_price_wmcp', true ) ) );
+					$sale_price    = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $variation->get_meta( '_sale_price_wmcp', true ) ) );
+					if ( isset( $product_price[ $current_currency ] ) && ! $variation->is_on_sale( 'edit' ) && is_numeric( $product_price[ $current_currency ] ) ) {
+						$price = self::settle_price( $product_price[ $current_currency ], $current_currency );
+					} elseif ( isset( $sale_price[ $current_currency ] ) && is_numeric( $sale_price[ $current_currency ] ) ) {
+						$price = self::settle_price( $sale_price[ $current_currency ], $current_currency );
 					}
 				}
 
@@ -250,13 +249,21 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 			return $html_price;
 		}
 		if ( self::$settings->get_auto_detect() == 2 ) {
-			if ( '' === $product->get_price() || ! $product->is_in_stock() ) {
+			if ( '' === $product->get_price() ) {
 				return $html_price;
 			}
 			if ( ! self::$settings->getcookie( 'wmc_currency_rate' ) || ! self::$settings->getcookie( 'wmc_currency_symbol' ) || ! self::$settings->getcookie( 'wmc_ip_info' ) ) {
 				return $html_price;
 			}
-			$geoplugin_arg = json_decode( base64_decode( self::$settings->getcookie( 'wmc_ip_info' ) ), true );
+			$geoplugin_arg = array();
+			$ip_info       = self::$settings->getcookie( 'wmc_ip_info' );
+			if ( is_string( $ip_info ) && '' !== $ip_info ) {
+				$decoded = base64_decode( $ip_info );
+				$json    = is_string( $decoded ) ? json_decode( $decoded, true ) : null;
+				if ( is_array( $json ) ) {
+					$geoplugin_arg = $json;
+				}
+			}
 
 			$detect_currency_code = isset( $geoplugin_arg['currency_code'] ) ? $geoplugin_arg['currency_code'] : '';
 			if ( $detect_currency_code == self::$settings->get_current_currency() ) {
@@ -266,15 +273,12 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 			$default_currency   = self::$settings->get_default_currency();
 			$decimal_separator  = wc_get_price_decimal_separator();
 			$thousand_separator = wc_get_price_thousand_separator();
-			if ( $detect_currency_code && isset( $list_currencies[ $detect_currency_code ] ) ) {
-				$decimals    = $list_currencies[ $detect_currency_code ]['decimals'];
-				$current_pos = $list_currencies[ $detect_currency_code ]['pos'];
-			} else {
-				$decimals    = $list_currencies[ $default_currency ]['decimals'];
-				$current_pos = $list_currencies[ $default_currency ]['pos'];
-			}
-			$rate   = self::$settings->getcookie( 'wmc_currency_rate' );
-			$symbol = self::$settings->getcookie( 'wmc_currency_symbol' );
+			$currency_key       = ( $detect_currency_code && isset( $list_currencies[ $detect_currency_code ] ) ) ? $detect_currency_code : $default_currency;
+			$currency_row       = ( is_array( $list_currencies ) && isset( $list_currencies[ $currency_key ] ) && is_array( $list_currencies[ $currency_key ] ) ) ? $list_currencies[ $currency_key ] : array();
+			$decimals           = isset( $currency_row['decimals'] ) ? (int) $currency_row['decimals'] : 0;
+			$current_pos        = isset( $currency_row['pos'] ) ? $currency_row['pos'] : '';
+			$rate               = self::$settings->getcookie( 'wmc_currency_rate' );
+			$symbol             = self::$settings->getcookie( 'wmc_currency_symbol' );
 			switch ( $current_pos ) {
 				case 'left' :
 					$format = '%1$s%2$s';
@@ -293,11 +297,13 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 					break;
 			}
 
-			$price = number_format( wc_get_price_to_display( $product, array(
-					'qty'   => 1,
-					'price' => $product->get_price( 'edit' )
-				) ) * $rate, $decimals, $decimal_separator, $thousand_separator );
-			$pos   = strpos( $symbol, '#PRICE#' );
+			$raw_price = wc_get_price_to_display( $product, array(
+				'qty'   => 1,
+				'price' => $product->get_price( 'edit' ),
+			) );
+			$rate_num  = is_numeric( $rate ) ? $rate : 0;
+			$price     = number_format( apply_filters( 'wmc_get_price', $raw_price * $rate_num, $detect_currency_code ), $decimals, $decimal_separator, $thousand_separator );
+			$pos       = strpos( (string) $symbol, '#PRICE#' );
 			if ( $pos === false ) {
 				$formatted_price = sprintf( $format, $symbol, $price );
 			} else {
@@ -307,10 +313,11 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 			if ( $product->get_type() == 'variable' ) {
 				$price_max = self::get_variation_max_price( $product, false, true );
 				if ( $price_max != $product->get_price( 'edit' ) ) {
-					$price_max = number_format( wc_get_price_to_display( $product, array(
-							'qty'   => 1,
-							'price' => $price_max
-						) ) * $rate, $decimals, $decimal_separator, $thousand_separator );
+					$raw_max   = wc_get_price_to_display( $product, array(
+						'qty'   => 1,
+						'price' => $price_max,
+					) );
+					$price_max = number_format( apply_filters( 'wmc_get_price', $raw_max * $rate_num, $detect_currency_code ), $decimals, $decimal_separator, $thousand_separator );
 					if ( $pos === false ) {
 						$max_price = ' - ' . sprintf( $format, $symbol, $price_max );
 					} else {
@@ -453,6 +460,42 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		self::$settled_prices[ $currency_key ][ $amount_key ] = $result;
 
 		return $result;
+	}
+
+	public static function note_cart_decimal_places( $cart ) {
+		if ( self::$scanning_cart_places || ! $cart instanceof WC_Cart ) {
+			return;
+		}
+		self::$scanning_cart_places = true;
+		self::ensure_settings();
+		$currency = self::$settings->get_current_currency();
+		try {
+			foreach ( $cart->get_cart() as $item ) {
+				foreach ( array( 'line_subtotal', 'line_total', 'line_subtotal_tax', 'line_tax' ) as $key ) {
+					if ( isset( $item[ $key ] ) && is_numeric( $item[ $key ] ) && (float) $item[ $key ] != 0.0 ) {
+						self::settle_price( $item[ $key ], $currency );
+					}
+				}
+			}
+			foreach ( array( $cart->get_shipping_total(), $cart->get_shipping_tax(), $cart->get_fee_total(), $cart->get_fee_tax() ) as $amount ) {
+				if ( is_numeric( $amount ) && (float) $amount != 0.0 ) {
+					self::settle_price( $amount, $currency );
+				}
+			}
+			$fees = $cart->get_fees();
+			if ( is_array( $fees ) ) {
+				foreach ( $fees as $fee ) {
+					if ( is_object( $fee ) && isset( $fee->total ) && is_numeric( $fee->total ) && (float) $fee->total != 0.0 ) {
+						self::settle_price( $fee->total, $currency );
+					}
+					if ( is_object( $fee ) && isset( $fee->tax ) && is_numeric( $fee->tax ) && (float) $fee->tax != 0.0 ) {
+						self::settle_price( $fee->tax, $currency );
+					}
+				}
+			}
+		} finally {
+			self::$scanning_cart_places = false;
+		}
 	}
 
 	/**
@@ -610,37 +653,39 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		if ( is_array( $price_arr ) && ! empty( $price_arr ) ) {
 			$fixed_price = self::$settings->check_fixed_price();
 
+			$current_currency = self::$settings->get_current_currency();
+			$default_currency = self::$settings->get_default_currency();
 			foreach ( $price_arr as $price_type => $values ) {
 				foreach ( $values as $key => $value ) {
-					if ( $fixed_price ) {
+					if ( $fixed_price && $current_currency !== $default_currency ) {
 						$wc_variation_product = wc_get_product( $key );
-						$current_currency = self::$settings->get_current_currency();
 						if ( $temp_arr['regular_price'][ $key ] != $temp_arr['price'][ $key ] ) {
 							if ( $price_type == 'regular_price' ) {
-								$regular_price_wmcp = wmc_adjust_fixed_price( self::format_json_price_meta( $wc_variation_product->get_meta('_regular_price_wmcp', true ) ) );
+								$regular_price_wmcp = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $wc_variation_product->get_meta( '_regular_price_wmcp', true ) ) );
 
-								if ( isset( $regular_price_wmcp[ $current_currency ] ) && $regular_price_wmcp[ $current_currency ] > 0 ) {
-									$price_arr[ $price_type ][ $key ] = $for_display ? $this->tax_handle( $regular_price_wmcp[ $current_currency ], $product ) : $regular_price_wmcp[ $current_currency ];
+								if ( isset( $regular_price_wmcp[ $current_currency ] ) && is_numeric( $regular_price_wmcp[ $current_currency ] ) ) {
+									$fixed = self::settle_price( $regular_price_wmcp[ $current_currency ], $current_currency );
+									$price_arr[ $price_type ][ $key ] = $for_display ? $this->tax_handle( $fixed, $product ) : $fixed;
 								} else {
 									$price_arr[ $price_type ][ $key ] = wmc_get_price( $value );
 								}
 							}
 
 							if ( $price_type == 'price' || $price_type == 'sale_price' ) {
-								$sale_price_wmcp = wmc_adjust_fixed_price( self::format_json_price_meta( $wc_variation_product->get_meta('_sale_price_wmcp', true ) ) );
+								$sale_price_wmcp = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $wc_variation_product->get_meta( '_sale_price_wmcp', true ) ) );
 
-								if ( isset( $sale_price_wmcp[ $current_currency ] ) && $sale_price_wmcp[ $current_currency ] > 0 ) {
-									$price_arr[ $price_type ][ $key ] = $for_display ? $this->tax_handle( $sale_price_wmcp[ $current_currency ], $product ) : $sale_price_wmcp[ $current_currency ];
-								} elseif ( $temp_arr['regular_price'][ $key ] != $temp_arr['price'][ $key ] ) {
-									$price_arr[ $price_type ][ $key ] = wmc_get_price( $value );
+								if ( isset( $sale_price_wmcp[ $current_currency ] ) && is_numeric( $sale_price_wmcp[ $current_currency ] ) ) {
+									$fixed = self::settle_price( $sale_price_wmcp[ $current_currency ], $current_currency );
+									$price_arr[ $price_type ][ $key ] = $for_display ? $this->tax_handle( $fixed, $product ) : $fixed;
 								} else {
 									$price_arr[ $price_type ][ $key ] = wmc_get_price( $value );
 								}
 							}
 						} else {
-							$regular_price_wmcp = wmc_adjust_fixed_price( self::format_json_price_meta( $wc_variation_product->get_meta('_regular_price_wmcp', true ) ) );
-							if ( isset( $regular_price_wmcp[ $current_currency ] ) && $regular_price_wmcp[ $current_currency ] > 0 ) {
-								$price_arr[ $price_type ][ $key ] = $for_display ? $this->tax_handle( $regular_price_wmcp[ $current_currency ], $product ) : $regular_price_wmcp[ $current_currency ];
+							$regular_price_wmcp = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $wc_variation_product->get_meta( '_regular_price_wmcp', true ) ) );
+							if ( isset( $regular_price_wmcp[ $current_currency ] ) && is_numeric( $regular_price_wmcp[ $current_currency ] ) ) {
+								$fixed = self::settle_price( $regular_price_wmcp[ $current_currency ], $current_currency );
+								$price_arr[ $price_type ][ $key ] = $for_display ? $this->tax_handle( $fixed, $product ) : $fixed;
 							} else {
 								$price_arr[ $price_type ][ $key ] = wmc_get_price( $value );
 							}
@@ -689,15 +734,13 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		}
 		$changes = $product->get_changes();
 
-		if ( self::$settings->check_fixed_price() && ( is_array( $changes ) ) && count( $changes ) < 1 ) {
+		if ( self::$settings->check_fixed_price() && self::$settings->get_current_currency() !== self::$settings->get_default_currency() && ( is_array( $changes ) ) && count( $changes ) < 1 ) {
 
 			$currenct_currency = self::$settings->get_current_currency();
 			$product_id        = $product->get_id();
-			$product_price     = wmc_adjust_fixed_price( self::format_json_price_meta( $product->get_meta('_sale_price_wmcp', true ) ) );
-			if ( isset( $product_price[ $currenct_currency ] ) ) {
-				if ( $product_price[ $currenct_currency ] > 0 ) {
-					return $this->set_cache( $product_price[ $currenct_currency ], $product_id, $price );
-				}
+			$product_price     = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $product->get_meta( '_sale_price_wmcp', true ) ) );
+			if ( isset( $product_price[ $currenct_currency ] ) && is_numeric( $product_price[ $currenct_currency ] ) ) {
+				return $this->set_cache( self::settle_price( $product_price[ $currenct_currency ], $currenct_currency ), $product_id, $price );
 			}
 		}
 
@@ -716,8 +759,8 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		if ( ! $price ) {
 			return $price;
 		}
-		if ( defined('B2BKING_VERSION') ) {
-			return floatval( $price );
+		if ( defined( 'B2BKING_VERSION' ) ) {
+			return $price;
 		}
 		$product_id = $product->get_id();
 		if ( ! wp_doing_ajax() && isset( $this->price[ $product_id ][ $price ] ) ) {
@@ -725,16 +768,13 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		}
 		$changes = $product->get_changes();
 
-		if ( self::$settings->check_fixed_price() && ( is_array( $changes ) ) && count( $changes ) < 1 ) {
+		if ( self::$settings->check_fixed_price() && self::$settings->get_current_currency() !== self::$settings->get_default_currency() && ( is_array( $changes ) ) && count( $changes ) < 1 ) {
 
 			$currenct_currency = self::$settings->get_current_currency();
 			$product_id        = $product->get_id();
-			$product_price     = wmc_adjust_fixed_price( self::format_json_price_meta( $product->get_meta('_regular_price_wmcp', true ) ) );
-			if ( isset( $product_price[ $currenct_currency ] ) ) {
-				if ( $product_price[ $currenct_currency ] > 0 ) {
-					return $this->set_cache( $product_price[ $currenct_currency ], $product_id, $price );
-
-				}
+			$product_price     = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $product->get_meta( '_regular_price_wmcp', true ) ) );
+			if ( isset( $product_price[ $currenct_currency ] ) && is_numeric( $product_price[ $currenct_currency ] ) ) {
+				return $this->set_cache( self::settle_price( $product_price[ $currenct_currency ], $currenct_currency ), $product_id, $price );
 			}
 		}
 
@@ -762,21 +802,16 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		}
 		$changes = $product->get_changes();
 
-		if ( self::$settings->check_fixed_price() && ( is_array( $changes ) ) && count( $changes ) < 1 ) {
+		if ( self::$settings->check_fixed_price() && self::$settings->get_current_currency() !== self::$settings->get_default_currency() && ( is_array( $changes ) ) && ( count( $changes ) < 1 || ( count( $changes ) == 1 && isset( $changes['name'] ) ) ) ) {
 
 			$currenct_currency = self::$settings->get_current_currency();
 			$product_id        = $product->get_id();
-			$product_price     = wmc_adjust_fixed_price( self::format_json_price_meta( $product->get_meta('_regular_price_wmcp', true ) ) );
-			$sale_price        = wmc_adjust_fixed_price( self::format_json_price_meta( $product->get_meta('_sale_price_wmcp', true ) ) );
-			if ( isset( $product_price[ $currenct_currency ] ) && ! $product->is_on_sale() ) {
-				if ( $product_price[ $currenct_currency ] > 0 ) {
-					return $this->set_cache( $product_price[ $currenct_currency ], $product_id, $price );
-				}
-			} elseif ( isset( $sale_price[ $currenct_currency ] ) ) {
-				if ( $sale_price[ $currenct_currency ] > 0 ) {
-					return $this->set_cache( $sale_price[ $currenct_currency ], $product_id, $price );
-
-				}
+			$product_price     = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $product->get_meta( '_regular_price_wmcp', true ) ) );
+			$sale_price        = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $product->get_meta( '_sale_price_wmcp', true ) ) );
+			if ( isset( $product_price[ $currenct_currency ] ) && ! $product->is_on_sale() && is_numeric( $product_price[ $currenct_currency ] ) ) {
+				return $this->set_cache( self::settle_price( $product_price[ $currenct_currency ], $currenct_currency ), $product_id, $price );
+			} elseif ( isset( $sale_price[ $currenct_currency ] ) && is_numeric( $sale_price[ $currenct_currency ] ) ) {
+				return $this->set_cache( self::settle_price( $sale_price[ $currenct_currency ], $currenct_currency ), $product_id, $price );
 			}
 		}
 
@@ -833,27 +868,23 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 				$sale_price_changes = true;
 			}
 		}
-		if ( self::$settings->check_fixed_price() && $no_fixed_changes ) {
+		if ( self::$settings->check_fixed_price() && self::$settings->get_current_currency() !== self::$settings->get_default_currency() && $no_fixed_changes ) {
 			$currenct_currency = self::$settings->get_current_currency();
 			$product_id        = $product->get_id();
-			$product_price     = wmc_adjust_fixed_price( self::format_json_price_meta( $product->get_meta('_regular_price_wmcp', true ) ) );
-			$sale_price        = wmc_adjust_fixed_price( self::format_json_price_meta( $product->get_meta('_sale_price_wmcp', true ) ) );
-			if ( isset( $product_price[ $currenct_currency ] ) && ! self::is_on_sale( $product ) ) {
-				if ( $product_price[ $currenct_currency ] > 0 ) {
-					if ( $sale_price_changes && $changes['price'] != $changes['regular_price'] && ! empty( $changes['price'] ) && (float) $changes['regular_price'] == (float) $product_price[ $currenct_currency ] ) {
-						return $this->set_cache( $changes['price'], $product_id, $price );
-					}
-					return $this->set_cache( $product_price[ $currenct_currency ], $product_id, $price );
-
+			$product_price     = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $product->get_meta( '_regular_price_wmcp', true ) ) );
+			$sale_price        = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $product->get_meta( '_sale_price_wmcp', true ) ) );
+			if ( isset( $product_price[ $currenct_currency ] ) && ! self::is_on_sale( $product ) && is_numeric( $product_price[ $currenct_currency ] ) ) {
+				if ( $sale_price_changes && $changes['price'] != $changes['regular_price'] && ! empty( $changes['price'] ) && (float) $changes['regular_price'] == (float) $product_price[ $currenct_currency ] ) {
+					return $this->set_cache( $changes['price'], $product_id, $price );
 				}
-			} elseif ( isset( $sale_price[ $currenct_currency ] ) ) {
-				if ( $sale_price[ $currenct_currency ] > 0 ) {
-					if ( $sale_price_changes && $changes['price'] != $changes['regular_price'] && ! empty( $changes['price'] ) && (float) $changes['regular_price'] == (float) $product_price[ $currenct_currency ] ) {
-						return $this->set_cache( $changes['price'], $product_id, $price );
-					}
-					return $this->set_cache( $sale_price[ $currenct_currency ], $product_id, $price );
 
+				return $this->set_cache( self::settle_price( $product_price[ $currenct_currency ], $currenct_currency ), $product_id, $price );
+			} elseif ( isset( $sale_price[ $currenct_currency ] ) && is_numeric( $sale_price[ $currenct_currency ] ) ) {
+				if ( $sale_price_changes && $changes['price'] != $changes['regular_price'] && ! empty( $changes['price'] ) && (float) $changes['regular_price'] == (float) $product_price[ $currenct_currency ] ) {
+					return $this->set_cache( $changes['price'], $product_id, $price );
 				}
+
+				return $this->set_cache( self::settle_price( $sale_price[ $currenct_currency ], $currenct_currency ), $product_id, $price );
 			}
 		}
 
@@ -883,16 +914,13 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		}
 		$changes = $product->get_changes();
 
-		if ( self::$settings->check_fixed_price() && ( is_array( $changes ) ) && count( $changes ) < 1 ) {
+		if ( self::$settings->check_fixed_price() && self::$settings->get_current_currency() !== self::$settings->get_default_currency() && ( is_array( $changes ) ) && count( $changes ) < 1 ) {
 
 			$currenct_currency = self::$settings->get_current_currency();
 			$product_id        = $product->get_id();
-			$product_price     = wmc_adjust_fixed_price( self::format_json_price_meta( $product->get_meta('_sale_price_wmcp', true ) ) );
-			if ( isset( $product_price[ $currenct_currency ] ) ) {
-				if ( $product_price[ $currenct_currency ] > 0 ) {
-					return $this->set_cache( $product_price[ $currenct_currency ], $product_id, $price );
-
-				}
+			$product_price     = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $product->get_meta( '_sale_price_wmcp', true ) ) );
+			if ( isset( $product_price[ $currenct_currency ] ) && is_numeric( $product_price[ $currenct_currency ] ) ) {
+				return $this->set_cache( self::settle_price( $product_price[ $currenct_currency ], $currenct_currency ), $product_id, $price );
 			}
 		}
 
@@ -915,17 +943,14 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		}
 		$changes = $product->get_changes();
 
-		if ( self::$settings->check_fixed_price() && ( is_array( $changes ) ) && ( count( $changes ) < 1 ||
+		if ( self::$settings->check_fixed_price() && self::$settings->get_current_currency() !== self::$settings->get_default_currency() && ( is_array( $changes ) ) && ( count( $changes ) < 1 ||
 		                                                                           ( count( $changes ) == 1 && isset( $changes['description'] ) ) ) ) {
 
 			$currenct_currency = self::$settings->get_current_currency();
 			$product_id        = $product->get_id();
-			$product_price     = wmc_adjust_fixed_price( self::format_json_price_meta( $product->get_meta('_regular_price_wmcp', true ) ) );
-			if ( isset( $product_price[ $currenct_currency ] ) ) {
-				if ( $product_price[ $currenct_currency ] > 0 ) {
-
-					return $this->set_cache( $product_price[ $currenct_currency ], $product_id, $price );
-				}
+			$product_price     = wmc_adjust_fixed_price( WOOMULTI_CURRENCY_F_Admin_Product::format_json_price_meta( $product->get_meta( '_regular_price_wmcp', true ) ) );
+			if ( isset( $product_price[ $currenct_currency ] ) && is_numeric( $product_price[ $currenct_currency ] ) ) {
+				return $this->set_cache( self::settle_price( $product_price[ $currenct_currency ], $currenct_currency ), $product_id, $price );
 			}
 		}
 
@@ -992,15 +1017,5 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		}
 
 		return $on_sale;
-	}
-
-	function format_json_price_meta( $price_meta ) {
-
-		return is_string( $price_meta ) ? json_decode( $price_meta, true ) : $price_meta;
-	}
-
-	public static function static_json_price_meta( $price_meta ) {
-
-		return is_string( $price_meta ) ? json_decode( $price_meta, true ) : $price_meta;
 	}
 }

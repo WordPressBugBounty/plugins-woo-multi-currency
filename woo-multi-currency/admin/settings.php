@@ -246,15 +246,28 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                         </tr>
                         <tr>
                             <th>
-                                <label for="<?php echo esc_attr( self::set_field( 'use_session' ) ) ?>">
-									<?php esc_html_e( 'Use SESSION', 'woo-multi-currency' ) ?>
+                                <label for="<?php echo esc_attr( self::set_field( 'ignore_exchange_rate' ) ) ?>">
+									<?php esc_html_e( "Don't use exchange rate", 'woo-multi-currency' ) ?>
                                 </label>
                             </th>
                             <td>
                                 <a class="vi-ui button yellow"
                                    href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
-                                <p class="description"><?php esc_html_e( 'Use SESSION instead of COOKIE.', 'woo-multi-currency' ) ?></p>
+                                <p class="description"><?php esc_html_e( 'If enabled, products without fixed prices are not automatically converted by the exchange rate', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'set_storage' ) ) ?>">
+									<?php esc_html_e( 'Data storage method', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'On certain servers, some storage methods may cause the selected currency to reset to the default after selection. If this occurs, try using a different storage method.', 'woo-multi-currency' ) ?></p>
                             </td>
                         </tr>
                         <tr>
@@ -267,7 +280,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                 <a class="vi-ui button yellow"
                                    href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
-                                <p class="description"><?php esc_html_e( 'Currency will be changed but It does not use URL. It is good for SEO. Now It is not compatible with Caching plugins.', 'woo-multi-currency' ) ?></p>
+                                <p class="description"><?php esc_html_e( 'Enable this option if you don\'t want to add "?wmc-currency={currency}" to url of currency switcher buttons.', 'woo-multi-currency' ) ?></p>
                             </td>
                         </tr>
                         <tr>
@@ -291,6 +304,19 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                         </tr>
                         <tr>
                             <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'load_ajax_filter_price' ) ) ?>">
+									<?php esc_html_e( 'Reload filter price', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'Reset price filter when loading via AJAX', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
                                 <label for="<?php echo esc_attr( self::set_field( 'loading_price_mask' ) ) ?>">
 			                        <?php esc_html_e( 'Loading price mask', 'woo-multi-currency' ) ?>
                                 </label>
@@ -304,6 +330,19 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                     <label></label>
                                 </div>
                                 <p class="description"><?php esc_html_e( 'Add loading layer when loading price via AJAX', 'woo-multi-currency' );//Now It is not compatible with Caching plugins.?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'bot_currency' ) ) ?>">
+									<?php esc_html_e( 'Bot currency', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'Select the currency that you want to show to Bots(web crawler tools) when they crawl your site. If not set, Bots will be treated like normal visitors which means that the auto-detect currency(if enabled) will also apply to them.', 'woo-multi-currency' ) ?></p>
                             </td>
                         </tr>
                         <tr>
@@ -500,7 +539,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
 								}
 								?>
                                 <p>
-									<?php esc_html_e( 'You can add only 2 currencies. Please update Pro version to add unlimited currencies.', 'woo-multi-currency' ) ?>
+									<?php esc_html_e( 'You can add up to 2 currencies. To add unlimited currencies and access more settings, such as Flag, Exchange Fee Type, and Decimal Separator, please upgrade to the Pro version..', 'woo-multi-currency' ) ?>
                                     <a class="vi-ui button yellow"
                                        href="https://villatheme.com/extensions/woo-multi-currency"
                                        target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
@@ -530,11 +569,62 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                             value="0"><?php esc_html_e( 'No', 'woo-multi-currency' ) ?></option>
                                     <option <?php selected( self::get_field( 'auto_detect' ), 1 ) ?>
                                             value="1"><?php esc_html_e( 'Auto select currency', 'woo-multi-currency' ) ?></option>
+                                    <option disabled><?php esc_html_e( 'Initial currency (Premium)', 'woo-multi-currency' ) ?></option>
                                     <option <?php selected( self::get_field( 'auto_detect' ), 2 ) ?>
                                             value="2"><?php esc_html_e( 'Approximate Price', 'woo-multi-currency' ) ?></option>
                                     <option disabled><?php esc_html_e( 'Language Polylang (Premium)', 'woo-multi-currency' ) ?></option>
                                     <option disabled><?php esc_html_e( 'TranslatePress Multilingual (Premium)', 'woo-multi-currency' ) ?></option>
                                 </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'approximate_position' ) ) ?>">
+									<?php esc_html_e( 'Show Approximate price for', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'Besides product price, if you want to show approximate price for cart elements on cart/checkout page, please select them here', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'approximately_label' ) ) ?>">
+									<?php esc_html_e( "Approximate price's label", 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'Use {price} to display price in special format. Example: (~ {price})', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'approximately_priority' ) ) ?>">
+									<?php esc_html_e( "Approximate price's position", 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'initial_currency' ) ) ?>">
+									<?php esc_html_e( 'Initial currency', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                             </td>
                         </tr>
                         <tr>
@@ -569,6 +659,23 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                 </select>
                                 <p class="description"><?php esc_html_e( 'API will help detect customer country code base on IP address.', 'woo-multi-currency' ) ?></p>
 
+                            </td>
+                        </tr>
+                        <tr class="wmc-external-geo-api-key-row" <?php if ( self::get_field( 'geo_api' ) != 1 ) {
+							echo esc_attr( 'style=display:none;' );
+						} ?>>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'geo_api_key' ) ) ?>">
+									<?php esc_html_e( 'External geo api key', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <input type="text" name="<?php echo esc_attr( self::set_field( 'geo_api_key' ) ) ?>"
+                                       value="<?php echo esc_attr( self::get_field( 'geo_api_key', '' ) ) ?>"/>
+                                <p class="description"><?php printf( '%s <a href="%s">ip2location.io</a> %s',
+										esc_html__( 'Go to', 'woo-multi-currency' ),
+										esc_url( 'https://www.ip2location.io/' ),
+										esc_html__( 'create account and paste API Key here to use.', 'woo-multi-currency' ) ); ?></p>
                             </td>
                         </tr>
                         <tr>
@@ -640,11 +747,52 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                         </tr>
 									<?php } ?>
                                     </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th colspan="3">
+                                            <label><?php esc_html_e( 'Get country by currency', 'woo-multi-currency' ); ?></label>
+                                            <a class="vi-ui button yellow"
+                                               href="https://villatheme.com/extensions/woo-multi-currency"
+                                               target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                        </th>
+                                    </tr>
+                                    </tfoot>
                                 </table>
                             </td>
                         </tr>
                         </tbody>
                     </table>
+					<?php if ( class_exists( 'TRP_Translate_Press' ) ) { ?>
+                        <h3>
+							<?php esc_html_e( 'TranslatePress - Multilingual', 'woo-multi-currency' ) ?>
+                        </h3>
+                        <table class="optiontable form-table">
+                            <tr>
+                                <th>
+                                    <label>
+										<?php esc_html_e( 'Language switcher', 'woo-multi-currency' ) ?>
+                                    </label>
+                                </th>
+                                <td>
+                                    <a class="vi-ui button yellow"
+                                       href="https://villatheme.com/extensions/woo-multi-currency"
+                                       target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label for="<?php echo esc_attr( self::set_field( 'allow_translatepress_and_widget_change_currency' ) ) ?>">
+										<?php esc_html_e( 'Allow currency widget change currency', 'woo-multi-currency' ) ?>
+                                    </label>
+                                </th>
+                                <td>
+                                    <a class="vi-ui button yellow"
+                                       href="https://villatheme.com/extensions/woo-multi-currency"
+                                       target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                </td>
+                            </tr>
+                        </table>
+					<?php } ?>
                     <!--					Polylang-->
 					<?php if ( class_exists( 'Polylang' ) ) { ?>
                         <h3>
@@ -661,6 +809,19 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                     <a class="vi-ui button yellow"
                                        href="https://villatheme.com/extensions/woo-multi-currency"
                                        target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label for="<?php echo esc_attr( self::set_field( 'add_query_arg_to_languague_switcher' ) ) ?>">
+										<?php esc_html_e( 'Add query params', 'woo-multi-currency' ) ?>
+                                    </label>
+                                </th>
+                                <td>
+                                    <a class="vi-ui button yellow"
+                                       href="https://villatheme.com/extensions/woo-multi-currency"
+                                       target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                    <p class="description"><?php esc_html_e( 'Add query param to URL to switch currency based on language while using cache plugin that prevents currency from changing based on language', 'woo-multi-currency' ) ?></p>
                                 </td>
                             </tr>
 
@@ -774,7 +935,7 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                             <td>
                                 <input placeholder="<?php esc_html_e( 'eg: !is_page(array(34,98,73))', 'woo-multi-currency' ) ?>"
                                        type="text"
-                                       value="<?php echo esc_attr( htmlentities( self::get_field( 'conditional_tags' ) ) ) ?>"
+                                       value="<?php echo esc_attr( htmlentities( self::get_field( 'conditional_tags' ), ENT_COMPAT ) ) ?>"
                                        name="<?php echo esc_attr( self::set_field( 'conditional_tags' ) ) ?>"/>
 
                                 <p class="description">
@@ -869,6 +1030,50 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                         </tr>
                         <tr>
                             <th>
+                                <label><?php esc_html_e( 'Expand button color', 'woo-multi-currency' ) ?></label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label><?php esc_html_e( 'Expand button background', 'woo-multi-currency' ) ?></label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label><?php esc_html_e( 'Expand button opacity', 'woo-multi-currency' ) ?></label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'disable_collapse' ) ) ?>">
+									<?php esc_html_e( 'Mobile', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'Disable Collapse', 'woo-multi-currency' ) ?></p>
+                                <p class="description"><?php esc_html_e( 'Enable this option to expand the currencies bar.', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
                                 <label>
 			                        <?php esc_html_e( 'Top position', 'woo-multi-currency' ) ?>
                                 </label>
@@ -877,7 +1082,17 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                 <a class="vi-ui button yellow"
                                    href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
-                                <p class="description"><?php esc_html_e( 'Fixed currency in schema structure data.', 'woo-multi-currency' ) ?></p>
+                                <p class="description"><?php esc_html_e( 'Distance from the sidebar center to the screen top corner. Use % to use proportional screen size or px to use pixels.', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label><?php esc_html_e( 'Max height (px)', 'woo-multi-currency' ) ?></label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                             </td>
                         </tr>
                         <tr>
@@ -936,6 +1151,16 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                         </tr>
                         <tr>
                             <th>
+                                <label><?php esc_html_e( 'Currency name background', 'woo-multi-currency' ) ?></label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
                                 <label>
 			                        <?php esc_html_e( 'Hover color', 'woo-multi-currency' ) ?>
                                 </label>
@@ -944,7 +1169,6 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                 <a class="vi-ui button yellow"
                                    href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
-                                <p class="description"><?php esc_html_e( 'Fixed currency in schema structure data.', 'woo-multi-currency' ) ?></p>
                             </td>
                         </tr>
                         <tr>
@@ -980,8 +1204,22 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                             value="2"><?php esc_html_e( 'Flag + Currency Code', 'woo-multi-currency' ) ?></option>
                                     <option <?php selected( $price_switcher, 3 ) ?>
                                             value="3"><?php esc_html_e( 'Flag + Price', 'woo-multi-currency' ) ?></option>
+                                    <option disabled><?php esc_html_e( 'Currency Symbol (Premium)', 'woo-multi-currency' ) ?></option>
+                                    <option disabled><?php esc_html_e( 'Currency Code + Name (Premium)', 'woo-multi-currency' ) ?></option>
                                 </select>
                                 <p class="description"><?php esc_html_e( 'Display a currency switcher under product price in single product pages.', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'price_switcher_layout' ) ) ?>">
+									<?php esc_html_e( 'Switcher layout', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                             </td>
                         </tr>
                         <tr>
@@ -1000,6 +1238,9 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                             value="10"><?php esc_html_e( 'Below price', 'woo-multi-currency' ) ?></option>
                                     <option <?php selected( $price_switcher_position, 20 ) ?>
                                             value="20"><?php esc_html_e( 'Below excerpt', 'woo-multi-currency' ) ?></option>
+                                    <option disabled><?php esc_html_e( 'Below add to cart (Premium)', 'woo-multi-currency' ) ?></option>
+                                    <option disabled><?php esc_html_e( 'Below meta (Premium)', 'woo-multi-currency' ) ?></option>
+                                    <option disabled><?php esc_html_e( 'Below sharing (Premium)', 'woo-multi-currency' ) ?></option>
                                 </select>
                                 <p class="description"><?php esc_html_e( 'Position of currency switcher in single product pages, it may be affected by the theme or product template', 'woo-multi-currency' ) ?></p>
                             </td>
@@ -1028,6 +1269,54 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                    href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php esc_html_e( 'Display product price collated with other currency and display settings (layout, title, position).', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'price_collate_layout' ) ) ?>">
+									<?php esc_html_e( 'Price collate layout', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'price_collate_title' ) ) ?>">
+									<?php esc_html_e( 'Title', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'price_collate_single' ) ) ?>">
+									<?php esc_html_e( 'Single product position', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'price_collate_archive' ) ) ?>">
+									<?php esc_html_e( 'Archive position', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                             </td>
                         </tr>
                         </tbody>
@@ -1194,7 +1483,19 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                         </tr>
                         <tr>
                             <th>
-                                <label for="<?php echo esc_attr( self::set_field( 'enable_currency_by_payment_method' ) ) ?>">
+                                <label for="<?php echo esc_attr( self::set_field( 'currency_by_payment_method_without_reload_page' ) ) ?>">
+									<?php esc_html_e( 'Without reload checkout page', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'billing_shipping_currency' ) ) ?>">
 			                        <?php esc_html_e( 'Change currency follow', 'woo-multi-currency' ) ?>
                                 </label>
                             </th>
@@ -1207,7 +1508,33 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                         </tr>
                         <tr>
                             <th>
-                                <label for="<?php echo esc_attr( self::set_field( 'enable_currency_by_payment_method' ) ) ?>">
+                                <label for="<?php echo esc_attr( self::set_field( 'only_shipping_country' ) ) ?>">
+									<?php esc_html_e( 'Only get shipping address', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'Only change currency when customer changes shipping country field (if disabled, when customer is not set "shipping to a different address", get shipping country by billing country)', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'sync_checkout_currency' ) ) ?>">
+									<?php esc_html_e( 'Sync checkout currency', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                                <p class="description"><?php esc_html_e( 'When currency is switched on cart/checkout page by the "Change currency follow" option above, also switch currency of the whole current customer session', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'equivalent_currency' ) ) ?>">
 			                        <?php esc_html_e( 'Display multi currencies', 'woo-multi-currency' ) ?>
                                 </label>
                             </th>
@@ -1234,6 +1561,28 @@ class WOOMULTI_CURRENCY_F_Admin_Settings {
                                    href="https://villatheme.com/extensions/woo-multi-currency"
                                    target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                                 <p class="description"><?php echo esc_html__( 'This option only works when input price same as output price (both include tax or exclude tax)', 'woo-multi-currency' ) ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="<?php echo esc_attr( self::set_field( 'price_lower_bound' ) ) ?>">
+									<?php esc_html_e( 'Accept lower bound', 'woo-multi-currency' ) ?>
+                                </label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label><?php esc_html_e( 'Price format rules', 'woo-multi-currency' ) ?></label>
+                            </th>
+                            <td>
+                                <a class="vi-ui button yellow"
+                                   href="https://villatheme.com/extensions/woo-multi-currency"
+                                   target="_blank"><?php echo esc_html__( 'Unlock This Feature', 'woo-multi-currency' ) ?></a>
                             </td>
                         </tr>
                         </tbody>

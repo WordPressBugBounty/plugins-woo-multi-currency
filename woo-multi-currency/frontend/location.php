@@ -141,28 +141,21 @@ class WOOMULTI_CURRENCY_F_Frontend_Location {
 				case 1:
 					$ip_add = $this->get_ip();
 					$this->settings->setcookie( 'wmc_ip_add', $ip_add, time() + 86400 );
-					if ( ! class_exists( 'geoPlugin' ) ) {
-						require_once WOOMULTI_CURRENCY_F_INCLUDES . 'geoplugin.class.php';
-					}
-					$geo_plugin = new geoPlugin();
-					$geoplugin  = $geo_plugin->fetch( "https://www.geoplugin.net/php.gp?ip={$ip_add}&base_currency=" . $this->settings->get_default_currency() );
-
-					if ( $geoplugin ) {
-						$geoplugin = is_string( $geoplugin )
-							? unserialize( $geoplugin, array( 'allowed_classes' => false ) ) // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize -- geoPlugin PHP payload; objects blocked.
-							: array();
-						if ( ! is_array( $geoplugin ) ) {
-							$geoplugin = array();
+					$ex_api_key   = $this->settings->get_geo_api_key();
+					$ex_url       = "https://api.ip2location.io/?key={$ex_api_key}&ip={$ip_add}";
+					$ex_response  = wp_remote_get( $ex_url, array( 'timeout' => 15 ) );
+					$country_code = '';
+					if ( ! is_wp_error( $ex_response ) ) {
+						$ex_body = wp_remote_retrieve_body( $ex_response );
+						$ex_data = json_decode( $ex_body, true );
+						if ( $ex_data && is_array( $ex_data ) && isset( $ex_data['country_code'] ) ) {
+							$country_code = $ex_data['country_code'];
 						}
 					}
-
 					$geoplugin_arg = array(
-						'country'       => isset( $geoplugin['geoplugin_countryCode'] ) ? $geoplugin['geoplugin_countryCode'] : 'US',
-						'currency_code' => isset( $geoplugin['geoplugin_currencyCode'] ) ? $geoplugin['geoplugin_currencyCode'] : 'USD',
+						'country'       => $country_code,
+						'currency_code' => $this->settings->get_currency_code( $country_code ),
 					);
-					if ( ! empty( $geoplugin['geoplugin_currencyConverter'] ) ) {
-						$geoplugin_arg['currency_rate'] = $geoplugin['geoplugin_currencyConverter'];
-					}
 					break;
 				case 2:
 					$country_code  = self::get_country_code_from_headers();

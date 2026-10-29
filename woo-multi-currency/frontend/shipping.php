@@ -129,7 +129,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shipping {
 					// Calculate the costs.
 					$cost         = $shipping->get_option( 'cost' );
 					$has_costs    = false; // True when a cost is set. False if all costs are blank strings.
-					$rate['cost'] = 0;
+					$rate         = array( 'cost' => 0 );
 					if ( '' !== $cost ) {
 						$has_costs    = true;
 						$rate['cost'] = $this->evaluate_cost(

@@ -16,9 +16,9 @@ class WOOMULTI_CURRENCY_F_Frontend_Location {
 			/*Check change currency. Can not code in init function because Widget price can not get symbol.*/
 			$list_currencies = $this->settings->get_list_currencies();
 
-			if ( ! isset( $_GET['wmc_location_nonce'] ) || wp_verify_nonce( wc_clean( wp_unslash( $_GET['wmc_location_nonce'] ) ), 'wmc_location_nonce' ) ) {
+			if ( ! isset( $_GET['wmc_location_nonce'] ) || wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['wmc_location_nonce'] ) ), 'wmc_location_nonce' ) ) {
 				if ( isset( $_GET['wmc-currency'] ) ) {
-					$target_currency = str_replace( '/', '', sanitize_text_field( $_GET['wmc-currency'] ) );
+					$target_currency = str_replace( '/', '', sanitize_text_field( wp_unslash( $_GET['wmc-currency'] ) ) );
 					if ( ! empty( $list_currencies[ $target_currency ] ) ) {
 						if ( $list_currencies[ $target_currency ]['hide'] !== '1' ) {
 							$this->settings->set_current_currency( $target_currency );
@@ -34,10 +34,10 @@ class WOOMULTI_CURRENCY_F_Frontend_Location {
 		if ( is_admin() && ! wp_doing_ajax() ) {
 			return;
 		}
-		if ( isset( $_GET['wmc_location_nonce'] ) && ! wp_verify_nonce( wc_clean( wp_unslash( $_GET['wmc_location_nonce'] ) ), 'wmc_location_nonce' ) ) {
+		if ( isset( $_GET['wmc_location_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['wmc_location_nonce'] ) ), 'wmc_location_nonce' ) ) {
 			return;
 		}
-		$action = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : '';
+		$action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
 		if ( $action === 'wc_facebook_background_product_sync' ) {
 			return;
 		}
@@ -270,13 +270,13 @@ class WOOMULTI_CURRENCY_F_Frontend_Location {
 		} else if ( isset( $_SERVER['HTTP_CLIENT_IP'] ) ) {
 			$ipaddress = sanitize_text_field( wp_unslash( $_SERVER['HTTP_CLIENT_IP'] ) );
 		} else if ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-			$ipaddress = self::validate_server_ip( $_SERVER['HTTP_X_FORWARDED_FOR'] );
+			$ipaddress = self::validate_server_ip( sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) );
 		} else if ( isset( $_SERVER['HTTP_X_FORWARDED'] ) ) {
-			$ipaddress = self::validate_server_ip( $_SERVER['HTTP_X_FORWARDED'] );
+			$ipaddress = self::validate_server_ip( sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED'] ) ) );
 		} else if ( isset( $_SERVER['HTTP_FORWARDED_FOR'] ) ) {
-			$ipaddress = self::validate_server_ip( $_SERVER['HTTP_FORWARDED_FOR'] );
+			$ipaddress = self::validate_server_ip( sanitize_text_field( wp_unslash( $_SERVER['HTTP_FORWARDED_FOR'] ) ) );
 		} else if ( isset( $_SERVER['HTTP_FORWARDED'] ) ) {
-			$ipaddress = self::validate_server_ip( $_SERVER['HTTP_FORWARDED'] );
+			$ipaddress = self::validate_server_ip( sanitize_text_field( wp_unslash( $_SERVER['HTTP_FORWARDED'] ) ) );
 		} else {
 			$ipaddress = 'UNKNOWN';
 		}

@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 use SW_WAPF_PRO\Includes\Classes\Cart;
 

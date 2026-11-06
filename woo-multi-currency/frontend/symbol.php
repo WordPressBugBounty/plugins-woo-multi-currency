@@ -178,6 +178,11 @@ class WOOMULTI_CURRENCY_F_Frontend_Symbol {
 		if ( is_admin() && ! wp_doing_ajax() ) {
 			return $data;
 		}
+		if ( ! $this->settings->get_enable_multi_payment() && function_exists( 'wmc_is_checkout_payment_context' ) && wmc_is_checkout_payment_context() ) {
+			$default_currency = $this->settings->get_default_currency();
+
+			return $default_currency ? $default_currency : $data;
+		}
 		if ( $this->settings->get_current_currency() ) {
 			$data = $this->settings->get_current_currency();
 		}
@@ -256,24 +261,8 @@ class WOOMULTI_CURRENCY_F_Frontend_Symbol {
 	 * @return int
 	 */
 	public function set_decimals( $decimal ) {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_symbol' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_symbol' ) ) {
 			return (int) $decimal;
-		}
-
-		global $pagenow;
-		if ( $pagenow === 'admin-ajax.php' && isset( $_REQUEST['action'] ) && $_REQUEST['action'] === 'generate_wpo_wcpdf' && isset( $_REQUEST['order_ids'] ) && $_REQUEST['order_ids'] ) {
-			$order_id       = intval( $_REQUEST['order_ids'] );
-//			$wc_order       = wc_get_product( $order_id );
-//			if ( $wc_order && is_object( $wc_order ) ) {
-//				$order_currency = $wc_order->get_meta( '_order_currency', true );
-//				$order_info     = $wc_order->get_meta( 'wmc_order_info', true );
-//			} else {
-				$order_currency = get_post_meta( $order_id, '_order_currency', true );
-				$order_info     = get_post_meta( $order_id, 'wmc_order_info', true );
-//			}
-			if ( isset( $order_info[ $order_currency ]['decimals'] ) ) {
-				return $order_info[ $order_currency ]['decimals'];
-			}
 		}
 		$selected_currencies = $this->settings->get_list_currencies();
 		$current_currency    = $this->settings->get_current_currency();

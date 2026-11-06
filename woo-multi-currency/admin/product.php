@@ -228,19 +228,21 @@ class WOOMULTI_CURRENCY_F_Admin_Product {
 			return;
 		}
 		/*Check send from product edit page*/
-		if ( ! isset( $_POST['_wmc_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_POST['_wmc_nonce'] ), 'wmc_save_simple_product_currency' ) ) {
+		if ( ! isset( $_POST['_wmc_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wmc_nonce'] ) ), 'wmc_save_simple_product_currency' ) ) {
 			return;
 		}
 		$simple_product = wc_get_product( $post_id );
 		$update_meta = false;
 
 		if ( isset( $_POST['_regular_price_wmcp'] ) ) {
-			$_regular_price_wmcp = wmc_adjust_fixed_price( wc_clean( $_POST['_regular_price_wmcp'] ) );
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$_regular_price_wmcp = wmc_adjust_fixed_price( wc_clean( wp_unslash( $_POST['_regular_price_wmcp'] ) ) );
 			$simple_product->update_meta_data('_regular_price_wmcp', wp_json_encode( $_regular_price_wmcp ) );
 			$update_meta = true;
 		}
 		if ( isset( $_POST['_sale_price_wmcp'] ) && ! empty( $_POST['_sale_price'] ) ) {
-			$_sale_price_wmcp = wmc_adjust_fixed_price( wc_clean( $_POST['_sale_price_wmcp'] ) );
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$_sale_price_wmcp = wmc_adjust_fixed_price( wc_clean( wp_unslash( $_POST['_sale_price_wmcp'] ) ) );
 			$simple_product->update_meta_data('_sale_price_wmcp', wp_json_encode( $_sale_price_wmcp ) );
 			$update_meta = true;
 		} else {
@@ -248,7 +250,8 @@ class WOOMULTI_CURRENCY_F_Admin_Product {
 			$update_meta = true;
 		}
 
-		$date_to = isset( $_POST['_sale_price_dates_to'] ) ? wc_clean( $_POST['_sale_price_dates_to'] ) : '';
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$date_to = isset( $_POST['_sale_price_dates_to'] ) ? wc_clean( wp_unslash( $_POST['_sale_price_dates_to'] ) ) : '';
 
 		if ( $date_to && strtotime( $date_to ) < strtotime( 'NOW', current_time( 'timestamp' ) ) ) {
 			$simple_product->update_meta_data('_sale_price_wmcp', '' );
@@ -271,25 +274,28 @@ class WOOMULTI_CURRENCY_F_Admin_Product {
 			return;
 		}
 		/*Check send from product edit page*/
-		if ( ! isset( $_POST['_wmc_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_POST['_wmc_nonce'] ), 'wmc_save_variable_product_currency' ) ) {
+		if ( ! isset( $_POST['_wmc_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wmc_nonce'] ) ), 'wmc_save_variable_product_currency' ) ) {
 			return;
 		}
 		$variation_product = wc_get_product( $variation_id );
 		$update_meta = false;
 
 		if ( isset( $_POST['variable_regular_price_wmc'] ) ) {
-			$_regular_price_wmcp = wmc_adjust_fixed_price( wc_clean( $_POST['variable_regular_price_wmc'] ) );
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$_regular_price_wmcp = wmc_adjust_fixed_price( wc_clean( wp_unslash( $_POST['variable_regular_price_wmc'] ) ) );
 			$variation_product->update_meta_data('_regular_price_wmcp', wp_json_encode( $_regular_price_wmcp[ $i ] ) );
 			$update_meta = true;
 		}
 		if ( isset( $_POST['variables_sale_price_wmc'] ) && ! empty( $_POST['variable_sale_price'][ $i ] ) ) {
-			$_sale_price_wmcp = wmc_adjust_fixed_price( wc_clean( $_POST['variables_sale_price_wmc'] ) );
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$_sale_price_wmcp = wmc_adjust_fixed_price( wc_clean( wp_unslash( $_POST['variables_sale_price_wmc'] ) ) );
 			$variation_product->update_meta_data('_sale_price_wmcp', wp_json_encode( $_sale_price_wmcp[ $i ] ) );
 			$update_meta = true;
 		} else {
 			$variation_product->update_meta_data('_sale_price_wmcp', '' );
 			$update_meta = true;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$variable_sale_price_dates_to = isset( $_POST['variable_sale_price_dates_to'] ) ? wc_clean( wp_unslash( $_POST['variable_sale_price_dates_to'] ) ) : array();
 		$date_to                      = isset( $variable_sale_price_dates_to[ $i ] ) ? $variable_sale_price_dates_to[ $i ] : '';
 		if ( $date_to && strtotime( $date_to ) < strtotime( 'NOW', current_time( 'timestamp' ) ) ) {

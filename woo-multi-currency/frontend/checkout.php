@@ -17,6 +17,14 @@ class WOOMULTI_CURRENCY_F_Frontend_Checkout {
 				$this,
 				'woocommerce_checkout_update_order_review'
 			), 99 );
+			add_action( 'woocommerce_checkout_create_order', array(
+				$this,
+				'enforce_default_order_currency'
+			), 10, 2 );
+			add_action( 'woocommerce_store_api_checkout_update_order_from_request', array(
+				$this,
+				'store_api_checkout_update_order_from_request'
+			), 10, 2 );
 
 			//Set order currency correctly
 			add_filter( 'woocommerce_paypal_args', array( $this, 'woocommerce_paypal_args' ), 10, 2 );
@@ -25,14 +33,46 @@ class WOOMULTI_CURRENCY_F_Frontend_Checkout {
 	}
 
 	/**
+	 * When Pay in many currencies is off, order currency must match default (totals currency).
+	 *
+	 * @param WC_Order $order Order being created or updated.
+	 */
+	public function enforce_default_order_currency( $order ) {
+		if ( ! $order instanceof WC_Order || $this->settings->get_enable_multi_payment() ) {
+			return;
+		}
+		$default_currency = $this->settings->get_default_currency();
+		if ( ! $default_currency ) {
+			return;
+		}
+		if ( $this->settings->get_current_currency() !== $default_currency ) {
+			$this->settings->set_current_currency( $default_currency, false );
+		}
+		if ( $order->get_currency() !== $default_currency ) {
+			$order->set_currency( $default_currency );
+		}
+	}
+
+	/**
+	 * Enforce default currency on Store API checkout when multi-currency payment is disabled.
+	 *
+	 * @param WC_Order        $order   Order being updated.
+	 * @param WP_REST_Request $request Request object.
+	 */
+	public function store_api_checkout_update_order_from_request( $order, $request ) {
+		$this->enforce_default_order_currency( $order );
+	}
+
+	/**
 	 * Change currency to default and reload page if the payment method is the new PayPal gateway
 	 *
 	 * @param $data
 	 */
 	public function woocommerce_checkout_update_order_review( $data ) {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_checkout' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_checkout' ) ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$payment_method   = isset( $_POST['payment_method'] ) ? wc_clean( wp_unslash( $_POST['payment_method'] ) ) : '';
 		$current_currency = $this->settings->get_current_currency();
 		if ( $payment_method === 'ppcp-gateway' ) {
@@ -97,7 +137,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Checkout {
 	 * @return mixed
 	 */
 	public function woocommerce_paypal_args( $payment_args, $order ) {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_checkout' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_checkout' ) ) {
 			return $payment_args;
 		}
 		if ( ! empty( $_GET['pay_for_order'] ) ) {
@@ -115,7 +155,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Checkout {
 	 * @return mixed
 	 */
 	public function woocommerce_twoco_args( $payment_args ) {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_checkout' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_checkout' ) ) {
 			return $payment_args;
 		}
 		if ( ! empty( $_GET['pay_for_order'] ) ) {

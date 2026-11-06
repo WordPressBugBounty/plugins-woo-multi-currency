@@ -18,11 +18,11 @@ class WOOMULTI_CURRENCY_F_Frontend_Mini_Cart {
 	}
 
 	public function remove_session() {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_minicart' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_minicart' ) ) {
 			return;
 		}
 		$selected_currencies = $this->settings->get_currencies();
-		if ( isset( $_GET['wmc-currency'] ) && in_array( sanitize_text_field( $_GET['wmc-currency'] ), $selected_currencies ) ) {
+		if ( isset( $_GET['wmc-currency'] ) && in_array( sanitize_text_field( wp_unslash( $_GET['wmc-currency'] ) ), $selected_currencies ) ) {
 			$src_min = WP_DEBUG ? '' : '.min';
 			wp_enqueue_script( 'woo-multi-currency-cart', WOOMULTI_CURRENCY_F_JS . 'woo-multi-currency-cart' . $src_min . '.js', array( 'jquery' ), WOOMULTI_CURRENCY_F_VERSION, false );
 		}

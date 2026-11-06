@@ -103,6 +103,34 @@ if ( ! function_exists( 'wmc_locate_template' ) ) {
 		return apply_filters( 'wmc_locate_template', $template, $template_name, $template_path );
 	}
 }
+if ( ! function_exists( 'wmc_is_checkout_payment_context' ) ) {
+	/**
+	 * Checkout payment / totals request where multi-pay OFF must use the default currency.
+	 * Detects classic WC AJAX before WOOCOMMERCE_CHECKOUT exists (defined on template_redirect).
+	 *
+	 * @return bool
+	 */
+	function wmc_is_checkout_payment_context() {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- WooCommerce checkout AJAX; no plugin nonce on wc-ajax.
+		if ( isset( $_REQUEST['wc-ajax'] ) ) {
+			$wc_ajax = sanitize_text_field( wp_unslash( $_REQUEST['wc-ajax'] ) );
+			if ( in_array( $wc_ajax, array( 'checkout', 'update_order_review' ), true ) ) {
+				return true;
+			}
+		}
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+		if ( function_exists( 'is_checkout' ) && is_checkout() ) {
+			return true;
+		}
+
+		if ( class_exists( '\Automattic\Jetpack\Constants' ) && \Automattic\Jetpack\Constants::is_defined( 'WOOCOMMERCE_CHECKOUT' ) ) {
+			return true;
+		}
+
+		return defined( 'WOOCOMMERCE_CHECKOUT' ) && WOOCOMMERCE_CHECKOUT;
+	}
+}
 if ( ! function_exists( 'wmc_get_price' ) ) {
 	function wmc_get_price( $price, $currency_code = false, $is_shipping = false, $match_decimals = false ) {
 
@@ -118,7 +146,12 @@ if ( ! function_exists( 'wmc_get_price' ) ) {
 			$price = (float) str_replace( ',', '.', $price );
 		}
 
-		if ( ! $allow_multi_pay && is_checkout() && ! $equivalent_currency ) {
+		if ( ! $allow_multi_pay && ! $equivalent_currency && wmc_is_checkout_payment_context() ) {
+			$default_currency = $setting->get_default_currency();
+			if ( $setting->get_current_currency() !== $default_currency ) {
+				$setting->set_current_currency( $default_currency, false );
+			}
+
 			return $price;
 		}
 		$match_decimals = apply_filters( 'wmc_convert_price_matching_decimals', $match_decimals, $currency_code, $is_shipping );
@@ -138,7 +171,7 @@ if ( ! function_exists( 'wmc_get_price' ) ) {
 				$price = $is_shipping ? $price : apply_filters( 'wmc_get_price', $price, $currency_code );
 				$price = WOOMULTI_CURRENCY_F_Frontend_Price::settle_price( $price, $currency_code );
 //				$price = apply_filters( 'wmc_get_price', $price, $currency_code );
-			} else {
+			} elseif ( isset( $selected_currencies[ $current_currency ] ) ) {
 				$price = $price * (float) $selected_currencies[ $current_currency ]['rate'];
 				if ( $match_decimals ) {
 					$price = WOOMULTI_CURRENCY_F_Data::convert_price_to_float( $price, array( 'decimals' => absint( $selected_currencies[ $current_currency ]['decimals'] ) ) );

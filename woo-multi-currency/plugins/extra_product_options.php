@@ -36,7 +36,7 @@ class WOOMULTI_CURRENCY_F_Plugin_Extra_Product_Options {
 	 * @return float|int|mixed|void
 	 */
 	public function thwepo_product_field_price( $price, $price_type, $name, $price_info, $index ) {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_plugin' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_plugin' ) ) {
 			return $price;
 		}
 		if ( $price && wp_doing_ajax() ) {

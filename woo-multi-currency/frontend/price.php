@@ -336,7 +336,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 	 * Check on checkout page
 	 */
 	public function init() {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_price' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_price' ) ) {
 			return;
 		}
 
@@ -351,14 +351,23 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			return;
 		}
-		if ( ! ( wp_doing_ajax() && isset( $_POST['action'] ) && $_POST['action'] == 'wmc_get_products_price' || ! wp_doing_ajax() ) ) {
+		if ( ! ( wp_doing_ajax() && isset( $_POST['action'] ) && sanitize_text_field( wp_unslash( $_POST['action'] ) ) == 'wmc_get_products_price' || ! wp_doing_ajax() ) ) {
+			/* WC checkout AJAX defines DOING_AJAX at init; force default before early return when multi-pay is off. */
+			if ( ! self::$settings->get_enable_multi_payment() && function_exists( 'wmc_is_checkout_payment_context' ) && wmc_is_checkout_payment_context() ) {
+				self::$settings->set_current_currency( self::$settings->get_default_currency(), false );
+			}
+
 			return;
 		}
 		$allow_multi      = self::$settings->get_enable_multi_payment();
 		$current_currency = self::$settings->get_current_currency();
-		$old_currency     = self::$settings->getcookie( 'wmc_current_currency_old' );
 		if ( ! $allow_multi ) {
-			if ( $this->is_checkout() ) {
+			$old_currency     = self::$settings->getcookie( 'wmc_current_currency_old' );
+			$allowed          = self::$settings->get_currencies();
+			if ( $old_currency && ( ! is_array( $allowed ) || ! in_array( $old_currency, $allowed, true ) ) ) {
+				$old_currency = self::$settings->get_default_currency();
+			}
+			if ( $this->is_checkout() || ( function_exists( 'wmc_is_checkout_payment_context' ) && wmc_is_checkout_payment_context() ) ) {
 				self::$settings->set_current_currency( self::$settings->get_default_currency(), false );
 			} elseif ( $old_currency && $old_currency != $current_currency ) {
 				self::$settings->set_current_currency( $old_currency, false );
@@ -633,9 +642,9 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 		global $wp;
 		$current_url = site_url( add_query_arg( array(), $wp->request ) );
 
-		$redirect_url = isset( $_SERVER['REDIRECT_URI'] ) ? $_SERVER['REDIRECT_URI'] : '';
-		$redirect_url = ! empty( $_SERVER['REDIRECT_URL'] ) ? $_SERVER['REDIRECT_URL'] : $redirect_url;
-		$redirect_url = ! empty( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : $redirect_url;
+		$redirect_url = isset( $_SERVER['REDIRECT_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REDIRECT_URI'] ) ) : '';
+		$redirect_url = ! empty( $_SERVER['REDIRECT_URL'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REDIRECT_URL'] ) ) : $redirect_url;
+		$redirect_url = ! empty( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : $redirect_url;
 
 		return $current_url . $redirect_url;
 	}
@@ -966,11 +975,11 @@ class WOOMULTI_CURRENCY_F_Frontend_Price {
 	 * @return mixed
 	 */
 	protected function set_cache( $price, $id, $key ) {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_price' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_price' ) ) {
 			return $price;
 		}
 
-		$ajax = isset( $_GET['wc-ajax'] ) ? sanitize_text_field( $_GET['wc-ajax'] ) : '';
+		$ajax = isset( $_GET['wc-ajax'] ) ? sanitize_text_field( wp_unslash( $_GET['wc-ajax'] ) ) : '';
 		if ( $ajax === 'ppc-create-order' ) {
 			/**
 			 * Fix bug with WooCommerce PayPal Payments

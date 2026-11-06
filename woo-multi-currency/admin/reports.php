@@ -38,7 +38,7 @@ class WOOMULTI_CURRENCY_F_Admin_Reports {
 	 * @return string
 	 */
 	public function get_current_range() {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_reports' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_reports' ) ) {
 			return '7day';
 		}
 		if ( $this->current_range === null ) {
@@ -58,7 +58,7 @@ class WOOMULTI_CURRENCY_F_Admin_Reports {
 	}
 
 	public function admin_enqueue_scripts() {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_reports' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_reports' ) ) {
 			return;
 		}
 		$screen    = get_current_screen();
@@ -382,7 +382,7 @@ class WOOMULTI_CURRENCY_F_Admin_Reports {
 	 *
 	 */
 	public function admin_footer() {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_reports' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_reports' ) ) {
 			return;
 		}
 		$currency          = isset( $_GET['wmc-currency'] ) ? strtoupper( sanitize_text_field( wp_unslash( $_GET['wmc-currency'] ) ) ) : '';
@@ -653,7 +653,7 @@ class WOOMULTI_CURRENCY_F_Admin_Reports {
 	 * @return int
 	 */
 	public function wc_get_price_decimals( $decimal ) {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_reports' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_reports' ) ) {
 			return $decimal;
 		}
 		$view_default = isset( $_GET['wmc-view-default-currency'] ) ? sanitize_text_field( wp_unslash( $_GET['wmc-view-default-currency'] ) ) : '';
@@ -674,7 +674,7 @@ class WOOMULTI_CURRENCY_F_Admin_Reports {
 	 * @return string
 	 */
 	public function woocommerce_currency( $woocommerce_currency ) {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_reports' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_reports' ) ) {
 			return $woocommerce_currency;
 		}
 		$view_default = isset( $_GET['wmc-view-default-currency'] ) ? sanitize_text_field( wp_unslash( $_GET['wmc-view-default-currency'] ) ) : '';
@@ -695,7 +695,7 @@ class WOOMULTI_CURRENCY_F_Admin_Reports {
 	 * @return mixed
 	 */
 	public function report_by_currency( $args ) {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_reports' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_reports' ) ) {
 			return $args;
 		}
 		global $pagenow;

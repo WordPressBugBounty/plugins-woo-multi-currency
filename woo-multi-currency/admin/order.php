@@ -71,7 +71,14 @@ class WOOMULTI_CURRENCY_F_Admin_Order {
 	 */
 	public function order_metabox( $post ) {
 
-		$order_id = $post->ID ?? wc_clean( wp_unslash( $_GET['id'] ?? '' ) );
+		if ( ! empty( $post->ID ) ) {
+			$order_id = absint( $post->ID );
+		} elseif ( isset( $_GET['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- HPOS order screen; read-only metabox.
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- HPOS order screen; read-only metabox, ID sanitized.
+			$order_id = absint( sanitize_text_field( wp_unslash( $_GET['id'] ) ) );
+		} else {
+			$order_id = 0;
+		}
 		if ( ! $order_id ) {
 			return;
 		}

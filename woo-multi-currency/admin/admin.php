@@ -127,8 +127,8 @@ class WOOMULTI_CURRENCY_F_Admin_Admin {
 		if ( ! wp_doing_ajax() ) {
 			$frontend_call_admin = false;
 			//Fix with Jetpack stats request from frontend
-			if ( ! isset( $_GET['wmc_admin_nonce'] ) || wp_verify_nonce( wc_clean( wp_unslash( $_GET['wmc_admin_nonce'] ) ), 'wmc_admin_nonce' ) ) {
-				if ( isset( $_GET['page'], $_GET['chart'] ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) === 'stats' && in_array( sanitize_text_field( $_GET['chart'] ), array(
+			if ( ! isset( $_GET['wmc_admin_nonce'] ) || wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['wmc_admin_nonce'] ) ), 'wmc_admin_nonce' ) ) {
+				if ( isset( $_GET['page'], $_GET['chart'] ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) === 'stats' && in_array( sanitize_text_field( wp_unslash( $_GET['chart'] ) ), array(
 						'admin-bar-hours-scale',
 						'admin-bar-hours-scale-2x'
 					) ) ) {
@@ -146,10 +146,11 @@ class WOOMULTI_CURRENCY_F_Admin_Admin {
 	/**
 	 * Init Script in Admin
 	 */
-	public function admin_enqueue_scripts() {
-		$page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : '';
-		if ( $page == 'woo-multi-currency' ) {
-			global $wp_scripts;
+	public function admin_enqueue_scripts( $hook ) {
+		if ( 'toplevel_page_woo-multi-currency' !== $hook ) {
+			return;
+		}
+		global $wp_scripts;
 			$scripts = $wp_scripts->registered;
 			foreach ( $scripts as $k => $script ) {
 				if ( ! is_string( $script->src ) ) {
@@ -237,7 +238,6 @@ class WOOMULTI_CURRENCY_F_Admin_Admin {
 				/* translators: 1: currency code, 2: minimum decimals */
 				'msgDecimals' => __( 'Decimals of %1$s must be at least %2$d. Please update the Number of Decimals.', 'woo-multi-currency' ),
 			) );
-		}
 	}
 
 	/**

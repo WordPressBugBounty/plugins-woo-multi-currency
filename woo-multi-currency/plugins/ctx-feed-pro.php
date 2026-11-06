@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class WOOMULTI_CURRENCY_F_Plugin_CTX_Feed_Pro {
 	public function __construct() {

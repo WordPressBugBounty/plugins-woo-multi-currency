@@ -44,11 +44,12 @@ class WOOMULTI_CURRENCY_F_Plugin_Catna {
 	 * @param $post_id
 	 */
 	public function vicatna_woocommerce_process_product_meta_simple( $post_id ) {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_catna' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_catna' ) ) {
 			return;
 		}
 
-		$type = isset( $_POST['vicatna_type'] ) ? wc_clean( $_POST['vicatna_type'] ) : '';
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$type = isset( $_POST['vicatna_type'] ) ? wc_clean( wp_unslash( $_POST['vicatna_type'] ) ) : '';
 		if ( $type === '' ) {
 			return;
 		}
@@ -59,8 +60,10 @@ class WOOMULTI_CURRENCY_F_Plugin_Catna {
 			if ( $default_currency !== $currency ) {
 				$key_min = '_wmc_vicatna_nyp_min_' . $currency;
 				$key_max = '_wmc_vicatna_nyp_max_' . $currency;
-				$wc_product->update_meta_data( $key_min, isset( $_POST[ $key_min ] ) ? wc_clean( $_POST[ $key_min ] ) : '' );
-				$wc_product->update_meta_data( $key_max, isset( $_POST[ $key_max ] ) ? wc_clean( $_POST[ $key_max ] ) : '' );
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+				$wc_product->update_meta_data( $key_min, isset( $_POST[ $key_min ] ) ? wc_clean( wp_unslash( $_POST[ $key_min ] ) ) : '' );
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+				$wc_product->update_meta_data( $key_max, isset( $_POST[ $key_max ] ) ? wc_clean( wp_unslash( $_POST[ $key_max ] ) ) : '' );
 				$wc_product->save_meta_data();
 			}
 		}

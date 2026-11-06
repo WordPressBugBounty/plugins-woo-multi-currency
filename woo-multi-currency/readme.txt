@@ -9,7 +9,7 @@ Requires PHP: 7.4
 WC requires at least: 7.0
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: trunk
+Stable tag: 2.2.21
 
 Show multi-currency pricing and dual-currency display, accept multi-currency payment, support IP detection, custom/global rate, fixed price and more
 
@@ -233,6 +233,16 @@ Check screenshots at https://villatheme.com/woo-multi-currency/ or https://villa
 3. Currency selector widgets using shortcode
 
 == Changelog ==
+
+2026.11.06 - version 2.2.21
+- Fixed: Validate currency cookie and set_current_currency against configured currencies to prevent unauthenticated zero-price conversion
+- Fixed: wmc_get_price() returns the unconverted price when the current currency rate is missing
+- Fixed: Apply product visibility check to exchange[] in wmc_get_products_price so draft/private prices are not returned to guests
+- Fixed: When Pay in many currencies is disabled, classic checkout AJAX forces default currency so order currency matches unconverted totals
+- Fixed: When Pay in many currencies is disabled, classic and Store API checkout set the order currency to the default currency used for totals
+- Updated: Enforce default currency on Store API checkout when Pay in many currencies is disabled
+- Updated: Compatible with PDF Invoices & Packing Slips for WooCommerce - WP Overnight
+- Updated: VillaTheme support
 
 2026.10.29 - version 2.2.20
 - Added: External geo API key setting; auto-detect uses ip2location.io when External geo API is enabled

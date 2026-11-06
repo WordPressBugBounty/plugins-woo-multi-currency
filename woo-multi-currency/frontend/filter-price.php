@@ -151,17 +151,15 @@ class WOOMULTI_CURRENCY_F_Frontend_Filter_Price {
 	 * @return mixed
 	 */
 	public function reset_price( $args, $wp_query ) {
-		if ( isset( $_GET['wmc_filter_nonce'] ) && ! wp_verify_nonce( wc_clean( wp_unslash( $_GET['wmc_filter_nonce'] ) ), 'wmc_filter_nonce' ) ) {
+		if ( isset( $_GET['wmc_filter_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['wmc_filter_nonce'] ) ), 'wmc_filter_nonce' ) ) {
 			return $args;
 		}
 
 		if ( ! $wp_query->is_main_query() || ( ! isset( $_GET['max_price'] ) && ! isset( $_GET['min_price'] ) ) ) {
 			return $args;
 		}
-		$min_price_input = isset( $_GET['min_price'] ) ? wp_unslash( $_GET['min_price'] ) : '';
-		$max_price_input = isset( $_GET['max_price'] ) ? wp_unslash( $_GET['max_price'] ) : '';
-		$this->min_price = floatval( sanitize_text_field( $min_price_input ) );
-		$this->max_price = floatval( sanitize_text_field( $max_price_input ) );
+		$this->min_price = isset( $_GET['min_price'] ) ? floatval( sanitize_text_field( wp_unslash( $_GET['min_price'] ) ) ) : 0;
+		$this->max_price = isset( $_GET['max_price'] ) ? floatval( sanitize_text_field( wp_unslash( $_GET['max_price'] ) ) ) : 0;
 		$current_currency = $this->settings->get_current_currency();
 		$rate             = wmc_get_price( 1, $current_currency ) ? wmc_get_price( 1, $current_currency ) : '';
 
@@ -180,7 +178,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Filter_Price {
 	 * @return mixed
 	 */
 	public function return_price( $args, $wp_query ) {
-		if ( isset( $_GET['wmc_filter_nonce'] ) && ! wp_verify_nonce( wc_clean( wp_unslash( $_GET['wmc_filter_nonce'] ) ), 'wmc_filter_nonce' ) ) {
+		if ( isset( $_GET['wmc_filter_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['wmc_filter_nonce'] ) ), 'wmc_filter_nonce' ) ) {
 			return $args;
 		}
 

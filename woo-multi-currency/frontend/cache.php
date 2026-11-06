@@ -83,7 +83,9 @@ class WOOMULTI_CURRENCY_F_Frontend_Cache {
 			wp_send_json_error( array( 'message' => esc_html__( 'Nonce invalid', 'woo-multi-currency' ) ) );
 		}
 		do_action( 'wmc_get_products_price_ajax_handle_before' );
-		$pids       = ! empty( $_POST['pids'] ) ? wc_clean( wp_unslash( $_POST['pids'] ) ) : array();
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$pids = ! empty( $_POST['pids'] ) ? wc_clean( wp_unslash( $_POST['pids'] ) ) : array();
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$shortcodes = ! empty( $_POST['shortcodes'] ) ? wc_clean( wp_unslash( $_POST['shortcodes'] ) ) : array();
 		if ( ! is_array( $pids ) ) {
 			$pids = array();
@@ -158,6 +160,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Cache {
 
 		if ( ! empty( $_POST['exchange'] ) ) {
 			$exchange_sc      = array();
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			$exchange_arr     = wc_clean( wp_unslash( $_POST['exchange'] ) );
 			$list_currencies  = $this->settings->get_list_currencies();
 			$current_currency = $this->settings->get_current_currency();
@@ -175,6 +178,16 @@ class WOOMULTI_CURRENCY_F_Frontend_Cache {
 				$ex_sc_currency       = isset( $ex['currency'] ) ? sanitize_text_field( $ex['currency'] ) : '';
 				if ( ! isset( $list_currencies[ $ex_sc_currency ] ) ) {
 					$ex_sc_currency = $current_currency;
+				}
+				if ( $ex_sc_product_id ) {
+					$product = wc_get_product( $ex_sc_product_id );
+					if ( ! $product ) {
+						continue;
+					}
+					$viewable_id = $product->get_parent_id() ? $product->get_parent_id() : $product->get_id();
+					if ( ! is_post_publicly_viewable( $viewable_id ) && ! current_user_can( 'read_post', $viewable_id ) ) {
+						continue;
+					}
 				}
 				$exchange_sc[] = array_merge( $ex, array(
 					'shortcode' => do_shortcode( "[woo_multi_currency_exchange product_id='" . esc_attr( $ex_sc_product_id ) . "' keep_format='" . esc_attr( $ex_sc_keep_format ) . "' price='" . esc_attr( $ex_sc_price ) . "' original_price='" . esc_attr( $ex_sc_original_price ) . "' currency='" . esc_attr( $ex_sc_currency ) . "']" ),

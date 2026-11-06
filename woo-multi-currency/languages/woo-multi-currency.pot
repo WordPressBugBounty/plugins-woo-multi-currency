@@ -1,51 +1,32 @@
-#, fuzzy
+# Copyright (C) 2026 CURCY - Multi Currency for WooCommerce
+# This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: CURCY - Multi Currency for WooCommerce\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-27 03:14+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Project-Id-Version: CURCY - Multi Currency for WooCommerce 2.2.20.1.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woo-multi-currency/\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: \n"
-"Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/\n"
+"POT-Creation-Date: 2026-11-05 06:37+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: audit-fix-i18n.php\n"
 "X-Domain: woo-multi-currency\n"
-
 #: admin/admin.php:44
 msgid " to set default currency."
 msgstr ""
 
-#. %s: taxes
-#: admin/order.php:226
-#, php-format
+#: admin/order.php:221
 msgid "(includes %s)"
 msgstr ""
 
-#. %s: Woo Discount Rule settings link
 #: plugins/woo_discount_rules.php:86
-#, php-format
-msgid ""
-"<strong>Multi Currency for WooCommerce and Woo Discount Rules compatibility "
-"issue</strong>: To make the two plugins work properly, please go to <a "
-"href=\"%s\">Woo Discount Rules/Settings/Third party plugin conflict fixes & "
-"options</a> and check the \"No\" checkbox next to \"Do you have custom "
-"prices set using another plugin or custom code?\""
+msgid "<strong>Multi Currency for WooCommerce and Woo Discount Rules compatibility issue</strong>: To make the two plugins work properly, please go to <a href=\"%s\">Woo Discount Rules/Settings/Third party plugin conflict fixes & options</a> and check the \"No\" checkbox next to \"Do you have custom prices set using another plugin or custom code?\""
 msgstr ""
 
-#: admin/system.php:101
-msgid "[WooCommerce] Your GEO IP"
-msgstr ""
-
-#: admin/system.php:95
-msgid "[WooCommerce] Your IP"
-msgstr ""
-
-#: admin/system.php:107
-msgid "_SERVER system"
+#: admin/settings.php:660
+msgid "API will help detect customer country code base on IP address."
 msgstr ""
 
 #: admin/settings.php:1569
@@ -77,9 +58,7 @@ msgid "Add loading layer when loading price via AJAX"
 msgstr ""
 
 #: admin/settings.php:824
-msgid ""
-"Add query param to URL to switch currency based on language while using "
-"cache plugin that prevents currency from changing based on language"
+msgid "Add query param to URL to switch currency based on language while using cache plugin that prevents currency from changing based on language"
 msgstr ""
 
 #: admin/settings.php:817
@@ -95,27 +74,15 @@ msgid "All currencies"
 msgstr ""
 
 #: admin/settings.php:855
-msgid ""
-"All product fields of Multi Currency for WooCommerce will be copied. When "
-"you switch language, Currency will change. "
-msgstr ""
-
-#: admin/settings.php:785
-msgid "Allow currency widget change currency"
+msgid "All product fields of Multi Currency for WooCommerce will be copied. When you switch language, Currency will change. "
 msgstr ""
 
 #: admin/system.php:65
 msgid "Allow URL Open"
 msgstr ""
 
-#. Description of the plugin
-msgid ""
-"Allows you to display prices and accepts payments in multiple currencies. "
-"Working only with WooCommerce."
-msgstr ""
-
-#: admin/settings.php:660
-msgid "API will help detect customer country code base on IP address."
+#: admin/settings.php:785
+msgid "Allow currency widget change currency"
 msgstr ""
 
 #: admin/settings.php:574
@@ -130,7 +97,7 @@ msgstr ""
 msgid "Approximate price's position"
 msgstr ""
 
-#: frontend/price.php:321
+#: frontend/price.php:328
 msgid "Approximately"
 msgstr ""
 
@@ -142,19 +109,20 @@ msgstr ""
 msgid "Auto Detect"
 msgstr ""
 
-#: admin/settings.php:571
-msgid "Auto select currency"
-msgstr ""
-
 #: admin/settings.php:1597
 msgid "Auto Update Exchange Rate"
 msgstr ""
 
-#: admin/settings.php:1176 admin/settings.php:1355
+#: admin/settings.php:571
+msgid "Auto select currency"
+msgstr ""
+
+#: admin/settings.php:1176
+#: admin/settings.php:1355
 msgid "Background color"
 msgstr ""
 
-#: admin/order.php:120
+#: admin/order.php:115
 msgid "Base on Currency"
 msgstr ""
 
@@ -183,44 +151,7 @@ msgid "Below title"
 msgstr ""
 
 #: admin/settings.php:590
-msgid ""
-"Besides product price, if you want to show approximate price for cart "
-"elements on cart/checkout page, please select them here"
-msgstr ""
-
-#: includes/blocks/block.json:1
-msgctxt "block description"
-msgid "Display currency selector for WooCommerce Multi Currency"
-msgstr ""
-
-#: includes/blocks/block.json:1
-msgctxt "block keyword"
-msgid "currency"
-msgstr ""
-
-#: includes/blocks/block.json:1
-msgctxt "block keyword"
-msgid "multi currency"
-msgstr ""
-
-#: includes/blocks/block.json:1
-msgctxt "block keyword"
-msgid "switcher"
-msgstr ""
-
-#: includes/blocks/block.json:1
-msgctxt "block keyword"
-msgid "woo"
-msgstr ""
-
-#: includes/blocks/block.json:1
-msgctxt "block keyword"
-msgid "woocommerce"
-msgstr ""
-
-#: includes/blocks/block.json:1
-msgctxt "block title"
-msgid "Currency Selector"
+msgid "Besides product price, if you want to show approximate price for cart elements on cart/checkout page, please select them here"
 msgstr ""
 
 #: plugins/woocommerce_bookings.php:114
@@ -231,16 +162,20 @@ msgstr ""
 msgid "Bot currency"
 msgstr ""
 
+#: includes/blocks/index.js:190
+msgid "Bottom"
+msgstr ""
+
 #: admin/settings.php:1028
-msgid ""
-"By default, currencies bar will expand on hovering. Enable this option if "
-"you want them to only expand when clicking on."
+msgid "By default, currencies bar will expand on hovering. Enable this option if you want them to only expand when clicking on."
 msgstr ""
 
 #: admin/settings.php:1258
-msgid ""
-"By default, dropdown currency selector will expand on hovering. Enable this "
-"option if you want them to only expand when clicking on."
+msgid "By default, dropdown currency selector will expand on hovering. Enable this option if you want them to only expand when clicking on."
+msgstr ""
+
+#: admin/settings.php:1409
+msgid "CSS"
 msgstr ""
 
 #: admin/settings.php:915
@@ -260,9 +195,7 @@ msgid "Change currency when customer change billing or shipping address."
 msgstr ""
 
 #: frontend/widgets/widget-selector.php:20
-msgid ""
-"Change display currency on shop page. Widget of Multi Currency for "
-"WooCommerce by VillaTheme"
+msgid "Change display currency on shop page. Widget of Multi Currency for WooCommerce by VillaTheme"
 msgstr ""
 
 #: admin/settings.php:1452
@@ -293,28 +226,57 @@ msgstr ""
 msgid "Conditional Tags"
 msgstr ""
 
+#: includes/blocks/index.js:146
+msgid "Configure the block settings to see the preview"
+msgstr ""
+
 #: admin/settings.php:706
 msgid "Countries"
-msgstr ""
-
-#: admin/settings.php:678
-msgid "create account and paste API Key here to use."
-msgstr ""
-
-#: admin/settings.php:1409
-msgid "CSS"
-msgstr ""
-
-#. Name of the plugin
-msgid "CURCY - Multi Currency for WooCommerce"
 msgstr ""
 
 #: admin/settings.php:876
 msgid "Currencies Bar"
 msgstr ""
 
-#: admin/order.php:114 admin/settings.php:375 admin/settings.php:705
+#: admin/order.php:109
+#: admin/settings.php:375
+#: admin/settings.php:705
 msgid "Currency"
+msgstr ""
+
+#: admin/settings.php:1208
+msgid "Currency Code + Name (Premium)"
+msgstr ""
+
+#: admin/order.php:33
+#: admin/order.php:42
+msgid "Currency Information"
+msgstr ""
+
+#: admin/settings.php:364
+msgid "Currency Options"
+msgstr ""
+
+#: admin/settings.php:1193
+msgid "Currency Price Switcher"
+msgstr ""
+
+#: admin/order.php:121
+msgid "Currency Rate"
+msgstr ""
+
+#: frontend/widgets/widget-selector.php:19
+#: includes/blocks/index.js:63
+#: includes/blocks/index.js:144
+msgid "Currency Selector"
+msgstr ""
+
+#: includes/blocks/index.js:158
+msgid "Currency Selector Settings"
+msgstr ""
+
+#: admin/settings.php:1207
+msgid "Currency Symbol (Premium)"
 msgstr ""
 
 #: admin/settings.php:684
@@ -325,44 +287,16 @@ msgstr ""
 msgid "Currency by Payment method"
 msgstr ""
 
-#: admin/settings.php:1208
-msgid "Currency Code + Name (Premium)"
-msgstr ""
-
-#: admin/order.php:38 admin/order.php:47
-msgid "Currency Information"
-msgstr ""
-
 #: admin/settings.php:1154
 msgid "Currency name background"
-msgstr ""
-
-#: admin/settings.php:364
-msgid "Currency Options"
 msgstr ""
 
 #: admin/settings.php:1264
 msgid "Currency price collate"
 msgstr ""
 
-#: admin/settings.php:1193
-msgid "Currency Price Switcher"
-msgstr ""
-
-#: admin/order.php:126
-msgid "Currency Rate"
-msgstr ""
-
-#. Base ID
-#: frontend/widgets/widget-selector.php:19
-msgid "Currency Selector"
-msgstr ""
-
-#: admin/settings.php:1207
-msgid "Currency Symbol (Premium)"
-msgstr ""
-
-#: admin/order.php:68 admin/order.php:142
+#: admin/order.php:63
+#: admin/order.php:137
 msgid "Currency: "
 msgstr ""
 
@@ -379,27 +313,21 @@ msgid "Custom symbol"
 msgstr ""
 
 #: admin/settings.php:547
-msgid ""
-"Custom symbol: You can set custom symbol for each currency in your list and "
-"how to it will be displayed (used when you have many currency have same "
-"symbol). Leave it empty to used default symbol. Example: if you set US$ for "
-"US dolar, system will display US$100 instead of $100 like default. Or you "
-"can use with pramater #PRICE# to display price in special format, example: "
-"if you set US #PRICE# $, system will display: US 100 $."
+msgid "Custom symbol: You can set custom symbol for each currency in your list and how to it will be displayed (used when you have many currency have same symbol). Leave it empty to used default symbol. Example: if you set US$ for US dolar, system will display US$100 instead of $100 like default. Or you can use with pramater #PRICE# to display price in special format, example: if you set US #PRICE# $, system will display: US 100 $."
 msgstr ""
 
 #: admin/settings.php:263
 msgid "Data storage method"
 msgstr ""
 
-#. 1: currency code, 2: minimum decimals
-#: admin/admin.php:241 frontend/price.php:534
-#, php-format
-msgid ""
-"Decimals of %1$s must be at least %2$d. Please update the Number of Decimals."
+#: admin/admin.php:238
+#: frontend/price.php:586
+msgid "Decimals of %1$s must be at least %2$d. Please update the Number of Decimals."
 msgstr ""
 
-#: admin/settings.php:373 admin/settings.php:1129 includes/data.php:782
+#: admin/settings.php:373
+#: admin/settings.php:1129
+#: includes/data.php:791
 #: includes/elementor/widget.php:61
 msgid "Default"
 msgstr ""
@@ -412,20 +340,24 @@ msgstr ""
 msgid "Desktop"
 msgstr ""
 
+#: includes/blocks/index.js:187
+msgid "Direction"
+msgstr ""
+
 #: admin/settings.php:1071
 msgid "Disable Collapse"
 msgstr ""
 
 #: admin/settings.php:1210
-msgid ""
-"Display a currency switcher under product price in single product pages."
+msgid "Display a currency switcher under product price in single product pages."
 msgstr ""
 
 #: admin/settings.php:1545
-msgid ""
-"Display currencies both in the store pages and checkout page if they are "
-"different at the checkout page. This option and Fixed price option don't "
-"work together."
+msgid "Display currencies both in the store pages and checkout page if they are different at the checkout page. This option and Fixed price option don't work together."
+msgstr ""
+
+#: includes/blocks/index.js:64
+msgid "Display currency selector for WooCommerce Multi Currency"
 msgstr ""
 
 #: admin/settings.php:1538
@@ -433,27 +365,22 @@ msgid "Display multi currencies"
 msgstr ""
 
 #: admin/settings.php:1271
-msgid ""
-"Display product price collated with other currency and display settings "
-"(layout, title, position)."
+msgid "Display product price collated with other currency and display settings (layout, title, position)."
 msgstr ""
 
 #: admin/settings.php:1085
-msgid ""
-"Distance from the sidebar center to the screen top corner. Use % to use "
-"proportional screen size or px to use pixels."
+msgid "Distance from the sidebar center to the screen top corner. Use % to use proportional screen size or px to use pixels."
 msgstr ""
 
 #: admin/settings.php:250
 msgid "Don't use exchange rate"
 msgstr ""
 
-#: admin/settings.php:936
-msgid "eg: !is_page(array(34,98,73))"
-msgstr ""
-
-#: admin/settings.php:217 admin/settings.php:840 admin/settings.php:882
-#: admin/settings.php:1428 admin/settings.php:1557
+#: admin/settings.php:217
+#: admin/settings.php:840
+#: admin/settings.php:882
+#: admin/settings.php:1428
+#: admin/settings.php:1557
 msgid "Enable"
 msgstr ""
 
@@ -466,29 +393,19 @@ msgid "Enable Collapse"
 msgstr ""
 
 #: admin/settings.php:301
-msgid ""
-"Enable this if you are using a caching plugin(WP Super cache, W3 total cache,"
-" WP rocket, ...) and currency does not remain after being switched by "
-"customers in the frontend"
+msgid "Enable this if you are using a caching plugin(WP Super cache, W3 total cache, WP rocket, ...) and currency does not remain after being switched by customers in the frontend"
 msgstr ""
 
 #: admin/settings.php:1404
-msgid ""
-"Enable this if you want rel=\"nofollow\" to be added to currency switcher "
-"buttons"
+msgid "Enable this if you want rel=\"nofollow\" to be added to currency switcher buttons"
 msgstr ""
 
 #: admin/settings.php:283
-msgid ""
-"Enable this option if you don't want to add \"?wmc-currency={currency}\" to "
-"url of currency switcher buttons."
+msgid "Enable this option if you don't want to add \"?wmc-currency={currency}\" to url of currency switcher buttons."
 msgstr ""
 
 #: admin/settings.php:1481
-msgid ""
-"Enable this option to change the currency immediately at the checkout order "
-"detail when the customer selects a payment gateway, instead of after "
-"clicking the 'place order' button."
+msgid "Enable this option to change the currency immediately at the checkout order detail when the customer selects a payment gateway, instead of after clicking the 'place order' button."
 msgstr ""
 
 #: admin/settings.php:1072
@@ -507,7 +424,7 @@ msgstr ""
 msgid "Ethereum"
 msgstr ""
 
-#: includes/data.php:612
+#: includes/data.php:613
 msgid "European Union"
 msgstr ""
 
@@ -543,10 +460,6 @@ msgstr ""
 msgid "Finance API"
 msgstr ""
 
-#: admin/settings.php:358 admin/settings.php:1119
-msgid "Fixed currency in schema structure data."
-msgstr ""
-
 #: admin/settings.php:233
 msgid "Fixed Price"
 msgstr ""
@@ -555,11 +468,17 @@ msgstr ""
 msgid "Fixed Structure currency"
 msgstr ""
 
-#: admin/settings.php:1133 admin/settings.php:1202
+#: admin/settings.php:358
+#: admin/settings.php:1119
+msgid "Fixed currency in schema structure data."
+msgstr ""
+
+#: admin/settings.php:1133
+#: admin/settings.php:1202
 msgid "Flag"
 msgstr ""
 
-#: includes/data.php:793
+#: includes/data.php:802
 msgid "Flag + Country + Currency + Symbol"
 msgstr ""
 
@@ -583,25 +502,30 @@ msgstr ""
 msgid "Flag Custom"
 msgstr ""
 
-#: frontend/widgets/widget-selector.php:71 includes/elementor/widget.php:79
+#: includes/blocks/index.js:174
+msgid "Flag Size"
+msgstr ""
+
+#: frontend/widgets/widget-selector.php:71
+#: includes/elementor/widget.php:79
 msgid "Flag size"
 msgstr ""
 
-#: frontend/price.php:128
+#: frontend/price.php:129
 msgid "Free"
 msgstr ""
 
-#: plugins/woo-product-bundle.php:113 plugins/woo-product-bundle.php:144
+#: plugins/woo-product-bundle.php:113
+#: plugins/woo-product-bundle.php:144
 msgid "From"
 msgstr ""
 
-#. 1: display price
-#: frontend/price.php:123
-#, php-format
+#: frontend/price.php:124
 msgid "From: %s"
 msgstr ""
 
-#: admin/settings.php:192 includes/elementor/widget.php:49
+#: admin/settings.php:192
+#: includes/elementor/widget.php:49
 msgid "General"
 msgstr ""
 
@@ -621,15 +545,18 @@ msgstr ""
 msgid "Hidden"
 msgstr ""
 
-#: admin/settings.php:433 admin/settings.php:434
+#: admin/settings.php:433
+#: admin/settings.php:434
 msgid "Hidden currencies on widget, shortcode and sidebar"
 msgstr ""
 
-#: includes/data.php:790 includes/elementor/widget.php:69
+#: includes/data.php:799
+#: includes/elementor/widget.php:69
 msgid "Horizontal Currency Slide"
 msgstr ""
 
-#: includes/data.php:789 includes/elementor/widget.php:68
+#: includes/data.php:798
+#: includes/elementor/widget.php:68
 msgid "Horizontal Currency Symbols"
 msgstr ""
 
@@ -637,22 +564,12 @@ msgstr ""
 msgid "Hover color"
 msgstr ""
 
-#. Author URI of the plugin
-msgid "https://villatheme.com"
-msgstr ""
-
-#. URI of the plugin
-msgid "https://villatheme.com/extensions/woo-multi-currency/"
-msgstr ""
-
 #: admin/settings.php:1651
 msgid "If empty, notification will sent to "
 msgstr ""
 
 #: admin/settings.php:257
-msgid ""
-"If enabled, products without fixed prices are not automatically converted by "
-"the exchange rate"
+msgid "If enabled, products without fixed prices are not automatically converted by the exchange rate"
 msgstr ""
 
 #: admin/settings.php:657
@@ -668,16 +585,16 @@ msgid "Initial currency (Premium)"
 msgstr ""
 
 #: admin/settings.php:472
-msgid ""
-"It is fixed rate. Eg: (Original rate)1.62 + 0.1(Exchange fee rate) = 1."
-"72(End rate)"
+msgid "It is fixed rate. Eg: (Original rate)1.62 + 0.1(Exchange fee rate) = 1.72(End rate)"
 msgstr ""
 
 #: admin/settings.php:575
 msgid "Language Polylang (Premium)"
 msgstr ""
 
-#: admin/settings.php:773 admin/settings.php:805 admin/settings.php:861
+#: admin/settings.php:773
+#: admin/settings.php:805
+#: admin/settings.php:861
 msgid "Language switcher"
 msgstr ""
 
@@ -686,6 +603,7 @@ msgid "Large"
 msgstr ""
 
 #: frontend/widgets/widget-selector.php:61
+#: includes/blocks/index.js:162
 msgid "Layout"
 msgstr ""
 
@@ -705,29 +623,36 @@ msgstr ""
 msgid "Left with space $ 99"
 msgstr ""
 
-#. Base ID
 #: frontend/widgets/widget-rates.php:19
 msgid "List Currency Rates"
 msgstr ""
 
-#: includes/data.php:788 includes/elementor/widget.php:67
+#: includes/data.php:797
+#: includes/elementor/widget.php:67
 msgid "List Flag + Currency Code"
 msgstr ""
 
-#: includes/data.php:786 includes/elementor/widget.php:65
+#: includes/data.php:795
+#: includes/elementor/widget.php:65
 msgid "List Flag Horizontal"
 msgstr ""
 
-#: includes/data.php:787 includes/elementor/widget.php:66
+#: includes/data.php:796
+#: includes/elementor/widget.php:66
 msgid "List Flag Vertical"
 msgstr ""
 
-#: includes/data.php:785 includes/elementor/widget.php:64
+#: includes/data.php:794
+#: includes/elementor/widget.php:64
 msgid "Listbox currency code"
 msgstr ""
 
 #: admin/cryptocurrency.php:26
 msgid "Litecoin"
+msgstr ""
+
+#: includes/blocks/index.js:134
+msgid "Loading preview..."
 msgstr ""
 
 #: admin/settings.php:321
@@ -746,12 +671,12 @@ msgstr ""
 msgid "Max height (px)"
 msgstr ""
 
-#: plugins/catna.php:98
-msgid "Maximum price"
-msgstr ""
-
 #: admin/settings.php:658
 msgid "MaxMind Geolocation (Premium)"
+msgstr ""
+
+#: plugins/catna.php:98
+msgid "Maximum price"
 msgstr ""
 
 #: admin/system.php:60
@@ -770,31 +695,38 @@ msgstr ""
 msgid "Mobile"
 msgstr ""
 
-#: admin/settings.php:946
-msgid "more"
-msgstr ""
-
-#: admin/admin.php:283 admin/product.php:76 includes/elementor/widget.php:34
+#: admin/admin.php:280
+#: admin/product.php:76
+#: includes/elementor/widget.php:34
 msgid "Multi Currency"
 msgstr ""
 
-#: admin/admin.php:283 plugins/visual_composer.php:31
-#: plugins/visual_composer.php:46 plugins/visual_composer.php:61
-#: plugins/visual_composer.php:76 plugins/visual_composer.php:91
-#: plugins/visual_composer.php:105 plugins/visual_composer.php:120
+#: admin/admin.php:280
+#: plugins/visual_composer.php:31
+#: plugins/visual_composer.php:46
+#: plugins/visual_composer.php:61
+#: plugins/visual_composer.php:76
+#: plugins/visual_composer.php:91
+#: plugins/visual_composer.php:105
+#: plugins/visual_composer.php:120
 msgid "Multi Currency for WooCommerce"
-msgstr ""
-
-#: admin/admin.php:44
-msgid "Multi Currency for WooCommerce setting page"
 msgstr ""
 
 #: admin/settings.php:187
 msgid "Multi Currency for WooCommerce Settings"
 msgstr ""
 
-#: admin/settings.php:437 admin/settings.php:569
+#: admin/admin.php:44
+msgid "Multi Currency for WooCommerce setting page"
+msgstr ""
+
+#: admin/settings.php:437
+#: admin/settings.php:569
 msgid "No"
+msgstr ""
+
+#: frontend/cache.php:83
+msgid "Nonce invalid"
 msgstr ""
 
 #: admin/settings.php:1200
@@ -806,24 +738,16 @@ msgid "Number of Decimals"
 msgstr ""
 
 #: admin/settings.php:270
-msgid ""
-"On certain servers, some storage methods may cause the selected currency to "
-"reset to the default after selection. If this occurs, try using a different "
-"storage method."
+msgid "On certain servers, some storage methods may cause the selected currency to reset to the default after selection. If this occurs, try using a different storage method."
 msgstr ""
 
-#. %1$s: user role name
 #: plugins/woocommerce_wholesale_prices.php:96
 #: plugins/woocommerce_wholesale_prices.php:178
-#, php-format
 msgid "Only applies to users with the role of %1$s"
 msgstr ""
 
 #: admin/settings.php:1519
-msgid ""
-"Only change currency when customer changes shipping country field (if "
-"disabled, when customer is not set \"shipping to a different address\", get "
-"shipping country by billing country)"
+msgid "Only change currency when customer changes shipping country field (if disabled, when customer is not set \"shipping to a different address\", get shipping country by billing country)"
 msgstr ""
 
 #: admin/settings.php:1512
@@ -831,20 +755,7 @@ msgid "Only get shipping address"
 msgstr ""
 
 #: admin/settings.php:695
-msgid ""
-"Only working with AUTO SELECT CURRENCY feature. Currency will be selected "
-"base on country."
-msgstr ""
-
-#: admin/settings.php:1438
-msgid "Pay in many currencies"
-msgstr ""
-
-#: admin/settings.php:1468
-msgid ""
-"Payment method depend on Payment Gateway. If Payment Gateway is not support "
-"currency, customer can not checkout with currency. Example: Paypal is not "
-"support IDR, Customer can not checkout IDR by Paypal."
+msgid "Only working with AUTO SELECT CURRENCY feature. Currency will be selected base on country."
 msgstr ""
 
 #: admin/system.php:55
@@ -855,22 +766,30 @@ msgstr ""
 msgid "PHP Time Limit"
 msgstr ""
 
-#: includes/data.php:783 includes/elementor/widget.php:62
+#: admin/settings.php:1438
+msgid "Pay in many currencies"
+msgstr ""
+
+#: admin/settings.php:1468
+msgid "Payment method depend on Payment Gateway. If Payment Gateway is not support currency, customer can not checkout with currency. Example: Paypal is not support IDR, Customer can not checkout IDR by Paypal."
+msgstr ""
+
+#: includes/data.php:792
+#: includes/elementor/widget.php:62
 msgid "Plain Horizontal"
 msgstr ""
 
-#: includes/data.php:784 includes/elementor/widget.php:63
+#: includes/data.php:793
+#: includes/elementor/widget.php:63
 msgid "Plain Vertical"
 msgstr ""
 
-#. %1$s: login url, %2$s: cashback value
 #: plugins/woo-wallet.php:260
-#, php-format
-msgid ""
-"Please <a href=\"%1$s\">log in</a> to avail %2$s cashback from this order."
+msgid "Please <a href=\"%1$s\">log in</a> to avail %2$s cashback from this order."
 msgstr ""
 
-#: frontend/widgets/widget-rates.php:54 frontend/widgets/widget-selector.php:55
+#: frontend/widgets/widget-rates.php:54
+#: frontend/widgets/widget-selector.php:55
 msgid "Please enter your title"
 msgstr ""
 
@@ -886,14 +805,13 @@ msgstr ""
 msgid "Polylang"
 msgstr ""
 
-#: admin/settings.php:376 admin/settings.php:963
+#: admin/settings.php:376
+#: admin/settings.php:963
 msgid "Position"
 msgstr ""
 
 #: admin/settings.php:1245
-msgid ""
-"Position of currency switcher in single product pages, it may be affected by "
-"the theme or product template"
+msgid "Position of currency switcher in single product pages, it may be affected by the theme or product template"
 msgstr ""
 
 #: admin/settings.php:1277
@@ -920,7 +838,8 @@ msgstr ""
 msgid "Rate Decimals"
 msgstr ""
 
-#: admin/product.php:152 plugins/yith_product_bundles.php:37
+#: admin/product.php:152
+#: plugins/yith_product_bundles.php:37
 msgid "Regular Price"
 msgstr ""
 
@@ -932,7 +851,8 @@ msgstr ""
 msgid "Reload filter price"
 msgstr ""
 
-#: admin/settings.php:502 admin/settings.php:503
+#: admin/settings.php:502
+#: admin/settings.php:503
 msgid "Remove"
 msgstr ""
 
@@ -956,7 +876,8 @@ msgstr ""
 msgid "Right with space 99 $"
 msgstr ""
 
-#: admin/product.php:160 plugins/yith_product_bundles.php:44
+#: admin/product.php:160
+#: plugins/yith_product_bundles.php:44
 msgid "Sale Price"
 msgstr ""
 
@@ -977,11 +898,7 @@ msgid "Select switcher layout"
 msgstr ""
 
 #: admin/settings.php:345
-msgid ""
-"Select the currency that you want to show to Bots(web crawler tools) when "
-"they crawl your site. If not set, Bots will be treated like normal visitors "
-"which means that the auto-detect currency(if enabled) will also apply to "
-"them."
+msgid "Select the currency that you want to show to Bots(web crawler tools) when they crawl your site. If not set, Bots will be treated like normal visitors which means that the auto-detect currency(if enabled) will also apply to them."
 msgstr ""
 
 #: admin/settings.php:1632
@@ -1005,12 +922,10 @@ msgid "Set sale prices"
 msgstr ""
 
 #: admin/settings.php:244
-msgid ""
-"Set up product price in each currency manually, this price will overwrite "
-"the calculated price."
+msgid "Set up product price in each currency manually, this price will overwrite the calculated price."
 msgstr ""
 
-#: admin/admin.php:254
+#: admin/admin.php:251
 msgid "Settings"
 msgstr ""
 
@@ -1023,9 +938,7 @@ msgid "Show Approximate price for"
 msgstr ""
 
 #: frontend/widgets/widget-rates.php:20
-msgid ""
-"Show list currency exchange rates of Multi Currency for WooCommerce by "
-"VillaTheme"
+msgid "Show list currency exchange rates of Multi Currency for WooCommerce by VillaTheme"
 msgstr ""
 
 #: admin/settings.php:1112
@@ -1045,9 +958,7 @@ msgid "Small"
 msgstr ""
 
 #: admin/settings.php:1334
-msgid ""
-"Some countries use the same currency. You can choice flag correctly. Each "
-"line is the flag. Structure [currency_code,country_code]. Example: EUR,ES"
+msgid "Some countries use the same currency. You can choice flag correctly. Each line is the flag. Structure [currency_code,country_code]. Example: EUR,ES"
 msgstr ""
 
 #: admin/settings.php:1124
@@ -1066,12 +977,12 @@ msgstr ""
 msgid "Switch when user login"
 msgstr ""
 
-#: admin/settings.php:1216
-msgid "Switcher layout"
-msgstr ""
-
 #: admin/settings.php:1228
 msgid "Switcher Position"
+msgstr ""
+
+#: admin/settings.php:1216
+msgid "Switcher layout"
 msgstr ""
 
 #: admin/settings.php:1131
@@ -1082,49 +993,52 @@ msgstr ""
 msgid "Sync checkout currency"
 msgstr ""
 
-#: admin/system.php:21 admin/system.php:124 admin/system.php:124
+#: admin/system.php:21
+#: admin/system.php:124
 msgid "System Status"
 msgstr ""
 
-#: admin/settings.php:1100 admin/settings.php:1344
+#: admin/settings.php:1100
+#: admin/settings.php:1344
 msgid "Text color"
 msgstr ""
 
-#. %s: currency code
-#: admin/admin.php:239 frontend/price.php:530
-#, php-format
-msgid ""
-"The %s exchange rate must be greater than 0. Please update the exchange rate."
+#: admin/admin.php:236
+#: frontend/price.php:582
+msgid "The %s exchange rate must be greater than 0. Please update the exchange rate."
 msgstr ""
 
 #: admin/admin.php:44
-msgid ""
-"The following options affect how prices are displayed on the frontend. Multi "
-"Currency for WooCommerce is working. Please go to "
+msgid "The following options affect how prices are displayed on the frontend. Multi Currency for WooCommerce is working. Please go to "
 msgstr ""
 
 #: admin/settings.php:1563
-msgid ""
-"This option only works when input price same as output price (both include "
-"tax or exclude tax)"
+msgid "This option only works when input price same as output price (both include tax or exclude tax)"
 msgstr ""
 
-#: admin/settings.php:953 admin/settings.php:1289
-#: plugins/visual_composer.php:39 plugins/visual_composer.php:54
-#: plugins/visual_composer.php:69 plugins/visual_composer.php:84
-#: plugins/visual_composer.php:99 plugins/visual_composer.php:113
+#: admin/settings.php:953
+#: admin/settings.php:1289
+#: plugins/visual_composer.php:39
+#: plugins/visual_composer.php:54
+#: plugins/visual_composer.php:69
+#: plugins/visual_composer.php:84
+#: plugins/visual_composer.php:99
+#: plugins/visual_composer.php:113
 #: plugins/visual_composer.php:128
 msgid "Title"
 msgstr ""
 
-#: frontend/widgets/widget-rates.php:53 frontend/widgets/widget-selector.php:54
+#: frontend/widgets/widget-rates.php:53
+#: frontend/widgets/widget-selector.php:54
 msgid "Title:"
 msgstr ""
 
-#. %1$s: logging file path
 #: admin/system.php:84
-#, php-format
 msgid "To allow logging, make %1$s writable."
+msgstr ""
+
+#: includes/blocks/index.js:191
+msgid "Top"
 msgstr ""
 
 #: admin/settings.php:1078
@@ -1139,23 +1053,57 @@ msgstr ""
 msgid "TranslatePress Multilingual (Premium)"
 msgstr ""
 
-#: admin/settings.php:256 admin/settings.php:269 admin/settings.php:282
-#: admin/settings.php:314 admin/settings.php:344 admin/settings.php:357
-#: admin/settings.php:545 admin/settings.php:589 admin/settings.php:602
-#: admin/settings.php:615 admin/settings.php:627 admin/settings.php:639
-#: admin/settings.php:756 admin/settings.php:779 admin/settings.php:791
-#: admin/settings.php:811 admin/settings.php:823 admin/settings.php:853
-#: admin/settings.php:867 admin/settings.php:1027 admin/settings.php:1038
-#: admin/settings.php:1048 admin/settings.php:1058 admin/settings.php:1070
-#: admin/settings.php:1084 admin/settings.php:1095 admin/settings.php:1118
-#: admin/settings.php:1159 admin/settings.php:1171 admin/settings.php:1222
-#: admin/settings.php:1257 admin/settings.php:1270 admin/settings.php:1283
-#: admin/settings.php:1295 admin/settings.php:1307 admin/settings.php:1319
-#: admin/settings.php:1450 admin/settings.php:1466 admin/settings.php:1480
-#: admin/settings.php:1493 admin/settings.php:1505 admin/settings.php:1518
-#: admin/settings.php:1531 admin/settings.php:1544 admin/settings.php:1562
-#: admin/settings.php:1575 admin/settings.php:1585 admin/settings.php:1603
-#: admin/settings.php:1615 admin/settings.php:1638 admin/settings.php:1649
+#: admin/settings.php:256
+#: admin/settings.php:269
+#: admin/settings.php:282
+#: admin/settings.php:314
+#: admin/settings.php:344
+#: admin/settings.php:357
+#: admin/settings.php:545
+#: admin/settings.php:589
+#: admin/settings.php:602
+#: admin/settings.php:615
+#: admin/settings.php:627
+#: admin/settings.php:639
+#: admin/settings.php:756
+#: admin/settings.php:779
+#: admin/settings.php:791
+#: admin/settings.php:811
+#: admin/settings.php:823
+#: admin/settings.php:853
+#: admin/settings.php:867
+#: admin/settings.php:1027
+#: admin/settings.php:1038
+#: admin/settings.php:1048
+#: admin/settings.php:1058
+#: admin/settings.php:1070
+#: admin/settings.php:1084
+#: admin/settings.php:1095
+#: admin/settings.php:1118
+#: admin/settings.php:1159
+#: admin/settings.php:1171
+#: admin/settings.php:1222
+#: admin/settings.php:1257
+#: admin/settings.php:1270
+#: admin/settings.php:1283
+#: admin/settings.php:1295
+#: admin/settings.php:1307
+#: admin/settings.php:1319
+#: admin/settings.php:1450
+#: admin/settings.php:1466
+#: admin/settings.php:1480
+#: admin/settings.php:1493
+#: admin/settings.php:1505
+#: admin/settings.php:1518
+#: admin/settings.php:1531
+#: admin/settings.php:1544
+#: admin/settings.php:1562
+#: admin/settings.php:1575
+#: admin/settings.php:1585
+#: admin/settings.php:1603
+#: admin/settings.php:1615
+#: admin/settings.php:1638
+#: admin/settings.php:1649
 msgid "Unlock This Feature"
 msgstr ""
 
@@ -1167,15 +1115,13 @@ msgstr ""
 msgid "Update All Rates"
 msgstr ""
 
-#: admin/settings.php:494 admin/settings.php:495
+#: admin/settings.php:494
+#: admin/settings.php:495
 msgid "Update Rate"
 msgstr ""
 
-#. %s: cashback value
 #: plugins/woo-wallet.php:257
-#, php-format
-msgid ""
-"Upon placing this order a cashback of %s will be credited to your wallet."
+msgid "Upon placing this order a cashback of %s will be credited to your wallet."
 msgstr ""
 
 #: admin/settings.php:289
@@ -1190,11 +1136,13 @@ msgstr ""
 msgid "Use {price} to display price in special format. Example: (~ {price})"
 msgstr ""
 
-#: includes/data.php:791 includes/elementor/widget.php:70
+#: includes/data.php:800
+#: includes/elementor/widget.php:70
 msgid "Vertical Currency Symbols"
 msgstr ""
 
-#: includes/data.php:792 includes/elementor/widget.php:71
+#: includes/data.php:801
+#: includes/elementor/widget.php:71
 msgid "Vertical Currency Symbols (circle)"
 msgstr ""
 
@@ -1202,15 +1150,12 @@ msgstr ""
 msgid "View in default currency"
 msgstr ""
 
-#. Author of the plugin
-msgid "VillaTheme"
+#: admin/settings.php:835
+msgid "WPML.org"
 msgstr ""
 
 #: admin/settings.php:1532
-msgid ""
-"When currency is switched on cart/checkout page by the \"Change currency "
-"follow\" option above, also switch currency of the whole current customer "
-"session"
+msgid "When currency is switched on cart/checkout page by the \"Change currency follow\" option above, also switch currency of the whole current customer session"
 msgstr ""
 
 #: plugins/woocommerce_wholesale_prices.php:80
@@ -1226,15 +1171,15 @@ msgstr ""
 msgid "Without reload checkout page"
 msgstr ""
 
-#: admin/settings.php:654 plugins/visual_composer.php:35
-#: plugins/visual_composer.php:50 plugins/visual_composer.php:65
-#: plugins/visual_composer.php:80 plugins/visual_composer.php:95
-#: plugins/visual_composer.php:109 plugins/visual_composer.php:124
+#: admin/settings.php:654
+#: plugins/visual_composer.php:35
+#: plugins/visual_composer.php:50
+#: plugins/visual_composer.php:65
+#: plugins/visual_composer.php:80
+#: plugins/visual_composer.php:95
+#: plugins/visual_composer.php:109
+#: plugins/visual_composer.php:124
 msgid "WooCommerce"
-msgstr ""
-
-#: admin/settings.php:835
-msgid "WPML.org"
 msgstr ""
 
 #: admin/settings.php:439
@@ -1242,10 +1187,7 @@ msgid "Yes"
 msgstr ""
 
 #: admin/settings.php:542
-msgid ""
-"You can add up to 2 currencies. To add unlimited currencies and access more "
-"settings, such as Flag, Exchange Fee Type, and Decimal Separator, please "
-"upgrade to the Pro version.."
+msgid "You can add up to 2 currencies. To add unlimited currencies and access more settings, such as Flag, Exchange Fee Type, and Decimal Separator, please upgrade to the Pro version.."
 msgstr ""
 
 #: admin/system.php:89
@@ -1255,3 +1197,28 @@ msgstr ""
 #: admin/cryptocurrency.php:28
 msgid "Zimbabwe"
 msgstr ""
+
+#: admin/system.php:101
+msgid "[WooCommerce] Your GEO IP"
+msgstr ""
+
+#: admin/system.php:95
+msgid "[WooCommerce] Your IP"
+msgstr ""
+
+#: admin/system.php:107
+msgid "_SERVER system"
+msgstr ""
+
+#: admin/settings.php:678
+msgid "create account and paste API Key here to use."
+msgstr ""
+
+#: admin/settings.php:936
+msgid "eg: !is_page(array(34,98,73))"
+msgstr ""
+
+#: admin/settings.php:946
+msgid "more"
+msgstr ""
+

@@ -18,7 +18,7 @@ class WOOMULTI_CURRENCY_F_Frontend_Shortcode {
 		add_action( 'init', array( $this, 'shortcode_init' ) );
 		add_filter( 'wmc_shortcode', array( $this, 'replace_shortcode' ), 10, 2 );
 
-		if ( ! isset( $_REQUEST['_woo_multi_currency_nonce'] ) || wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'woo_multi_currency_shortcode' ) ) {
+		if ( ! isset( $_REQUEST['_woo_multi_currency_nonce'] ) || wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'woo_multi_currency_shortcode' ) ) {
 			$posted_url = '';
 			if ( ! empty( $_POST['wmc_current_url'] ) ) {
 				$posted_url = esc_url_raw( sanitize_text_field( wp_unslash( $_POST['wmc_current_url'] ) ) );

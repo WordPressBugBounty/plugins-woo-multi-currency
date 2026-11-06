@@ -654,7 +654,7 @@ class WOOMULTI_CURRENCY_F_Data {
 	 * @return array
 	 */
 	public function get_links() {
-		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( $_REQUEST['_woo_multi_currency_nonce'] ), 'wmc_currency_nonce' ) ) {
+		if ( isset( $_REQUEST['_woo_multi_currency_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_woo_multi_currency_nonce'] ) ), 'wmc_currency_nonce' ) ) {
 			return array();
 		}
 
@@ -684,17 +684,17 @@ class WOOMULTI_CURRENCY_F_Data {
 				$arg = array( 'wmc-currency' => $k );
 				if ( $current_currency == $k ) {
 					if ( isset( $_GET['min_price'] ) ) {
-						$arg['min_price'] = floatval( sanitize_text_field( $_GET['min_price'] ) );
+						$arg['min_price'] = floatval( sanitize_text_field( wp_unslash( $_GET['min_price'] ) ) );
 					}
 					if ( isset( $_GET['max_price'] ) ) {
-						$arg['max_price'] = floatval( sanitize_text_field( $_GET['max_price'] ) );
+						$arg['max_price'] = floatval( sanitize_text_field( wp_unslash( $_GET['max_price'] ) ) );
 					}
 				} else {
 					if ( isset( $_GET['min_price'] ) ) {
-						$arg['min_price'] = ( floatval( sanitize_text_field( $_GET['min_price'] ) ) / $selected_currencies[ $current_currency ]['rate'] ) * $currency['rate'];
+						$arg['min_price'] = ( floatval( sanitize_text_field( wp_unslash( $_GET['min_price'] ) ) ) / $selected_currencies[ $current_currency ]['rate'] ) * $currency['rate'];
 					}
 					if ( isset( $_GET['max_price'] ) ) {
-						$arg['max_price'] = ( floatval( sanitize_text_field( $_GET['max_price'] ) ) / $selected_currencies[ $current_currency ]['rate'] ) * $currency['rate'];
+						$arg['max_price'] = ( floatval( sanitize_text_field( wp_unslash( $_GET['max_price'] ) ) ) / $selected_currencies[ $current_currency ]['rate'] ) * $currency['rate'];
 					}
 				}
 				$link        = apply_filters( 'wmc_get_link', add_query_arg( $arg, $url ), $k, $currency );
@@ -742,11 +742,14 @@ class WOOMULTI_CURRENCY_F_Data {
 	 * @return mixed
 	 */
 	public function get_current_currency() {
-		if ( self::$current_currency !== null && self::$current_currency !== false ) {
-			return self::$current_currency;
-		}
-		$current_currency    = $this->getcookie( 'wmc_current_currency' );
 		$selected_currencies = $this->get_currencies();
+		if ( self::$current_currency !== null && self::$current_currency !== false ) {
+			if ( is_array( $selected_currencies ) && in_array( self::$current_currency, $selected_currencies, true ) ) {
+				return self::$current_currency;
+			}
+			self::$current_currency = null;
+		}
+		$current_currency = $this->getcookie( 'wmc_current_currency' );
 
 		if ( ! is_array( $selected_currencies ) || ! in_array( $current_currency, $selected_currencies, true ) ) {
 			$current_currency = get_option( 'woocommerce_currency' );
@@ -1114,12 +1117,13 @@ class WOOMULTI_CURRENCY_F_Data {
 				return;
 			}
 		}
-		// Update request cache so get_current_currency() returns new value in same request.
 		if ( $currency_code ) {
+			$allowed = $this->get_currencies();
+			if ( ! is_array( $allowed ) || ! in_array( $currency_code, $allowed, true ) ) {
+				$currency_code = $this->get_default_currency();
+			}
+			// Update request cache so get_current_currency() returns new value in same request.
 			self::$current_currency = $currency_code;
-		}
-
-		if ( $currency_code ) {
 			$this->setcookie( 'wmc_current_currency', $currency_code, time() + 60 * 60 * 24, '/' );
 			if ( ! $this->get_enable_multi_payment() && $checkout ) {
 				$this->setcookie( 'wmc_current_currency_old', $currency_code, time() + 60 * 60 * 24, '/' );
